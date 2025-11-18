@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Symposium 2025 - XIAO JINHANG</title>
+    <meta name="description" content="Symposium 2025 project by Jinhang Xiao - exploring the connections between humans and technology">
+    <link rel="icon" type="image/svg+xml" href="../../favicon-green-square.svg">
+    <link rel="shortcut icon" type="image/svg+xml" href="../../favicon-green-square.svg">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../favicon-green-square.svg">
+    <link rel="icon" type="image/svg+xml" sizes="32x32" href="../../favicon-green-square.svg">
+    <link rel="icon" type="image/svg+xml" sizes="16x16" href="../../favicon-green-square.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-size: 11.2px;
+            line-height: 1.4;
+            color: #000;
+            background-color: #fff;
+        }
+
+        /* 隐藏横向滚动条但保持功能 */
+        body::-webkit-scrollbar {
+            width: 0px;
+            background: transparent;
+        }
+
+        body::-webkit-scrollbar-thumb {
+            background: transparent;
+        }
+
+        /* Firefox */
+        html {
+            scrollbar-width: none;
+        }
+
+        h1 {
+            font-weight: normal;
+            font-size: 12.4px;
+            display: inline;
+        }
+
+        h1 a {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        h1 a:hover {
+            text-decoration: underline;
+        }
+
+        a {
+            color: #000;
+            text-decoration: none;
+            cursor: url('../../cursor-asset11-small.png') 13 13, pointer;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 208px;
+            border-right: 1px solid #000;
+            padding: 16px;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            background-color: #fff;
+            transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            transform: translateX(-100%);
+            z-index: 100;
+        }
+
+        .sidebar.show {
+            transform: translateX(0);
+        }
+
+        .content {
+            flex: 1;
+            margin-left: 208px;
+            padding: 16px;
+            transition: margin-left 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            background: transparent;
+        }
+
+        .content .project-images img,
+        .content .project-images > div {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
+                        transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            will-change: opacity, transform;
+        }
+
+        .content .project-images img.show,
+        .content .project-images > div.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* 隐藏侧边栏滚动条但保持功能 */
+        .sidebar::-webkit-scrollbar {
+            width: 0px;
+            background: transparent;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: transparent;
+        }
+
+        /* Firefox */
+        .sidebar {
+            scrollbar-width: none;
+        }
+
+        .bio {
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        .bio p {
+            font-size: 12px;
+            margin: 0;
+            line-height: 1.4;
+        }
+
+        .bio h1 {
+            position: relative;
+            display: inline-block;
+        }
+
+        .bio h1::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: calc(-0.15em + 3px);
+            height: 0.65em;
+            background: #00ff88;
+            z-index: -1;
+        }
+
+        .project-meta {
+            font-size: 11.2px;
+            margin: 12px 0 0 0;
+            line-height: 1.4;
+            color: #000;
+            opacity: 0.4;
+        }
+
+        .school-link {
+            text-decoration: underline;
+        }
+
+        .school-link:hover {
+            text-decoration: none;
+        }
+
+        .back-link {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #fff;
+            border: 1px solid #000;
+            padding: 8px 16px;
+            font-size: 10.4px;
+            z-index: 1001;
+            text-decoration: none;
+            color: #000;
+            transition: all 0.3s ease;
+            user-select: none;
+            border-radius: 0;
+            min-width: 120px;
+            text-align: center;
+        }
+
+        /* 绿色高亮效果 - 与主页按钮一致 */
+        .back-link::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 6px;
+            height: 0;
+            background: #00ff88;
+            z-index: -1;
+            transition: height 0.3s ease;
+        }
+
+        .back-link:hover::after {
+            height: 8px;
+        }
+
+        .back-link:hover {
+            color: #000;
+            background: #fff;
+            border-color: transparent;
+            text-decoration: none;
+        }
+
+        /* 项目导航按钮 */
+        .project-navigation {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-top: 40px;
+            padding: 0;
+            line-height: normal;
+        }
+
+        .project-nav-btn {
+            background: #fff;
+            border: 1px solid #000;
+            padding: 8px 16px;
+            font-size: 10.4px;
+            text-decoration: none;
+            color: #000;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .project-nav-btn::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 6px;
+            height: 0;
+            background: #00ff88;
+            z-index: -1;
+            transition: height 0.3s ease;
+        }
+
+        .project-nav-btn:hover::after {
+            height: 8px;
+        }
+
+        .project-nav-btn:hover {
+            color: #000;
+            background: #fff;
+            border-color: transparent;
+            text-decoration: none;
+        }
+
+        .project-nav-btn.disabled {
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        /* 打字机效果 */
+        #typewriter-text {
+            display: inline-block;
+        }
+
+        .typewriter-cursor {
+            display: inline-block;
+            animation: blink 1s infinite;
+            margin-left: 2px;
+        }
+
+        @keyframes blink {
+            0%, 50% {
+                opacity: 1;
+            }
+            51%, 100% {
+                opacity: 0;
+            }
+        }
+
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                position: relative;
+                height: auto;
+                border-right: none;
+                border-bottom: 1px solid #000;
+            }
+
+            .content {
+                margin-left: 0;
+            }
+
+            .container {
+                flex-direction: column;
+            }
+
+            .bio p {
+                font-size: 11px;
+            }
+
+            .project-meta {
+                font-size: 11px;
+            }
+
+            .back-link {
+                position: relative;
+                top: auto;
+                right: auto;
+                margin-bottom: 16px;
+                display: inline-block;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .sidebar {
+                padding: 12px;
+            }
+
+            .content {
+                padding: 12px;
+            }
+
+            .bio p {
+                font-size: 10px;
+            }
+
+            .project-meta {
+                font-size: 10px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .sidebar {
+                padding: 8px;
+            }
+
+            .content {
+                padding: 8px;
+            }
+
+            .bio p {
+                font-size: 9px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="../../index.html" class="back-link">Back to Main</a>
+    
+    <div class="container">
+        <aside class="sidebar">
+            <div class="bio">
+                <h1>Symposium 2025</h1>
+                <p>Commissioned by Triple Canopy, I developed a visual identity for the annual symposium that draws on the imagery of puzzles and sandcastles.</p>
+                <br>
+                <p class="project-meta">Branding / 2024</p>
+            </div>
+        </aside>
+
+        <main class="content">
+            <!-- 项目内容区域 -->
+            <div class="project-images" style="padding: 40px 0;">
+                <!-- 项目图片将在这里添加 -->
+                <div style="padding: 100px 0; text-align: center; color: #999; font-style: italic;">
+                    <span id="typewriter-text"></span><span class="typewriter-cursor">_</span>
+                </div>
+                <div class="project-navigation">
+                    <a href="#" class="project-nav-btn" id="prev-project">← Previous</a>
+                    <a href="#" class="project-nav-btn" id="next-project">Next →</a>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // 打字机效果
+        function typeWriter(element, text, speed = 100) {
+            let i = 0;
+            element.textContent = '';
+            
+            function type() {
+                if (i < text.length) {
+                    element.textContent += text.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
+                }
+            }
+            
+            type();
+        }
+
+        // 页面加载时的进入动画
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebar = document.querySelector('.sidebar');
+            const imageElements = document.querySelectorAll('.project-images img, .project-images > div');
+            const typewriterText = document.getElementById('typewriter-text');
+            
+            // 延迟一点时间让页面完全加载
+            setTimeout(() => {
+                sidebar.classList.add('show');
+                
+                // 启动打字机效果
+                if (typewriterText) {
+                    setTimeout(() => {
+                        typeWriter(typewriterText, 'case study work in progress...', 80);
+                    }, 500);
+                }
+                
+                // 图片依次出现，每张间隔200ms
+                imageElements.forEach((element, index) => {
+                    setTimeout(() => {
+                        element.classList.add('show');
+                    }, 200 + (index * 200));
+                });
+            }, 100);
+        });
+
+        // 返回主页时的退出动画
+        document.querySelector('.back-link').addEventListener('click', function(e) {
+            e.preventDefault();
+            const sidebar = document.querySelector('.sidebar');
+            const imageElements = document.querySelectorAll('.project-images img, .project-images > div');
+            
+            // 图片依次退出
+            imageElements.forEach((element, index) => {
+                setTimeout(() => {
+                    element.classList.remove('show');
+                }, index * 50);
+            });
+            
+            // 侧边栏稍后退出
+            setTimeout(() => {
+                sidebar.classList.remove('show');
+            }, 200);
+            
+            // 等待动画完成后跳转
+            setTimeout(() => {
+                window.location.href = this.href;
+            }, 800);
+        });
+
+        // 项目导航功能
+        (function() {
+            const projects = [
+                '../symposium-2025/index.html', // 01 Symposium
+                '../greentopia/index.html', // 02 Greentopia
+                '../lumimoria/index.html', // 03 Lumimoria
+                '../the-little-food-book/index.html', // 04 The Little Food Book
+                '../interview-with-muon-studio/index.html', // 05 Interview with muon studio
+                '../sewing-machine/index.html'   // 06 sewing machine
+            ];
+
+            // 从当前URL获取项目编号
+            const currentPath = window.location.pathname;
+            const currentProjectIndex = projects.findIndex(p => currentPath.includes(p.split('/')[1]));
+
+            const prevBtn = document.getElementById('prev-project');
+            const nextBtn = document.getElementById('next-project');
+
+            // 设置上一个项目按钮
+            if (currentProjectIndex > 0) {
+                prevBtn.href = projects[currentProjectIndex - 1];
+                prevBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const sidebar = document.querySelector('.sidebar');
+                    const imageElements = document.querySelectorAll('.project-images img, .project-images > div, .project-images iframe');
+                    imageElements.forEach((element, index) => {
+                        setTimeout(() => {
+                            element.classList.remove('show');
+                        }, index * 50);
+                    });
+                    setTimeout(() => {
+                        sidebar.classList.remove('show');
+                    }, 200);
+                    setTimeout(() => {
+                        window.location.href = this.href;
+                    }, 800);
+                });
+            } else {
+                prevBtn.classList.add('disabled');
+                prevBtn.href = '#';
+            }
+
+            // 设置下一个项目按钮
+            if (currentProjectIndex < projects.length - 1) {
+                nextBtn.href = projects[currentProjectIndex + 1];
+                nextBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const sidebar = document.querySelector('.sidebar');
+                    const imageElements = document.querySelectorAll('.project-images img, .project-images > div, .project-images iframe');
+                    imageElements.forEach((element, index) => {
+                        setTimeout(() => {
+                            element.classList.remove('show');
+                        }, index * 50);
+                    });
+                    setTimeout(() => {
+                        sidebar.classList.remove('show');
+                    }, 200);
+                    setTimeout(() => {
+                        window.location.href = this.href;
+                    }, 800);
+                });
+            } else {
+                nextBtn.classList.add('disabled');
+                nextBtn.href = '#';
+            }
+        })();
+    </script>
+</body>
+</html>
