@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>XIAO JINHANG</title>
-    <meta name="description" content="Portfolio showcasing creative work and projects">
+    <meta name="description" content="">
     <link rel="icon" type="image/svg+xml" href="favicon-green-square.svg">
     <link rel="shortcut icon" type="image/svg+xml" href="favicon-green-square.svg">
     <link rel="apple-touch-icon" sizes="180x180" href="favicon-green-square.svg">
@@ -28,7 +28,6 @@
             background-color: #fff;
         }
 
-        /* 隐藏横向滚动条但保持功能 */
         body::-webkit-scrollbar {
             width: 0px;
             background: transparent;
@@ -38,7 +37,6 @@
             background: transparent;
         }
 
-        /* Firefox */
         html {
             scrollbar-width: none;
         }
@@ -59,7 +57,6 @@
             text-decoration: underline;
         }
 
-        /* 打字机散开效果 */
         .name-link {
             display: inline;
             position: relative;
@@ -78,7 +75,6 @@
             font-kerning: auto;
         }
 
-        /* 确保动画时字母可以移动 */
         .name-link:hover .letter {
             display: inline-block;
             animation: typewriterScatter 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
@@ -120,7 +116,6 @@
             }
         }
 
-        /* 为每个字母设置不同的散开方向 */
         .name-link:hover .letter:nth-child(1) { --scatter-x: -15px; --scatter-y: -10px; --scatter-rotate: -15deg; }
         .name-link:hover .letter:nth-child(2) { --scatter-x: -8px; --scatter-y: 12px; --scatter-rotate: 10deg; }
         .name-link:hover .letter:nth-child(3) { --scatter-x: 5px; --scatter-y: -15px; --scatter-rotate: -8deg; }
@@ -128,7 +123,6 @@
         .name-link:hover .letter:nth-child(5) { --scatter-x: -5px; --scatter-y: 15px; --scatter-rotate: -10deg; }
         .name-link:hover .letter:nth-child(6) { --scatter-x: 18px; --scatter-y: -5px; --scatter-rotate: 8deg; }
 
-        /* 描述文字撞击效果 */
         .description {
             position: relative;
         }
@@ -139,12 +133,10 @@
             position: relative;
         }
 
-        /* 当Justin被hover时，描述文字被撞击 */
         h1:has(.name-link:hover) ~ .description .word {
             animation: wordImpact 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
         }
 
-        /* 撞击动画 - 不同单词不同延迟和方向 */
         h1:has(.name-link:hover) ~ .description .word:nth-child(1) { animation-delay: 0.2s; --impact-y: 8px; --impact-x: -3px; }
         h1:has(.name-link:hover) ~ .description .word:nth-child(2) { animation-delay: 0.3s; --impact-y: 12px; --impact-x: 2px; }
         h1:has(.name-link:hover) ~ .description .word:nth-child(3) { animation-delay: 0.4s; --impact-y: 15px; --impact-x: -5px; }
@@ -175,7 +167,6 @@
             }
         }
 
-        /* 复原动画 */
         h1:not(:has(.name-link:hover)) ~ .description .word {
             animation: wordRestore 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
         }
@@ -225,7 +216,6 @@
             z-index: 100;
         }
 
-        /* 折叠状态 */
         body.collapsed .sidebar {
             transform: translateX(-100%);
         }
@@ -242,17 +232,14 @@
             margin-left: 0;
         }
 
-        /* collapsed状态下隐藏侧边栏 */
         body.collapsed .sidebar {
             transform: translateX(-100%);
         }
 
-        /* collapsed状态下内容区域占满全屏 */
         body.collapsed .content {
             margin-left: 0;
         }
 
-        /* 隐藏侧边栏滚动条但保持功能 */
         .sidebar::-webkit-scrollbar {
             width: 0px;
             background: transparent;
@@ -262,7 +249,6 @@
             background: transparent;
         }
 
-        /* Firefox */
         .sidebar {
             scrollbar-width: none;
         }
@@ -296,7 +282,6 @@
             transition: none !important;
         }
 
-        /* 折叠状态下隐藏横线 */
         body.collapsed .top-line {
             opacity: 0;
             visibility: hidden;
@@ -451,7 +436,6 @@
             white-space: nowrap;
         }
 
-        /* 绿色高亮框在文字下方，宽度自适应文字 */
         .project-list li.active a::after {
             content: '';
             position: absolute;
@@ -467,7 +451,6 @@
             color: #000;
         }
 
-        /* 项目编号样式 */
         .project-number {
             color: #000;
             font-weight: normal;
@@ -482,12 +465,10 @@
             background: transparent;
         }
 
-        /* 默认视图 - 隐藏项目网格，只显示预览 */
         body:not(.collapsed) .project-grid {
             display: none;
         }
 
-        /* 网格视图 */
         .project-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -518,7 +499,6 @@
             pointer-events: none;
         }
 
-        /* 折叠状态下的项目动画 */
         body.collapsed .project-item {
             animation: fadeInUp 0.6s cubic-bezier(0.19, 1, 0.22, 1) forwards;
         }
@@ -569,7 +549,6 @@
             filter: none;
         }
 
-        /* Interview 项目图片缩小 20% */
         .project-item[href*="interview-with-muon-studio"] {
             display: flex;
             align-items: center;
@@ -582,7 +561,6 @@
             object-fit: contain;
         }
 
-        /* 网格视图中的视频样式 */
         .project-item video {
             width: 100%;
             height: 100%;
@@ -595,8 +573,6 @@
             filter: none;
         }
 
-
-        /* Project 9 轮播效果 */
         .project9-carousel {
             position: relative;
             width: 100%;
@@ -624,13 +600,11 @@
             transition: none;
         }
 
-        /* wayfinding-03.webp 额外缩小 20% */
         .project9-carousel .carousel-image[src="wayfinding-03.webp"] {
             width: 64%;
             height: 64%;
         }
 
-        /* 视图切换按钮 - 固定在同一位置 */
         .view-toggle-btn {
             position: fixed;
             bottom: 20px;
@@ -648,7 +622,6 @@
             text-align: center;
         }
 
-        /* 绿色高亮效果 - 与项目列表一致 */
         .view-toggle-btn::after {
             content: '';
             position: absolute;
@@ -671,7 +644,6 @@
             border-color: transparent;
         }
 
-        /* 默认显示"查看所有项目"按钮 */
         .back-to-auto {
             display: none;
         }
@@ -680,7 +652,6 @@
             display: block;
         }
 
-        /* 折叠状态下显示"返回"按钮 */
         body.collapsed .back-to-auto {
             display: block;
         }
@@ -689,7 +660,6 @@
             display: none;
         }
 
-        /* 项目预览区域包装器 - 默认隐藏 */
         .project-preview-wrapper {
             position: fixed;
             left: calc(50% + 104px);
@@ -709,12 +679,10 @@
             visibility: visible;
         }
 
-        /* 在collapsed状态下隐藏预览 */
         body.collapsed .project-preview-wrapper {
             display: none;
         }
 
-        /* 项目预览框 */
         .project-preview {
             width: 360px;
             height: 360px;
@@ -766,7 +734,6 @@
             opacity: 1;
         }
 
-        /* 视频样式与图片保持一致 */
         video.project-image {
             position: absolute;
             top: 0;
@@ -782,7 +749,6 @@
             opacity: 1;
         }
 
-        /* Poster Collection 装饰性线条效果 */
         .poster-collection-pattern {
             width: 100%;
             height: 100%;
@@ -828,7 +794,6 @@
             background: linear-gradient(135deg, transparent 49.8%, #000 50%, transparent 50.2%);
         }
 
-        /* 平板端适配 */
         @media (max-width: 768px) {
             .container {
                 flex-direction: column;
@@ -884,13 +849,11 @@
                 display: none;
             }
             
-            /* 折叠状态下隐藏侧边栏 */
             body.collapsed .sidebar {
                 display: none;
             }
         }
 
-        /* 手机端适配 */
         @media (max-width: 480px) {
             .sidebar {
                 padding: 12px;
@@ -943,7 +906,6 @@
             }
         }
 
-        /* 超小屏幕适配 */
         @media (max-width: 360px) {
             .sidebar {
                 padding: 8px;
@@ -978,7 +940,6 @@
             }
         }
 
-        /* 触摸设备优化 */
         @media (hover: none) and (pointer: coarse) {
             .project-list li a,
             .view-toggle-btn,
@@ -1000,7 +961,6 @@
                 min-height: 200px;
             }
             
-            /* 移除hover效果，使用active状态 */
             .project-list li a:active {
                 color: #000;
             }
@@ -1032,18 +992,15 @@
     </style>
 </head>
 <body>
-    <!-- 返回自动播放视图按钮 -->
     <div class="view-toggle-btn back-to-auto" id="back-to-auto">
         Back to Main
     </div>
     
-    <!-- 切换到网格视图按钮 -->
     <div class="view-toggle-btn switch-to-grid" id="switch-to-grid">
         View All Projects
     </div>
     
     <div class="container">
-        <!-- 顶部横线 -->
         <div class="top-line" id="top-line"></div>
         
         <aside class="sidebar">
@@ -1113,7 +1070,6 @@
         </aside>
 
         <main class="content" id="home-content">
-            <!-- 自动播放视图的图片预览区域 -->
             <div class="project-preview-wrapper" id="project-preview-wrapper">
             <div class="project-preview" id="project-preview">
                 <div class="project-carousel">
@@ -1128,7 +1084,6 @@
                 <div class="project-description" id="project-description"></div>
             </div>
             
-            <!-- 网格视图的项目网格 -->
             <div class="project-grid">
                 <a href="projects/symposium-2025/index.html" class="project-item">
                     <video src="symposium logo animation.mp4" alt="Symposium 2025" autoplay muted loop playsinline></video>
@@ -1179,7 +1134,6 @@
     </div>
 
     <script>
-// More Info展开功能
 document.addEventListener('DOMContentLoaded', function() {
     const moreInfoBtn = document.querySelector('.more-info-btn');
     const lessInfoBtn = document.querySelector('.less-info-btn');
@@ -1247,13 +1201,11 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// 自动滚动播放功能
 let autoScrollInterval = null;
 let currentProjectIndex = 0;
-let isManualHover = false; // 标记是否正在手动hover
+let isManualHover = false;
 
 function startAutoScroll() {
-    // 只在非collapsed状态下启动自动滚动
     if (document.body.classList.contains('collapsed')) {
         return;
     }
@@ -1263,37 +1215,31 @@ function startAutoScroll() {
     const previewWrapper = document.getElementById('project-preview-wrapper');
     const descriptionDiv = document.getElementById('project-description');
     
-    // 项目简介数据
     const projectDescriptions = [
-        ['2025', 'for Design Studio IV', 'Advise by Kathy Wu'], // Symposium
-        ['2024', 'for Design Studio III', 'with Sarah Feng, Marie You and Nor Wu'], // Greentopia
-        ['2024', 'for Typography III', 'Advise by Anastasiia Raina'], // Lumimoria
-        ['2024', 'for Typography II', 'Advise by Min Hee Lee'], // The Little Food Book
-        ['2025', 'for Design Studio IV', 'Advise by Elizabeth Goodspeed'], // Interview with muon studio
-        ['2024', 'for Design Studio III', 'Advise by Emily Rye']  // sewing machine
+        ['2025', 'for Design Studio IV', 'Advise by Kathy Wu'],
+        ['2024', 'for Design Studio III', 'with Sarah Feng, Marie You and Nor Wu'],
+        ['2024', 'for Typography III', 'Advise by Anastasiia Raina'],
+        ['2024', 'for Typography II', 'Advise by Min Hee Lee'],
+        ['2025', 'for Design Studio IV', 'Advise by Elizabeth Goodspeed'],
+        ['2024', 'for Design Studio III', 'Advise by Emily Rye']
     ];
     
     if (projectLinks.length === 0) return;
     
     function highlightProject(index) {
-        // 如果正在手动hover，跳过自动高亮
         if (isManualHover) return;
         
-        // 移除所有active类
         projectLinks.forEach(li => li.classList.remove('active'));
         projectImages.forEach(img => img.classList.remove('active'));
         
-        // 添加当前项目的active类
         if (projectLinks[index]) {
             projectLinks[index].classList.add('active');
         }
         
-        // 显示对应的项目预览
         if (previewWrapper) {
             previewWrapper.classList.add('show');
         }
         
-        // 更新项目简介
         if (descriptionDiv && projectDescriptions[index]) {
             const desc = projectDescriptions[index];
             descriptionDiv.innerHTML = `<p>${desc[0]}</p><p>${desc[1]}</p><p>${desc[2]}</p>`;
@@ -1303,7 +1249,6 @@ function startAutoScroll() {
             projectImages[index].classList.add('active');
         }
         
-        // 滚动到当前项目
         if (projectLinks[index]) {
             projectLinks[index].scrollIntoView({
                 behavior: 'smooth',
@@ -1313,18 +1258,15 @@ function startAutoScroll() {
     }
     
 function nextProject() {
-    // 如果正在手动hover，跳过自动切换
     if (isManualHover) return;
     
     highlightProject(currentProjectIndex);
     currentProjectIndex = (currentProjectIndex + 1) % projectLinks.length;
 }
     
-    // 立即显示第一个项目
     highlightProject(0);
     currentProjectIndex = 1;
     
-    // 设置定时器，每5秒切换到下一个项目
     autoScrollInterval = setInterval(nextProject, 5000);
 }
 
@@ -1334,7 +1276,6 @@ function stopAutoScroll() {
         autoScrollInterval = null;
     }
     
-    // 移除所有高亮
     const projectLinks = document.querySelectorAll('.project-list li');
     const projectImages = document.querySelectorAll('.project-image');
     const previewWrapper = document.getElementById('project-preview-wrapper');
@@ -1347,21 +1288,19 @@ function stopAutoScroll() {
     }
 }
 
-// 设置手动hover功能
 function setupManualHover() {
     const projectLinks = document.querySelectorAll('.project-list li');
         const projectImages = document.querySelectorAll('.project-image');
         const previewWrapper = document.getElementById('project-preview-wrapper');
         const descriptionDiv = document.getElementById('project-description');
         
-    // 项目简介数据
     const projectDescriptions = [
-        ['2025', 'for Design Studio IV', 'Advise by Kathy Wu'], // Symposium
-        ['2024', 'for Design Studio III', 'with Sarah Feng, Marie You and Nor Wu'], // Greentopia
-        ['2024', 'for Typography III', 'Advise by Anastasiia Raina'], // Lumimoria
-        ['2024', 'for Typography II', 'Advise by Min Hee Lee'], // The Little Food Book
-        ['2025', 'for Design Studio IV', 'Advise by Elizabeth Goodspeed'], // Interview with muon studio
-        ['2024', 'for Design Studio III', 'Advise by Emily Rye']  // sewing machine
+        ['2025', 'for Design Studio IV', 'Advise by Kathy Wu'],
+        ['2024', 'for Design Studio III', 'with Sarah Feng, Marie You and Nor Wu'],
+        ['2024', 'for Typography III', 'Advise by Anastasiia Raina'],
+        ['2024', 'for Typography II', 'Advise by Min Hee Lee'],
+        ['2025', 'for Design Studio IV', 'Advise by Elizabeth Goodspeed'],
+        ['2024', 'for Design Studio III', 'Advise by Emily Rye']
     ];
         
     projectLinks.forEach((li, index) => {
@@ -1369,22 +1308,17 @@ function setupManualHover() {
         
         link.addEventListener('mouseenter', function() {
             if (!document.body.classList.contains('collapsed')) {
-                // 立即标记为手动hover状态，停止自动播放
                 isManualHover = true;
                 
-                        // 移除所有active类
                 projectLinks.forEach(item => item.classList.remove('active'));
                         projectImages.forEach(img => img.classList.remove('active'));
                 
-                // 添加当前项目的active类
                 li.classList.add('active');
                 
-                // 显示对应的项目预览
                 if (previewWrapper) {
                     previewWrapper.classList.add('show');
                 }
                 
-                // 更新项目简介
                 if (descriptionDiv && projectDescriptions[index]) {
                     const desc = projectDescriptions[index];
                     descriptionDiv.innerHTML = `<p>${desc[0]}</p><p>${desc[1]}</p><p>${desc[2]}</p>`;
@@ -1398,7 +1332,6 @@ function setupManualHover() {
         
         link.addEventListener('mouseleave', function() {
             if (!document.body.classList.contains('collapsed')) {
-                // 延迟恢复自动滚动，给用户时间移动到其他项目
                 setTimeout(() => {
                     isManualHover = false;
                 }, 500);
@@ -1407,23 +1340,19 @@ function setupManualHover() {
     });
 }
 
-// 设置自动滚动控制（鼠标悬停暂停）
 function setupAutoScrollControls() {
     const sidebar = document.querySelector('.sidebar');
     
-    // 鼠标进入侧边栏时暂停自动滚动
     sidebar.addEventListener('mouseenter', function() {
         if (!document.body.classList.contains('collapsed')) {
             isManualHover = true;
         }
     });
     
-    // 鼠标离开侧边栏后恢复自动滚动
     sidebar.addEventListener('mouseleave', function() {
         if (!document.body.classList.contains('collapsed')) {
             setTimeout(() => {
                 isManualHover = false;
-                // 重置当前索引，从当前位置继续
                 const projectLinks = document.querySelectorAll('.project-list li');
                 const activeIndex = Array.from(projectLinks).findIndex(li => li.classList.contains('active'));
                 if (activeIndex !== -1) {
@@ -1434,9 +1363,7 @@ function setupAutoScrollControls() {
     });
 }
 
-// 视图切换功能
 document.addEventListener('DOMContentLoaded', function() {
-    // Project 9 图片轮播
     const project9Carousel = document.querySelector('.project9-carousel');
     if (project9Carousel) {
         const images = project9Carousel.querySelectorAll('.carousel-image');
@@ -1448,40 +1375,30 @@ document.addEventListener('DOMContentLoaded', function() {
             images[currentIndex].classList.add('active');
         }
         
-        // 每0.3秒切换一次图片，快速播放效果
         setInterval(showNextImage, 300);
     }
 
     const backToAutoBtn = document.getElementById('back-to-auto');
     const switchToGridBtn = document.getElementById('switch-to-grid');
     
-    // 页面加载时启动自动播放
     setTimeout(() => {
         startAutoScroll();
-        setupManualHover(); // 设置手动hover功能
+        setupManualHover();
         setupAutoScrollControls();
     }, 100);
     
-    // 切换到网格视图
     if (switchToGridBtn) {
         switchToGridBtn.addEventListener('click', function() {
-            // 停止自动滚动
             stopAutoScroll();
             
-            // 切换到collapsed状态显示所有项目
             document.body.classList.add('collapsed');
         });
     }
     
-    // 返回自动播放视图
     if (backToAutoBtn) {
         backToAutoBtn.addEventListener('click', function() {
-            // 移除collapsed状态
             document.body.classList.remove('collapsed');
             
-            // 横线会通过CSS自动显示，无需JavaScript处理
-            
-            // 重新启动自动滚动
             setTimeout(() => {
                 currentProjectIndex = 0;
                 startAutoScroll();
