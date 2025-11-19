@@ -1659,6 +1659,8 @@ function closeMoreInfo() {
 let autoScrollInterval = null;
 let currentProjectIndex = 0;
 let isManualHover = false;
+let autoScrollStartTime = null;
+const AUTO_SCROLL_INTERVAL = 5000;
 let isHighlighting = false;
 
 function startAutoScroll() {
@@ -1753,13 +1755,87 @@ function nextProject() {
     const didHighlight = highlightProject(currentProjectIndex);
     if (didHighlight) {
         currentProjectIndex = (currentProjectIndex + 1) % projectLinks.length;
+        autoScrollStartTime = Date.now();
     }
 }
     
     const initialHighlight = highlightProject(0);
     currentProjectIndex = initialHighlight ? 1 : 0;
+    autoScrollStartTime = Date.now();
     
-    autoScrollInterval = setInterval(nextProject, 5000);
+    autoScrollInterval = setInterval(nextProject, AUTO_SCROLL_INTERVAL);
+    
+    // 页面重新激活时，立即更新到正确的项目
+    function syncAutoScrollOnVisible() {
+        if (document.body.classList.contains('collapsed') || isMobileView()) {
+            return;
+        }
+        
+        const currentProjectLinks = document.querySelectorAll('.project-list li');
+        const previewWrapper = document.getElementById('project-preview-wrapper');
+        
+        if (!currentProjectLinks.length || !previewWrapper) return;
+        
+        // 确保 preview-wrapper 显示
+        if (!previewWrapper.classList.contains('show')) {
+            previewWrapper.classList.add('show');
+        }
+        
+        // 检查当前是否有active项目
+        const activeIndex = Array.from(currentProjectLinks).findIndex(li => li.classList.contains('active'));
+        
+        if (autoScrollStartTime && !isManualHover) {
+            // 如果有开始时间，计算应该显示的项目
+            const now = Date.now();
+            const elapsed = now - autoScrollStartTime;
+            const cycles = Math.floor(elapsed / AUTO_SCROLL_INTERVAL);
+            const targetIndex = cycles % currentProjectLinks.length;
+            
+            // 如果当前显示的不是应该显示的项目，立即更新
+            if (activeIndex !== targetIndex) {
+                highlightProject(targetIndex);
+                currentProjectIndex = (targetIndex + 1) % currentProjectLinks.length;
+            }
+            
+            // 重置开始时间，继续从当前项目计时
+            autoScrollStartTime = now;
+        } else if (activeIndex === -1 || !autoScrollStartTime) {
+            // 如果没有active项目或没有开始时间，显示第一个项目
+            highlightProject(0);
+            currentProjectIndex = 1;
+            autoScrollStartTime = Date.now();
+        }
+    }
+    
+    // 监听页面可见性变化
+    document.addEventListener('visibilitychange', function() {
+        if (document.visibilityState === 'visible' && autoScrollInterval && !document.body.classList.contains('collapsed')) {
+            syncAutoScrollOnVisible();
+        }
+    });
+    
+    // 监听页面获得焦点
+    window.addEventListener('focus', function() {
+        if (autoScrollInterval && !document.body.classList.contains('collapsed')) {
+            syncAutoScrollOnVisible();
+        }
+    });
+    
+    // 监听页面显示
+    window.addEventListener('pageshow', function(event) {
+        if (!event.persisted && autoScrollInterval && !document.body.classList.contains('collapsed')) {
+            syncAutoScrollOnVisible();
+        }
+    });
+    
+    // 如果是从其他页面加载，立即同步显示（延迟一点确保DOM已加载）
+    setTimeout(() => {
+        if (autoScrollInterval && !document.body.classList.contains('collapsed') && !isMobileView()) {
+            syncAutoScrollOnVisible();
+        }
+    }, 150);
+    
+    return { highlightProject, syncAutoScrollOnVisible };
 }
 
 function stopAutoScroll() {
@@ -1965,11 +2041,23 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // 确保第一个项目正确显示（如果preview-wrapper存在但没有show class）
         const previewWrapper = document.getElementById('project-preview-wrapper');
-        if (previewWrapper && !previewWrapper.classList.contains('show')) {
-            // 如果初始加载时没有show class，确保添加它
-            const projectLinks = document.querySelectorAll('.project-list li');
-            if (projectLinks.length > 0 && !document.body.classList.contains('collapsed')) {
+        const projectLinks = document.querySelectorAll('.project-list li');
+        if (previewWrapper && projectLinks.length > 0 && !document.body.classList.contains('collapsed')) {
+            // 如果preview-wrapper没有show class，确保添加它并高亮第一个项目
+            if (!previewWrapper.classList.contains('show')) {
                 previewWrapper.classList.add('show');
+            }
+            // 确保第一个项目被高亮显示
+            const firstLink = projectLinks[0];
+            if (firstLink && !firstLink.classList.contains('active')) {
+                projectLinks.forEach(li => li.classList.remove('active'));
+                firstLink.classList.add('active');
+            }
+            // 确保第一张图片被激活
+            const projectImages = document.querySelectorAll('.project-image');
+            if (projectImages[0] && !projectImages[0].classList.contains('active')) {
+                projectImages.forEach(img => img.classList.remove('active'));
+                projectImages[0].classList.add('active');
             }
         }
     }, 100);
@@ -2028,6 +2116,28 @@ window.addEventListener('pageshow', function(event) {
     // 从项目页返回时才移除show class并退出View All
     const isFromProjectPage = document.referrer && document.referrer.includes('/projects/');
     resetPreviewWrapper(isFromProjectPage, isFromProjectPage);
+    
+    // 如果不是从项目页返回，确保autoscroll正确显示
+    if (!isFromProjectPage && !document.body.classList.contains('collapsed') && !isMobileView()) {
+        setTimeout(() => {
+            // 先停止现有的autoscroll（如果存在）
+            if (autoScrollInterval) {
+                clearInterval(autoScrollInterval);
+                autoScrollInterval = null;
+            }
+            
+            const projectLinks = document.querySelectorAll('.project-list li');
+            const previewWrapper = document.getElementById('project-preview-wrapper');
+            
+            if (projectLinks.length > 0 && previewWrapper) {
+                // 确保 preview-wrapper 显示
+                previewWrapper.classList.add('show');
+                
+                // 重新启动autoscroll（这会确保显示第一个项目）
+                startAutoScroll();
+            }
+        }, 100);
+    }
 });
 
 document.addEventListener('visibilitychange', function() {
