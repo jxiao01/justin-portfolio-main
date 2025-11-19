@@ -549,6 +549,78 @@
             filter: none;
         }
 
+        .prototype-item,
+        .poster-collection-item,
+        .railroad-item {
+            position: relative;
+        }
+
+        .prototype-item img {
+            filter: blur(3px) brightness(1.5) opacity(0.2);
+        }
+
+        .prototype-item:hover img {
+            filter: blur(3px) brightness(1.5) opacity(0.2);
+        }
+
+        .railroad-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .railroad-item video {
+            width: 80% !important;
+            height: 80% !important;
+            object-fit: contain !important;
+            filter: blur(3px) brightness(1.5) opacity(0.2);
+        }
+
+        .railroad-item:hover video {
+            filter: blur(3px) brightness(1.5) opacity(0.2);
+        }
+
+        .lumimoria-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #000;
+        }
+
+        .lumimoria-item img {
+            width: 98% !important;
+            height: 98% !important;
+            object-fit: contain !important;
+        }
+
+        .prototype-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #000;
+            font-size: 12px;
+            font-style: italic;
+            z-index: 10;
+            pointer-events: none;
+            text-align: center;
+        }
+
+        .typewriter-cursor {
+            display: inline-block;
+            animation: blink 1s infinite;
+            margin-left: 2px;
+        }
+
+        @keyframes blink {
+            0%, 50% {
+                opacity: 1;
+            }
+            51%, 100% {
+                opacity: 0;
+            }
+        }
+
         .project-item[href*="interview-with-muon-studio"] {
             display: flex;
             align-items: center;
@@ -620,6 +692,16 @@
             border-radius: 0;
             min-width: 120px;
             text-align: center;
+        }
+
+        body.collapsed .view-toggle-btn {
+            left: 50%;
+            right: auto;
+            transform: translateX(-50%);
+        }
+
+        body.collapsed .content {
+            padding-bottom: 80px;
         }
 
         .view-toggle-btn::after {
@@ -807,16 +889,52 @@
                 border-bottom: 1px solid #000;
                 padding: 16px;
                 margin-left: 0;
+                max-height: none;
+            }
+            
+            .bio {
+                margin-bottom: 16px;
+            }
+            
+            .more-info-content {
+                max-height: 300px;
+            }
+            
+            .bio.expanded .more-info-content {
+                max-height: 300px;
             }
             
             .content {
                 margin-left: 0;
                 padding: 16px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                min-height: 100vh;
+            }
+            
+            body.collapsed .content {
+                justify-content: center;
+                align-items: center;
             }
             
             .project-grid {
                 grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
                 gap: 16px;
+                width: 100%;
+                max-width: 100%;
+                margin: 0 auto;
+            }
+            
+            body.collapsed .project-grid {
+                display: grid;
+                justify-items: center;
+                align-content: center;
+            }
+            
+            .project-item {
+                width: 100%;
+                max-width: 400px;
             }
             
             .project-preview-wrapper {
@@ -839,10 +957,24 @@
             }
             
             .view-toggle-btn {
+                position: fixed;
                 bottom: 16px;
                 right: 16px;
                 font-size: 10px;
                 padding: 6px 12px;
+            }
+            
+            body.collapsed .content {
+                padding-bottom: 80px;
+            }
+            
+            body.collapsed .view-toggle-btn {
+                position: fixed;
+                bottom: 16px;
+                left: 50%;
+                right: auto;
+                transform: translateX(-50%);
+                margin: 0;
             }
             
             .top-line {
@@ -859,17 +991,49 @@
                 padding: 12px;
             }
             
+            .bio {
+                margin-bottom: 12px;
+            }
+            
+            .more-info-content {
+                max-height: 250px;
+            }
+            
+            .bio.expanded .more-info-content {
+                max-height: 250px;
+            }
+            
             .content {
                 padding: 12px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+            }
+            
+            body.collapsed .content {
+                justify-content: flex-start;
+                padding-top: 24px;
             }
             
             .project-grid {
                 grid-template-columns: 1fr;
                 gap: 16px;
+                width: 100%;
+                max-width: 100%;
+                margin: 0 auto;
+            }
+            
+            body.collapsed .project-grid {
+                display: grid;
+                justify-items: center;
+                align-content: center;
             }
             
             .project-item {
                 height: 200px;
+                width: 100%;
+                max-width: 100%;
             }
             
             .project-preview {
@@ -877,11 +1041,25 @@
             }
             
             .view-toggle-btn {
+                position: fixed;
                 bottom: 12px;
                 right: 12px;
                 font-size: 9px;
                 padding: 5px 10px;
                 min-width: 100px;
+            }
+            
+            body.collapsed .content {
+                padding-bottom: 70px;
+            }
+            
+            body.collapsed .view-toggle-btn {
+                position: fixed;
+                bottom: 12px;
+                left: 50%;
+                right: auto;
+                transform: translateX(-50%);
+                margin: 0;
             }
             
             h1 {
@@ -904,6 +1082,11 @@
                 font-size: 10px;
                 padding: 4px 8px;
             }
+            
+            .project-list li.active a::after {
+                height: 8px;
+                bottom: -1px;
+            }
         }
 
         @media (max-width: 360px) {
@@ -911,16 +1094,47 @@
                 padding: 8px;
             }
             
+            .bio {
+                margin-bottom: 10px;
+            }
+            
+            .more-info-content {
+                max-height: 200px;
+            }
+            
+            .bio.expanded .more-info-content {
+                max-height: 200px;
+            }
+            
             .content {
                 padding: 8px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+            }
+            
+            body.collapsed .content {
+                justify-content: flex-start;
+                padding-top: 16px;
             }
             
             .project-grid {
                 gap: 12px;
+                width: 100%;
+                max-width: 100%;
+            }
+            
+            body.collapsed .project-grid {
+                display: grid;
+                justify-items: center;
+                align-content: center;
             }
             
             .project-item {
                 height: 180px;
+                width: 100%;
+                max-width: 100%;
             }
             
             h1 {
@@ -932,23 +1146,56 @@
             }
             
             .view-toggle-btn {
+                position: fixed;
                 bottom: 8px;
                 right: 8px;
                 font-size: 8px;
                 padding: 4px 8px;
                 min-width: 80px;
             }
+            
+            body.collapsed .content {
+                padding-bottom: 60px;
+            }
+            
+            body.collapsed .view-toggle-btn {
+                position: fixed;
+                bottom: 8px;
+                left: 50%;
+                right: auto;
+                transform: translateX(-50%);
+                margin: 0;
+            }
+            
+            .project-list li.active a::after {
+                height: 8px;
+                bottom: -1px;
+            }
         }
 
         @media (hover: none) and (pointer: coarse) {
             .project-list li a,
-            .view-toggle-btn,
-            .more-info-btn,
-            .less-info-btn {
+            .view-toggle-btn {
                 min-height: 44px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
+            }
+            
+            .more-info-btn,
+            .less-info-btn {
+                min-height: 44px;
+                display: inline-flex;
+                align-items: center;
+                justify-content: flex-start;
+            }
+            
+            .bio.expanded .more-info-btn {
+                display: none;
+            }
+            
+            .bio.expanded .less-info-btn {
+                display: inline-flex;
             }
             
             .project-list li {
@@ -967,6 +1214,7 @@
             
             .project-list li.active a::after {
                 height: 8px;
+                bottom: -1px;
             }
             
             .view-toggle-btn:active::after {
@@ -1093,21 +1341,13 @@
                     <img src="greentopia.gif" alt="Greentopia">
                 </a>
                 
-                <a href="projects/lumimoria/index.html" class="project-item">
+                <a href="projects/lumimoria/index.html" class="project-item lumimoria-item">
                     <img src="13.png" alt="Lumimoria">
-                </a>
-                
-                <a href="projects/poster-collection/index.html" class="project-item">
-                    <div class="poster-collection-pattern" alt="Poster Collection"></div>
                 </a>
                 
                 <a href="projects/the-little-food-book/index.html" class="project-item">
                     <img src="the little food book-01.webp" alt="The Little Food Book">
                 </a>
-                
-                <div class="project-item">
-                    <video src="xiaohongshu.mp4" alt="Amusement Park Archive" autoplay muted loop playsinline></video>
-                </div>
                 
                 <a href="projects/interview-with-muon-studio/index.html" class="project-item">
                     <img src="interview-01.png" alt="Interview with muon studio">
@@ -1126,9 +1366,30 @@
                     </div>
                 </div>
                 
-                <a href="projects/project10/index.html" class="project-item">
-                    <div style="width: 100%; height: 100%; background: #f0f0f0; display: flex; align-items: center; justify-content: center; color: #999; font-size: 12px;">Project 10</div>
+                <div class="project-item">
+                    <video src="xiaohongshu.mp4" alt="Intern" autoplay muted loop playsinline></video>
+                </div>
+                
+                <a href="projects/poster-collection/index.html" class="project-item poster-collection-item">
+                    <div class="poster-collection-pattern" alt="Poster Collection"></div>
+                    <div class="prototype-overlay">
+                        <span id="poster-typewriter-text"></span><span class="typewriter-cursor">_</span>
+                    </div>
                 </a>
+                
+                <div class="project-item prototype-item">
+                    <img src="projects/prototype/prototype-01.svg" alt="Prototype">
+                    <div class="prototype-overlay">
+                        <span id="prototype-typewriter-text"></span><span class="typewriter-cursor">_</span>
+                    </div>
+                </div>
+                
+                <div class="project-item railroad-item">
+                    <video src="railroad-01.mp4" alt="Railroad Hall of Fame" autoplay muted loop playsinline></video>
+                    <div class="prototype-overlay">
+                        <span id="railroad-typewriter-text"></span><span class="typewriter-cursor">_</span>
+                    </div>
+                </div>
             </div>
         </main>
     </div>
@@ -1372,6 +1633,21 @@ function setupAutoScrollControls() {
     });
 }
 
+function typeWriter(element, text, speed = 100) {
+    let i = 0;
+    element.textContent = '';
+    
+    function type() {
+        if (i < text.length) {
+            element.textContent += text.charAt(i);
+            i++;
+            setTimeout(type, speed);
+        }
+    }
+    
+    type();
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     const project9Carousel = document.querySelector('.project9-carousel');
     if (project9Carousel) {
@@ -1390,6 +1666,48 @@ document.addEventListener('DOMContentLoaded', function() {
     const backToAutoBtn = document.getElementById('back-to-auto');
     const switchToGridBtn = document.getElementById('switch-to-grid');
     
+    const prototypeTypewriterText = document.getElementById('prototype-typewriter-text');
+    if (prototypeTypewriterText) {
+        function startPrototypeTypewriter() {
+            prototypeTypewriterText.textContent = '';
+            setTimeout(() => {
+                typeWriter(prototypeTypewriterText, 'work in progress...', 80);
+            }, 500);
+        }
+        
+        if (document.body.classList.contains('collapsed')) {
+            startPrototypeTypewriter();
+        }
+    }
+
+    const posterTypewriterText = document.getElementById('poster-typewriter-text');
+    if (posterTypewriterText) {
+        function startPosterTypewriter() {
+            posterTypewriterText.textContent = '';
+            setTimeout(() => {
+                typeWriter(posterTypewriterText, 'ongoing series', 80);
+            }, 500);
+        }
+        
+        if (document.body.classList.contains('collapsed')) {
+            startPosterTypewriter();
+        }
+    }
+
+    const railroadTypewriterText = document.getElementById('railroad-typewriter-text');
+    if (railroadTypewriterText) {
+        function startRailroadTypewriter() {
+            railroadTypewriterText.textContent = '';
+            setTimeout(() => {
+                typeWriter(railroadTypewriterText, 'work in progress...', 80);
+            }, 500);
+        }
+        
+        if (document.body.classList.contains('collapsed')) {
+            startRailroadTypewriter();
+        }
+    }
+    
     setTimeout(() => {
         startAutoScroll();
         setupManualHover();
@@ -1402,6 +1720,33 @@ document.addEventListener('DOMContentLoaded', function() {
             stopAutoScroll();
             
             document.body.classList.add('collapsed');
+            
+            if (prototypeTypewriterText) {
+                setTimeout(() => {
+                    prototypeTypewriterText.textContent = '';
+                    setTimeout(() => {
+                        typeWriter(prototypeTypewriterText, 'work in progress...', 80);
+                    }, 500);
+                }, 100);
+            }
+            
+            if (posterTypewriterText) {
+                setTimeout(() => {
+                    posterTypewriterText.textContent = '';
+                    setTimeout(() => {
+                        typeWriter(posterTypewriterText, 'ongoing series', 80);
+                    }, 500);
+                }, 100);
+            }
+            
+            if (railroadTypewriterText) {
+                setTimeout(() => {
+                    railroadTypewriterText.textContent = '';
+                    setTimeout(() => {
+                        typeWriter(railroadTypewriterText, 'work in progress...', 80);
+                    }, 500);
+                }, 100);
+            }
         });
     }
     
