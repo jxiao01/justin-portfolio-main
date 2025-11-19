@@ -345,18 +345,19 @@
         <aside class="sidebar">
             <div class="bio">
                 <h1>Poster Collection</h1>
-                <p>A curated series of experimental poster designs exploring typography, color theory, and visual communication through contemporary design principles and innovative layout compositions.</p>
+                <p>A series of experimental poster designs exploring typography, color theory, and visual communication.</p>
                 <br>
-                <p class="project-meta">Graphic Design, Typography, Print / 2024</p>
+                <p class="project-meta">ongoing</p>
             </div>
         </aside>
 
         <main class="content">
             <!-- 项目内容区域 -->
             <div class="project-images" style="padding: 40px 0;">
-                <!-- 项目图片将在这里添加 -->
-                <div style="padding: 100px 0; text-align: center; color: #999; font-style: italic;">
-                    Project images will be added here
+                <div style="display: flex; justify-content: center; align-items: center; gap: 20px;">
+                    <img src="600ppi/breadtopia.webp" alt="Breadtopia" style="width: 30%; height: auto; display: block; margin: 0; padding: 0; flex-shrink: 0;">
+                    <img src="600ppi/amusement park archive.webp" alt="Amusement Park Archive" style="width: 30%; height: auto; display: block; margin: 0; padding: 0; flex-shrink: 0;">
+                    <img src="weverse con.png" alt="Weverse Con" style="width: 30%; height: auto; display: block; margin: 0; padding: 0; flex-shrink: 0;">
                 </div>
                 <div class="project-navigation">
                     <a href="#" class="project-nav-btn" id="prev-project">← Previous</a>
@@ -370,7 +371,33 @@
         // 页面加载时的进入动画
         document.addEventListener('DOMContentLoaded', function() {
             const sidebar = document.querySelector('.sidebar');
-            const imageElements = document.querySelectorAll('.project-images img, .project-images > div');
+            const imageElements = document.querySelectorAll('.project-images img, .project-images video, .project-images > div');
+            
+            // 设置图片相同高度
+            const breadtopia = document.querySelector('img[alt="Breadtopia"]');
+            const amusementPark = document.querySelector('img[alt="Amusement Park Archive"]');
+            const weverseCon = document.querySelector('img[alt="Weverse Con"]');
+            if (breadtopia) {
+                function setSameHeight() {
+                    const height = breadtopia.offsetHeight;
+                    if (amusementPark) {
+                        amusementPark.style.height = height + 'px';
+                        amusementPark.style.objectFit = 'contain';
+                    }
+                    if (weverseCon) {
+                        weverseCon.style.height = height + 'px';
+                        weverseCon.style.objectFit = 'contain';
+                    }
+                }
+                breadtopia.addEventListener('load', setSameHeight);
+                if (breadtopia.complete) {
+                    setSameHeight();
+                }
+                if (weverseCon) {
+                    weverseCon.addEventListener('load', setSameHeight);
+                }
+                window.addEventListener('resize', setSameHeight);
+            }
             
             // 延迟一点时间让页面完全加载
             setTimeout(() => {
@@ -389,7 +416,7 @@
         document.querySelector('.back-link').addEventListener('click', function(e) {
             e.preventDefault();
             const sidebar = document.querySelector('.sidebar');
-            const imageElements = document.querySelectorAll('.project-images img, .project-images > div');
+            const imageElements = document.querySelectorAll('.project-images img, .project-images video, .project-images > div');
             
             // 图片依次退出
             imageElements.forEach((element, index) => {
