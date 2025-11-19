@@ -755,6 +755,10 @@
             flex-direction: column;
             align-items: center;
         }
+        
+        .project-preview-wrapper[style*="pointer"] {
+            cursor: pointer;
+        }
 
         .project-preview-wrapper.show {
             opacity: 1;
@@ -991,7 +995,8 @@
                 left: auto;
                 transform: none;
                 width: 100%;
-                margin-bottom: 10px !important;
+                margin-top: 0 !important;
+                margin-bottom: 0 !important;
             }
             
             .project-preview {
@@ -1003,11 +1008,21 @@
                 width: 100%;
                 margin-bottom: 0 !important;
                 padding-bottom: 0 !important;
-                padding-top: 0 !important;
+                padding-top: 16px !important;
             }
             
             .project-description p {
                 margin-bottom: 0 !important;
+            }
+            
+            .view-toggle-btn:hover::after {
+                height: 0 !important;
+            }
+            
+            .view-toggle-btn:hover {
+                color: #000 !important;
+                background: #fff !important;
+                border-color: #000 !important;
             }
             
             .view-toggle-btn {
@@ -1332,6 +1347,18 @@
             .view-toggle-btn:active::after {
                 height: 8px;
             }
+            
+            @media (max-width: 768px) {
+                .view-toggle-btn:hover::after {
+                    height: 0 !important;
+                }
+                
+                .view-toggle-btn:hover {
+                    color: #000 !important;
+                    background: #fff !important;
+                    border-color: #000 !important;
+                }
+            }
         }
 
         ::-webkit-scrollbar {
@@ -1632,6 +1659,31 @@ function startAutoScroll() {
         
         if (previewWrapper) {
             previewWrapper.classList.add('show');
+            
+            const activeLink = projectLinks[index]?.querySelector('a');
+            if (activeLink) {
+                const projectHref = activeLink.getAttribute('href');
+                const projectName = activeLink.textContent.trim();
+                
+                const nonClickableProjects = ['prototype', 'railroad-hall-of-fame', 'intern'];
+                const isNonClickable = nonClickableProjects.some(name => 
+                    projectHref?.toLowerCase().includes(name) || 
+                    projectName?.toLowerCase().includes(name)
+                );
+                
+                if (isNonClickable) {
+                    previewWrapper.style.cursor = 'default';
+                    previewWrapper.onclick = null;
+                    previewWrapper.style.pointerEvents = 'none';
+                } else {
+                    previewWrapper.style.cursor = 'pointer';
+                    previewWrapper.style.pointerEvents = 'auto';
+                    previewWrapper.onclick = function(e) {
+                        e.preventDefault();
+                        window.location.href = projectHref;
+                    };
+                }
+            }
         }
         
         if (descriptionDiv && projectDescriptions[index]) {
@@ -1711,6 +1763,28 @@ function setupManualHover() {
                 
                 if (previewWrapper) {
                     previewWrapper.classList.add('show');
+                    
+                    const projectHref = link.getAttribute('href');
+                    const projectName = link.textContent.trim();
+                    
+                    const nonClickableProjects = ['prototype', 'railroad-hall-of-fame', 'intern'];
+                    const isNonClickable = nonClickableProjects.some(name => 
+                        projectHref?.toLowerCase().includes(name) || 
+                        projectName?.toLowerCase().includes(name)
+                    );
+                    
+                    if (isNonClickable) {
+                        previewWrapper.style.cursor = 'default';
+                        previewWrapper.onclick = null;
+                        previewWrapper.style.pointerEvents = 'none';
+                    } else {
+                        previewWrapper.style.cursor = 'pointer';
+                        previewWrapper.style.pointerEvents = 'auto';
+                        previewWrapper.onclick = function(e) {
+                            e.preventDefault();
+                            window.location.href = projectHref;
+                        };
+                    }
                 }
                 
                 if (descriptionDiv && projectDescriptions[index]) {
