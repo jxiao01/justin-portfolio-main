@@ -1520,6 +1520,10 @@
 })();
 
 // ===== 重置函数 - 解决preview-wrapper位置问题 =====
+function isMobileView() {
+    return window.innerWidth <= 768;
+}
+
 function resetPreviewWrapper(shouldRemoveShow, shouldExitGrid = false) {
     const previewWrapper = document.getElementById('project-preview-wrapper');
     if (previewWrapper) {
@@ -1655,9 +1659,10 @@ function closeMoreInfo() {
 let autoScrollInterval = null;
 let currentProjectIndex = 0;
 let isManualHover = false;
+let isHighlighting = false;
 
 function startAutoScroll() {
-    if (document.body.classList.contains('collapsed')) {
+    if (document.body.classList.contains('collapsed') || isMobileView()) {
         return;
     }
     
@@ -1678,7 +1683,8 @@ function startAutoScroll() {
     if (projectLinks.length === 0) return;
     
     function highlightProject(index) {
-        if (isManualHover) return;
+        if (isManualHover || isHighlighting) return false;
+        isHighlighting = true;
         
         projectLinks.forEach(li => li.classList.remove('active'));
         projectImages.forEach(img => img.classList.remove('active'));
@@ -1725,23 +1731,33 @@ function startAutoScroll() {
             projectImages[index].classList.add('active');
         }
         
-        if (projectLinks[index]) {
+        if (projectLinks[index] && !isMobileView()) {
             projectLinks[index].scrollIntoView({
                 behavior: 'smooth',
                 block: 'center'
             });
         }
+        
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+                isHighlighting = false;
+            });
+        });
+        
+        return true;
     }
     
 function nextProject() {
     if (isManualHover) return;
     
-    highlightProject(currentProjectIndex);
-    currentProjectIndex = (currentProjectIndex + 1) % projectLinks.length;
+    const didHighlight = highlightProject(currentProjectIndex);
+    if (didHighlight) {
+        currentProjectIndex = (currentProjectIndex + 1) % projectLinks.length;
+    }
 }
     
-    highlightProject(0);
-    currentProjectIndex = 1;
+    const initialHighlight = highlightProject(0);
+    currentProjectIndex = initialHighlight ? 1 : 0;
     
     autoScrollInterval = setInterval(nextProject, 5000);
 }
@@ -1765,6 +1781,9 @@ function stopAutoScroll() {
 }
 
 function setupManualHover() {
+    if (isMobileView()) {
+        return;
+    }
     const projectLinks = document.querySelectorAll('.project-list li');
         const projectImages = document.querySelectorAll('.project-image');
         const previewWrapper = document.getElementById('project-preview-wrapper');
@@ -1839,6 +1858,9 @@ function setupManualHover() {
 }
 
 function setupAutoScrollControls() {
+    if (isMobileView()) {
+        return;
+    }
     const sidebar = document.querySelector('.sidebar');
     
     sidebar.addEventListener('mouseenter', function() {
