@@ -496,7 +496,6 @@
 
         .project-item:not(a) {
             cursor: default;
-            pointer-events: none;
         }
 
         body.collapsed .project-item {
@@ -563,21 +562,17 @@
             filter: blur(3px) brightness(1.5) opacity(0.2);
         }
 
+        .railroad-item img {
+            filter: blur(1.5px) brightness(1.25) opacity(0.35);
+            object-fit: contain;
+        }
+
+        .railroad-item:hover img {
+            filter: blur(1.5px) brightness(1.25) opacity(0.35);
+        }
+
         .railroad-item {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .railroad-item video {
-            width: 80% !important;
-            height: 80% !important;
-            object-fit: contain !important;
-            filter: blur(3px) brightness(1.5) opacity(0.2);
-        }
-
-        .railroad-item:hover video {
-            filter: blur(3px) brightness(1.5) opacity(0.2);
+            position: relative;
         }
 
         .lumimoria-item {
@@ -991,84 +986,35 @@
             .project-item {
                 width: 100%;
                 max-width: 400px;
+                opacity: 1 !important;
+                transform: translateY(0) !important;
+                animation: none !important;
             }
             
             .project-preview-wrapper {
-                position: relative;
-                right: auto;
-                top: auto;
-                left: auto;
-                transform: none;
+                display: none !important;
+            }
+            
+            body:not(.collapsed) .project-grid {
+                display: grid !important;
+            }
+            
+            .project-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 16px;
                 width: 100%;
-                margin-top: -500px !important;
-                margin-bottom: 0 !important;
-                padding: 0 !important;
-            }
-            
-            .project-preview {
-                width: 100%;
-                height: 300px;
-                margin: 0 !important;
-            }
-            
-            .project-description {
-                width: 100%;
-                margin-bottom: 0 !important;
-                padding-bottom: 0 !important;
-                padding-top: 8px !important;
-            }
-            
-            .project-description p {
-                margin-bottom: 0 !important;
-            }
-            
-            .view-toggle-btn:hover::after {
-                height: 0 !important;
-            }
-            
-            .view-toggle-btn:hover {
-                color: #000 !important;
-                background: #fff !important;
-                border-color: #000 !important;
+                max-width: 100%;
+                margin: 0 auto;
+                justify-items: center;
+                align-content: center;
             }
             
             .view-toggle-btn {
-                position: fixed;
-                bottom: 16px;
-                right: 16px;
-                font-size: 10px;
-                padding: 10px 12px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                line-height: 1;
-                height: auto;
-                z-index: 1001 !important;
-                pointer-events: auto !important;
+                display: none !important;
             }
             
-            .view-toggle-btn::after {
-                bottom: 5px;
-            }
-            
-            body.collapsed .content {
-                padding-bottom: 80px;
-            }
-            
-            body.collapsed .view-toggle-btn {
-                position: fixed;
-                bottom: 16px;
-                left: 50%;
-                right: auto;
-                transform: translateX(-50%);
-                margin: 0;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                line-height: 1;
-                height: auto;
-                z-index: 1001 !important;
-                pointer-events: auto !important;
+            .content {
+                padding-bottom: 20px !important;
             }
             
             .top-line {
@@ -1076,7 +1022,7 @@
             }
             
             body.collapsed .sidebar {
-                display: none;
+                display: block !important;
             }
             
             .back-to-auto {
@@ -1173,66 +1119,29 @@
                 height: 200px;
                 width: 100%;
                 max-width: 100%;
+                opacity: 1 !important;
+                transform: translateY(0) !important;
+                animation: none !important;
             }
             
             .project-preview {
                 height: 250px;
             }
             
+            .project-preview-wrapper {
+                display: none !important;
+            }
+            
+            body:not(.collapsed) .project-grid {
+                display: grid !important;
+            }
+            
             .view-toggle-btn {
-                position: fixed;
-                bottom: 12px;
-                right: 12px;
-                font-size: 9px;
-                padding: 9px 10px;
-                min-width: 100px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                line-height: 1;
-                height: auto;
-                z-index: 1001 !important;
-                pointer-events: auto !important;
-            }
-            
-            .view-toggle-btn::after {
-                bottom: 5px;
-            }
-            
-            body.collapsed .content {
-                padding-bottom: 70px;
-            }
-            
-            body.collapsed .view-toggle-btn {
-                position: fixed;
-                bottom: 12px;
-                left: 50%;
-                right: auto;
-                transform: translateX(-50%);
-                margin: 0;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                line-height: 1;
-                height: auto;
-                z-index: 1001 !important;
-                pointer-events: auto !important;
-            }
-            
-            .back-to-auto {
                 display: none !important;
             }
             
-            .switch-to-grid {
-                display: block !important;
-            }
-            
-            body.collapsed .back-to-auto {
-                display: block !important;
-            }
-            
-            body.collapsed .switch-to-grid {
-                display: none !important;
+            .content {
+                padding-bottom: 20px !important;
             }
             
             h1 {
@@ -1337,6 +1246,9 @@
                 height: 180px;
                 width: 100%;
                 max-width: 100%;
+                opacity: 1 !important;
+                transform: translateY(0) !important;
+                animation: none !important;
             }
             
             h1 {
@@ -1347,60 +1259,20 @@
                 font-size: 10px;
             }
             
+            .project-preview-wrapper {
+                display: none !important;
+            }
+            
+            body:not(.collapsed) .project-grid {
+                display: grid !important;
+            }
+            
             .view-toggle-btn {
-                position: fixed;
-                bottom: 8px;
-                right: 8px;
-                font-size: 8px;
-                padding: 8px 8px;
-                min-width: 80px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                line-height: 1;
-                height: auto;
-                z-index: 1001 !important;
-                pointer-events: auto !important;
-            }
-            
-            .view-toggle-btn::after {
-                bottom: 4px;
-            }
-            
-            body.collapsed .content {
-                padding-bottom: 60px;
-            }
-            
-            body.collapsed .view-toggle-btn {
-                position: fixed;
-                bottom: 8px;
-                left: 50%;
-                right: auto;
-                transform: translateX(-50%);
-                margin: 0;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                line-height: 1;
-                height: auto;
-                z-index: 1001 !important;
-                pointer-events: auto !important;
-            }
-            
-            .back-to-auto {
                 display: none !important;
             }
             
-            .switch-to-grid {
-                display: block !important;
-            }
-            
-            body.collapsed .back-to-auto {
-                display: block !important;
-            }
-            
-            body.collapsed .switch-to-grid {
-                display: none !important;
+            .content {
+                padding-bottom: 20px !important;
             }
             
             .project-list li.active a::after {
@@ -1488,13 +1360,8 @@
     </style>
 </head>
 <body>
-    <div class="view-toggle-btn back-to-auto" id="back-to-auto">
-        Back to Main
-    </div>
-    
-    <div class="view-toggle-btn switch-to-grid" id="switch-to-grid">
-        View All Projects
-    </div>
+    <div class="view-toggle-btn back-to-auto" id="back-to-auto">Back to Main</div>
+    <div class="view-toggle-btn switch-to-grid" id="switch-to-grid">View All Projects</div>
     
     <div class="container">
         <div class="top-line" id="top-line"></div>
@@ -1569,7 +1436,7 @@
             <div class="project-preview-wrapper" id="project-preview-wrapper">
             <div class="project-preview" id="project-preview">
                 <div class="project-carousel">
-                        <video src="symposium logo animation.mp4" alt="Symposium 2025" class="project-image" autoplay muted loop playsinline></video>
+                        <img src="symposium logo animation.gif" alt="Symposium 2025" class="project-image">
                         <img src="greentopia.gif" alt="Greentopia" class="project-image">
                     <img src="13.png" alt="Lumimoria" class="project-image">
                         <img src="the little food book-01.png" alt="The Little Food Book" class="project-image">
@@ -1582,7 +1449,7 @@
             
             <div class="project-grid">
                 <a href="projects/symposium-2025/index.html" class="project-item">
-                    <video src="symposium logo animation.mp4" alt="Symposium 2025" autoplay muted loop playsinline></video>
+                    <img src="symposium logo animation.gif" alt="Symposium 2025">
                 </a>
                 
                 <a href="projects/greentopia/index.html" class="project-item">
@@ -1615,7 +1482,7 @@
                 </div>
                 
                 <div class="project-item">
-                    <video src="xiaohongshu.mp4" alt="Intern" autoplay muted loop playsinline></video>
+                    <img src="xiaohongshu.gif" alt="Intern">
                 </div>
                 
                 <a href="projects/poster-collection/index.html" class="project-item poster-collection-item">
@@ -1633,7 +1500,7 @@
                 </div>
                 
                 <div class="project-item railroad-item">
-                    <video src="railroad-01.mp4" alt="Railroad Hall of Fame" autoplay muted loop playsinline></video>
+                    <img src="railroad-01.gif" alt="Railroad Hall of Fame">
                     <div class="prototype-overlay">
                         <span id="railroad-typewriter-text"></span><span class="typewriter-cursor">_</span>
                     </div>
@@ -1643,20 +1510,60 @@
     </div>
 
     <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // ===== 新增：重置页面状态 =====
-    // 重置 body 的 collapsed 状态
-    document.body.classList.remove('collapsed');
-    
-    // 重置 preview wrapper 的位置和状态
+// ===== 立即执行的重置 - 在页面渲染前 =====
+(function() {
+    // 尝试立即重置，即使DOM还没完全加载
+    try {
+        document.body.classList.remove('collapsed');
+        window.scrollTo(0, 0);
+    } catch(e) {}
+})();
+
+// ===== 重置函数 - 解决preview-wrapper位置问题 =====
+function resetPreviewWrapper(shouldRemoveShow, shouldExitGrid = false) {
     const previewWrapper = document.getElementById('project-preview-wrapper');
     if (previewWrapper) {
-        previewWrapper.classList.remove('show');
+        // 只在明确需要时移除show class（从项目页返回时）
+        if (shouldRemoveShow) {
+            previewWrapper.classList.remove('show');
+        }
+        // 彻底移除所有内联样式
+        previewWrapper.removeAttribute('style');
+        // 强制重置可能影响的CSS属性
         previewWrapper.style.cssText = '';
+        previewWrapper.style.position = '';
+        previewWrapper.style.top = '';
+        previewWrapper.style.left = '';
+        previewWrapper.style.right = '';
+        previewWrapper.style.transform = '';
+        previewWrapper.style.marginTop = '';
     }
     
-    // 确保页面滚动到顶部
+    // 只有在需要时才退出View All模式
+    if (shouldExitGrid) {
+        document.body.classList.remove('collapsed');
+    }
+    
+    // 移除可能存在的其他class
+    const content = document.querySelector('.content');
+    if (content) {
+        content.classList.remove('transitioning');
+    }
+    
+    // 滚动到页面顶部
     window.scrollTo(0, 0);
+    
+    // 强制重绘
+    if (previewWrapper) {
+        previewWrapper.offsetHeight; // 触发reflow
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    // 检查是否从项目页返回（通过检查referrer或URL参数）
+    const isFromProjectPage = document.referrer && document.referrer.includes('/projects/');
+    // 初始加载时不移除show class，只重置样式，并确保处于主视图
+    resetPreviewWrapper(false, true);
     
     const moreInfoBtn = document.querySelector('.more-info-btn');
     const lessInfoBtn = document.querySelector('.less-info-btn');
@@ -1703,20 +1610,6 @@ document.addEventListener('DOMContentLoaded', function() {
         lessInfoBtn.addEventListener('click', function() {
             closeMoreInfo();
         });
-    }
-});
-
-// ===== 新增：处理浏览器缓存 =====
-window.addEventListener('pageshow', function(event) {
-    if (event.persisted) {
-        // 如果页面是从缓存加载的，强制重置状态
-        document.body.classList.remove('collapsed');
-        const previewWrapper = document.getElementById('project-preview-wrapper');
-        if (previewWrapper) {
-            previewWrapper.classList.remove('show');
-            previewWrapper.style.cssText = '';
-        }
-        window.scrollTo(0, 0);
     }
 });
 
@@ -2047,6 +1940,16 @@ document.addEventListener('DOMContentLoaded', function() {
         startAutoScroll();
         setupManualHover();
         setupAutoScrollControls();
+        
+        // 确保第一个项目正确显示（如果preview-wrapper存在但没有show class）
+        const previewWrapper = document.getElementById('project-preview-wrapper');
+        if (previewWrapper && !previewWrapper.classList.contains('show')) {
+            // 如果初始加载时没有show class，确保添加它
+            const projectLinks = document.querySelectorAll('.project-list li');
+            if (projectLinks.length > 0 && !document.body.classList.contains('collapsed')) {
+                previewWrapper.classList.add('show');
+            }
+        }
     }, 100);
     
     if (switchToGridBtn) {
@@ -2096,6 +1999,27 @@ document.addEventListener('DOMContentLoaded', function() {
             }, 100);
         });
     }
+});
+
+// ===== 在多个事件中调用重置函数 =====
+window.addEventListener('pageshow', function(event) {
+    // 从项目页返回时才移除show class并退出View All
+    const isFromProjectPage = document.referrer && document.referrer.includes('/projects/');
+    resetPreviewWrapper(isFromProjectPage, isFromProjectPage);
+});
+
+document.addEventListener('visibilitychange', function() {
+    if (document.visibilityState === 'visible') {
+        // 从项目页返回时才移除show class并退出View All
+        const isFromProjectPage = document.referrer && document.referrer.includes('/projects/');
+        resetPreviewWrapper(isFromProjectPage, isFromProjectPage);
+    }
+});
+
+window.addEventListener('focus', function() {
+    // 从项目页返回时才移除show class并退出View All
+    const isFromProjectPage = document.referrer && document.referrer.includes('/projects/');
+    resetPreviewWrapper(isFromProjectPage, isFromProjectPage);
 });
     </script>
 </body>
