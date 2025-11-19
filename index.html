@@ -692,6 +692,10 @@
             border-radius: 0;
             min-width: 120px;
             text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: normal;
         }
 
         body.collapsed .view-toggle-btn {
@@ -714,6 +718,7 @@
             background: #00ff88;
             z-index: -1;
             transition: height 0.3s ease;
+            pointer-events: none;
         }
 
         .view-toggle-btn:hover::after {
@@ -995,7 +1000,7 @@
                 left: auto;
                 transform: none;
                 width: 100%;
-                margin-top: 0 !important;
+                margin-top: -500px !important;
                 margin-bottom: 0 !important;
                 padding: 0 !important;
             }
@@ -1032,13 +1037,18 @@
                 bottom: 16px;
                 right: 16px;
                 font-size: 10px;
-                padding: 6px 12px;
+                padding: 10px 12px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                line-height: 1.2;
+                line-height: 1;
+                height: auto;
                 z-index: 1001 !important;
                 pointer-events: auto !important;
+            }
+            
+            .view-toggle-btn::after {
+                bottom: 5px;
             }
             
             body.collapsed .content {
@@ -1055,7 +1065,8 @@
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                line-height: 1.2;
+                line-height: 1;
+                height: auto;
                 z-index: 1001 !important;
                 pointer-events: auto !important;
             }
@@ -1173,14 +1184,19 @@
                 bottom: 12px;
                 right: 12px;
                 font-size: 9px;
-                padding: 5px 10px;
+                padding: 9px 10px;
                 min-width: 100px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                line-height: 1.2;
+                line-height: 1;
+                height: auto;
                 z-index: 1001 !important;
                 pointer-events: auto !important;
+            }
+            
+            .view-toggle-btn::after {
+                bottom: 5px;
             }
             
             body.collapsed .content {
@@ -1197,7 +1213,8 @@
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                line-height: 1.2;
+                line-height: 1;
+                height: auto;
                 z-index: 1001 !important;
                 pointer-events: auto !important;
             }
@@ -1335,14 +1352,19 @@
                 bottom: 8px;
                 right: 8px;
                 font-size: 8px;
-                padding: 4px 8px;
+                padding: 8px 8px;
                 min-width: 80px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                line-height: 1.2;
+                line-height: 1;
+                height: auto;
                 z-index: 1001 !important;
                 pointer-events: auto !important;
+            }
+            
+            .view-toggle-btn::after {
+                bottom: 4px;
             }
             
             body.collapsed .content {
@@ -1359,7 +1381,8 @@
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                line-height: 1.2;
+                line-height: 1;
+                height: auto;
                 z-index: 1001 !important;
                 pointer-events: auto !important;
             }
@@ -1621,6 +1644,20 @@
 
     <script>
 document.addEventListener('DOMContentLoaded', function() {
+    // ===== 新增：重置页面状态 =====
+    // 重置 body 的 collapsed 状态
+    document.body.classList.remove('collapsed');
+    
+    // 重置 preview wrapper 的位置和状态
+    const previewWrapper = document.getElementById('project-preview-wrapper');
+    if (previewWrapper) {
+        previewWrapper.classList.remove('show');
+        previewWrapper.style.cssText = '';
+    }
+    
+    // 确保页面滚动到顶部
+    window.scrollTo(0, 0);
+    
     const moreInfoBtn = document.querySelector('.more-info-btn');
     const lessInfoBtn = document.querySelector('.less-info-btn');
     const bio = document.querySelector('.bio');
@@ -1666,6 +1703,20 @@ document.addEventListener('DOMContentLoaded', function() {
         lessInfoBtn.addEventListener('click', function() {
             closeMoreInfo();
         });
+    }
+});
+
+// ===== 新增：处理浏览器缓存 =====
+window.addEventListener('pageshow', function(event) {
+    if (event.persisted) {
+        // 如果页面是从缓存加载的，强制重置状态
+        document.body.classList.remove('collapsed');
+        const previewWrapper = document.getElementById('project-preview-wrapper');
+        if (previewWrapper) {
+            previewWrapper.classList.remove('show');
+            previewWrapper.style.cssText = '';
+        }
+        window.scrollTo(0, 0);
     }
 });
 
