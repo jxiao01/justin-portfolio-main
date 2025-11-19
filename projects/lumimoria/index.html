@@ -120,19 +120,6 @@
             transform: translateY(0);
         }
 
-        .content .project-images iframe {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
-                        transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            will-change: opacity, transform;
-        }
-
-        .content .project-images > div.show iframe,
-        .content .project-images iframe.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
 
         /* 隐藏侧边栏滚动条但保持功能 */
         .sidebar::-webkit-scrollbar {
@@ -383,16 +370,18 @@
                 <div style="width: 100%; margin-top: 40px;">
                     <div style="display: flex; gap: 20px; width: 100%;">
                         <div style="flex: 1;">
-                            <a href="https://lumimoria.com/" target="_blank" rel="noopener noreferrer" style="font-size: 12px; color: #000; margin-bottom: 8px; display: block;">https://lumimoria.com/</a>
-                            <div style="position: relative; aspect-ratio: 5/3; border: 1px solid #000; overflow: hidden;">
-                                <iframe src="https://lumimoria.com/" style="position: absolute; top: 0; left: 0; width: 200%; height: 200%; border: none; display: block; transform: scale(0.5); transform-origin: top left;" class="website-preview"></iframe>
+                            <div style="position: relative; aspect-ratio: 5/3; border: 1px solid #000; overflow: hidden; background: #fff;">
+                                <img src="lumimoria-site.webp" alt="Lumimoria Website" style="width: 100%; height: 100%; object-fit: cover; display: block; transform: scale(1.1);">
+                                <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(255, 255, 255, 0.01); pointer-events: none;"></div>
                             </div>
+                            <a href="https://lumimoria.com/" target="_blank" rel="noopener noreferrer" style="font-size: 12px; color: #000; margin-top: 8px; display: inline-block; text-decoration: underline;">Visit Site</a>
                         </div>
                         <div style="flex: 1;">
-                            <a href="https://lumimoria.com/story/" target="_blank" rel="noopener noreferrer" style="font-size: 12px; color: #000; margin-bottom: 8px; display: block;">https://lumimoria.com/story/</a>
-                            <div style="position: relative; aspect-ratio: 5/3; border: 1px solid #000; overflow: hidden;">
-                                <iframe src="https://lumimoria.com/story/" style="position: absolute; top: 0; left: 0; width: 200%; height: 200%; border: none; display: block; transform: scale(0.5); transform-origin: top left;" class="website-preview"></iframe>
+                            <div style="position: relative; aspect-ratio: 5/3; border: 1px solid #000; overflow: hidden; background: #fff;">
+                                <img src="lumimoria-story.webp" alt="Lumimoria Story" style="width: 100%; height: 100%; object-fit: cover; display: block; transform: scale(1.1);">
+                                <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(255, 255, 255, 0.01); pointer-events: none;"></div>
                             </div>
+                            <a href="https://lumimoria.com/story/" target="_blank" rel="noopener noreferrer" style="font-size: 12px; color: #000; margin-top: 8px; display: inline-block; text-decoration: underline;">Visit Site</a>
                         </div>
                     </div>
                 </div>
@@ -408,7 +397,7 @@
         // 页面加载时的进入动画
         document.addEventListener('DOMContentLoaded', function() {
             const sidebar = document.querySelector('.sidebar');
-            const imageElements = document.querySelectorAll('.project-images img, .project-images > div, .project-images iframe');
+            const imageElements = document.querySelectorAll('.project-images img, .project-images > div');
             
             // 延迟一点时间让页面完全加载
             setTimeout(() => {
@@ -427,7 +416,7 @@
         document.querySelector('.back-link').addEventListener('click', function(e) {
             e.preventDefault();
             const sidebar = document.querySelector('.sidebar');
-            const imageElements = document.querySelectorAll('.project-images img, .project-images > div, .project-images iframe');
+            const imageElements = document.querySelectorAll('.project-images img, .project-images > div');
             
             // 图片依次退出
             imageElements.forEach((element, index) => {
@@ -471,7 +460,7 @@
                 prevBtn.addEventListener('click', function(e) {
                     e.preventDefault();
                     const sidebar = document.querySelector('.sidebar');
-                    const imageElements = document.querySelectorAll('.project-images img, .project-images > div, .project-images iframe');
+                    const imageElements = document.querySelectorAll('.project-images img, .project-images > div');
                     imageElements.forEach((element, index) => {
                         setTimeout(() => {
                             element.classList.remove('show');
@@ -495,7 +484,7 @@
                 nextBtn.addEventListener('click', function(e) {
                     e.preventDefault();
                     const sidebar = document.querySelector('.sidebar');
-                    const imageElements = document.querySelectorAll('.project-images img, .project-images > div, .project-images iframe');
+                    const imageElements = document.querySelectorAll('.project-images img, .project-images > div');
                     imageElements.forEach((element, index) => {
                         setTimeout(() => {
                             element.classList.remove('show');
