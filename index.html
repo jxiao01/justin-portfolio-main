@@ -835,6 +835,35 @@
             opacity: 1;
         }
 
+        /* 支持 GIF 平滑切换的容器 */
+        .project-image-container {
+            display: block; /* 确保作为容器显示 */
+        }
+
+        .project-image-container img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .project-image-container .hover-gif {
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            z-index: 2;
+        }
+
+        .project-image-container .static-img {
+            z-index: 1;
+        }
+
+        /* Hover 效果 - 仅在非 collapsed 状态下生效 */
+        body:not(.collapsed) #project-preview-wrapper:hover .project-image-container.active .hover-gif {
+            opacity: 1;
+        }
+
         .poster-collection-pattern {
             width: 100%;
             height: 100%;
@@ -1436,8 +1465,14 @@
             <div class="project-preview-wrapper" id="project-preview-wrapper">
             <div class="project-preview" id="project-preview">
                 <div class="project-carousel">
-                        <img src="symposium logo animation.gif" alt="Symposium 2025" class="project-image">
-                        <img src="greentopia.gif" alt="Greentopia" class="project-image">
+                        <div class="project-image project-image-container symposium-image">
+                            <img src="symposium-01.webp" alt="Symposium 2025" class="static-img">
+                            <img src="symposium logo animation.gif" alt="Symposium 2025" class="hover-gif">
+                        </div>
+                        <div class="project-image project-image-container greentopia-image">
+                            <img src="greentopia-01.png" alt="Greentopia" class="static-img">
+                            <img src="greentopia.gif" alt="Greentopia" class="hover-gif">
+                        </div>
                     <img src="13.png" alt="Lumimoria" class="project-image">
                         <img src="the little food book-01.png" alt="The Little Food Book" class="project-image">
                     <img src="interview-01.png" alt="Interview with muon studio" class="project-image">
@@ -1449,11 +1484,11 @@
             
             <div class="project-grid">
                 <a href="projects/symposium-2025/index.html" class="project-item">
-                    <img src="symposium logo animation.gif" alt="Symposium 2025">
+                    <img src="symposium-01.webp" alt="Symposium 2025">
                 </a>
                 
                 <a href="projects/greentopia/index.html" class="project-item">
-                    <img src="greentopia.gif" alt="Greentopia">
+                    <img src="greentopia-01.png" alt="Greentopia">
                 </a>
                 
                 <a href="projects/lumimoria/index.html" class="project-item lumimoria-item">
@@ -1461,7 +1496,7 @@
                 </a>
                 
                 <a href="projects/the-little-food-book/index.html" class="project-item">
-                    <img src="the little food book-01.webp" alt="The Little Food Book">
+                    <img src="the little food book-01.png" alt="The Little Food Book">
                 </a>
                 
                 <a href="projects/interview-with-muon-studio/index.html" class="project-item">
@@ -1566,6 +1601,7 @@ function resetPreviewWrapper(shouldRemoveShow, shouldExitGrid = false) {
 document.addEventListener('DOMContentLoaded', function() {
     // 检查是否从项目页返回（通过检查referrer或URL参数）
     const isFromProjectPage = document.referrer && document.referrer.includes('/projects/');
+    
     // 初始加载时不移除show class，只重置样式，并确保处于主视图
     resetPreviewWrapper(false, true);
     
@@ -2034,12 +2070,12 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    setTimeout(() => {
-        startAutoScroll();
-        setupManualHover();
-        setupAutoScrollControls();
-        
-        // 确保第一个项目正确显示（如果preview-wrapper存在但没有show class）
+        setTimeout(() => {
+            startAutoScroll();
+            setupManualHover();
+            setupAutoScrollControls();
+            
+            // 确保第一个项目正确显示（如果preview-wrapper存在但没有show class）
         const previewWrapper = document.getElementById('project-preview-wrapper');
         const projectLinks = document.querySelectorAll('.project-list li');
         if (previewWrapper && projectLinks.length > 0 && !document.body.classList.contains('collapsed')) {
