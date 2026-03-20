@@ -106,6 +106,7 @@
         }
 
         .content .project-images img,
+        .content .project-images video,
         .content .project-images > div {
             opacity: 0;
             transform: translateY(30px);
@@ -115,47 +116,45 @@
         }
 
         .content .project-images img.show,
+        .content .project-images video.show,
         .content .project-images > div.show {
             opacity: 1;
             transform: translateY(0);
         }
         
         .poster-carousel {
-            position: relative;
             width: 100%;
             display: flex;
-            justify-content: center;
-            align-items: flex-start;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
         }
         
-        .poster-carousel .carousel-image {
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            transition: opacity 0.5s ease;
-            width: 64%;
-            height: auto;
-            max-width: 100%;
+        .poster-carousel img,
+        .poster-carousel video {
+            width: 100%;
+            display: block;
             margin: 0 auto;
         }
         
-        .poster-carousel .carousel-image:first-child {
-            position: absolute;
-            opacity: 1;
+        .poster-carousel video {
+            max-width: 100%;
+            height: auto;
+            width: 50%;
         }
         
-        .poster-carousel .carousel-image[alt="Amusement Park Archive"] {
-            left: 50%;
-            transform: translateX(-50%);
+        .poster-carousel img[alt="Amusement Park Archive"] {
+            width: 80%;
         }
         
-        .poster-carousel .carousel-image[alt="Breadtopia"] {
+        .poster-carousel div img[alt="Breadtopia"] {
             width: 40.96%;
+            flex-shrink: 0;
         }
         
-        .poster-carousel .carousel-image[alt="Weverse Con"] {
+        .poster-carousel div img[alt="Weverse Con"] {
             width: 36.864%;
+            flex-shrink: 0;
         }
 
         /* 隐藏侧边栏滚动条但保持功能 */
@@ -392,10 +391,33 @@
         <main class="content">
             <!-- 项目内容区域 -->
             <div class="project-images" style="padding: 40px 0;">
-                <div class="poster-carousel" style="min-height: 400px;">
-                    <img src="600ppi/amusement park archive.webp" alt="Amusement Park Archive" class="carousel-image active">
-                    <img src="600ppi/breadtopia.webp" alt="Breadtopia" class="carousel-image">
-                    <img src="weverse con.png" alt="Weverse Con" class="carousel-image">
+                <div class="poster-carousel">
+                    <div style="display: flex; width: 100%; justify-content: center; gap: 20px; align-items: stretch;">
+                        <div style="flex: 1; min-width: 0; display: flex; justify-content: center;">
+                            <img src="amusement park.png" alt="Amusement Park" style="width: 100%; height: 100%; object-fit: contain; display: block;">
+                        </div>
+                        <div style="flex: 1; min-width: 0; display: flex; justify-content: center;">
+                            <img src="600ppi/amusement park archive.webp" alt="Amusement Park Archive" style="width: 100%; height: 100%; object-fit: contain; display: block;">
+                        </div>
+                    </div>
+                    <div style="display: flex; width: 100%; justify-content: center; gap: 20px; align-items: stretch;">
+                        <div style="flex: 1; min-width: 0; display: flex; justify-content: center;">
+                            <img src="600ppi/breadtopia.webp" alt="Breadtopia" style="width: 100%; height: 100%; object-fit: contain; display: block;">
+                        </div>
+                        <div style="flex: 1; min-width: 0; display: flex; justify-content: center;">
+                            <img src="postcards.png" alt="Postcards" style="width: 100%; height: 100%; object-fit: contain; display: block;">
+                        </div>
+                    </div>
+                    <div style="display: flex; width: 100%; justify-content: center; gap: 20px; align-items: stretch;">
+                        <div style="flex: 1; min-width: 0; display: flex; justify-content: center;">
+                            <img src="../../interview-01.png" alt="Interview" style="width: 100%; height: 100%; object-fit: contain; display: block;">
+                        </div>
+                        <div style="flex: 1; min-width: 0; display: flex; justify-content: center; align-items: center;">
+                            <video src="exactitude.mp4" alt="Exactitude" style="width: 100%; display: block; object-fit: contain;" autoplay loop muted playsinline></video>
+                        </div>
+                    </div>
+                    <img src="Railroad Street Poster.png" alt="Railroad Street Poster" style="width: 100%; display: block;">
+                    <img src="../../railroad-01.gif" alt="Railroad Hall of Fame" style="width: 100%; display: block;">
                 </div>
                 <div class="project-navigation">
                     <a href="#" class="project-nav-btn" id="prev-project">← Previous</a>
@@ -409,48 +431,33 @@
         // 页面加载时的进入动画
         document.addEventListener('DOMContentLoaded', function() {
             const sidebar = document.querySelector('.sidebar');
-            const carousel = document.querySelector('.poster-carousel');
+            const imageElements = document.querySelectorAll('.project-images img, .project-images video, .project-images > div');
             
             // 延迟一点时间让页面完全加载
             setTimeout(() => {
                 sidebar.classList.add('show');
-                if (carousel) {
-                    carousel.classList.add('show');
-                }
+                
+                // 图片依次出现，每张间隔200ms
+                imageElements.forEach((element, index) => {
+                    setTimeout(() => {
+                        element.classList.add('show');
+                    }, 200 + (index * 200));
+                });
             }, 100);
-            
-            // 轮播功能
-            const carouselImages = document.querySelectorAll('.carousel-image');
-            let currentIndex = 0;
-            
-            function showNextImage() {
-                if (carouselImages.length === 0) return;
-                
-                carouselImages[currentIndex].classList.remove('active');
-                carouselImages[currentIndex].style.opacity = '0';
-                
-                currentIndex = (currentIndex + 1) % carouselImages.length;
-                
-                carouselImages[currentIndex].classList.add('active');
-                carouselImages[currentIndex].style.opacity = '1';
-            }
-            
-            // 每3秒切换一次
-            if (carouselImages.length > 1) {
-                setInterval(showNextImage, 3000);
-            }
         });
 
         // 返回主页时的退出动画
         document.querySelector('.back-link').addEventListener('click', function(e) {
             e.preventDefault();
             const sidebar = document.querySelector('.sidebar');
-            const carousel = document.querySelector('.poster-carousel');
+            const imageElements = document.querySelectorAll('.project-images img, .project-images video, .project-images > div');
             
-            // 轮播退出
-            if (carousel) {
-                carousel.classList.remove('show');
-            }
+            // 图片依次退出
+            imageElements.forEach((element, index) => {
+                setTimeout(() => {
+                    element.classList.remove('show');
+                }, index * 50);
+            });
             
             // 侧边栏稍后退出
             setTimeout(() => {
@@ -466,12 +473,13 @@
         // 项目导航功能
         (function() {
             const projects = [
+                '../prototype/index.html',
+                '../clostra-son-jon-mustair/index.html',
                 '../symposium-2025/index.html',
                 '../greentopia/index.html',
                 '../lumimoria/index.html',
                 '../poster-collection/index.html',
                 '../the-little-food-book/index.html',
-                '../interview-with-muon-studio/index.html',
                 '../sewing-machine/index.html',
                 '../wayfinding/index.html'
             ];
@@ -489,10 +497,12 @@
                 prevBtn.addEventListener('click', function(e) {
                     e.preventDefault();
                     const sidebar = document.querySelector('.sidebar');
-                    const carousel = document.querySelector('.poster-carousel');
-                    if (carousel) {
-                        carousel.classList.remove('show');
-                    }
+                    const imageElements = document.querySelectorAll('.project-images img, .project-images video, .project-images > div');
+                    imageElements.forEach((element, index) => {
+                        setTimeout(() => {
+                            element.classList.remove('show');
+                        }, index * 50);
+                    });
                     setTimeout(() => {
                         sidebar.classList.remove('show');
                     }, 200);
@@ -511,10 +521,12 @@
                 nextBtn.addEventListener('click', function(e) {
                     e.preventDefault();
                     const sidebar = document.querySelector('.sidebar');
-                    const carousel = document.querySelector('.poster-carousel');
-                    if (carousel) {
-                        carousel.classList.remove('show');
-                    }
+                    const imageElements = document.querySelectorAll('.project-images img, .project-images video, .project-images > div');
+                    imageElements.forEach((element, index) => {
+                        setTimeout(() => {
+                            element.classList.remove('show');
+                        }, index * 50);
+                    });
                     setTimeout(() => {
                         sidebar.classList.remove('show');
                     }, 200);
