@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prototype</title>
-    <meta name="description" content="Prototype project by Jinhang Xiao">
+    <title>Prototype Festival</title>
+    <meta name="description" content="Prototype Festival project by Jinhang Xiao">
     <link rel="icon" type="image/svg+xml" href="../../favicon-green-square.svg">
     <link rel="shortcut icon" type="image/svg+xml" href="../../favicon-green-square.svg">
     <link rel="apple-touch-icon" sizes="180x180" href="../../favicon-green-square.svg">
@@ -107,6 +107,7 @@
         }
 
         .content .project-images img,
+        .content .project-images video,
         .content .project-images > div {
             opacity: 0;
             transform: translateY(30px);
@@ -116,6 +117,7 @@
         }
 
         .content .project-images img.show,
+        .content .project-images video.show,
         .content .project-images > div.show {
             opacity: 1;
             transform: translateY(0);
@@ -340,16 +342,38 @@
     <div class="container">
         <aside class="sidebar">
             <div class="bio">
-                <h1>Prototype</h1>
-                <p>Project description goes here.</p>
+                <h1>Prototype Festival</h1>
+                <p>Brand identity for the Prototype Festival, featuring a modular typographic system and visual language that reflects the experimental and hybrid nature of contemporary opera and performance.</p>
                 <br>
-                <p class="project-meta">Project Type / Year</p>
+                <p class="project-meta">Identity, Creative Coding / 2025</p>
             </div>
         </aside>
 
         <main class="content">
             <div class="project-images" style="padding: 40px 0; line-height: 0;">
-                <img src="prototype-01.svg" alt="Prototype" style="width: 100%; display: block; margin: 0; padding: 0;">
+                <img src="billboard.png" alt="Prototype Festival" style="width: 100%; display: block; margin: 0; padding: 0;">
+                <div style="width: 100%; overflow: hidden;">
+                    <video src="PROTOTYPE_logo.webm" alt="Prototype Festival" style="width: 100%; display: block; margin: 0; padding: 0; transform: scale(1.3); transform-origin: center center;" autoplay loop muted playsinline></video>
+                </div>
+                <div style="width: 100%; overflow: hidden;">
+                    <video src="PROTOTYPE_colors.webm" alt="Prototype Festival Colors" style="width: 100%; display: block; margin: 0; padding: 0; transform: scale(1); transform-origin: center center;" autoplay loop muted playsinline></video>
+                </div>
+                <img src="prototype.jpg" alt="Prototype Festival" style="width: 100%; display: block; margin: 0; padding: 0;">
+                <img src="stationary.jpg" alt="Prototype Festival" style="width: 100%; display: block; margin: 0; padding: 0;">
+                <img src="prototype hat.jpg" alt="Prototype Festival" style="width: 100%; display: block; margin: 0; padding: 0;">
+                <img src="badge.jpg" alt="Prototype Festival" style="width: 100%; display: block; margin: 0; padding: 0;">
+                <img src="card.jpg" alt="Prototype Festival" style="width: 100%; display: block; margin: 0; padding: 0;">
+                <img src="prototype social.jpg" alt="Prototype Festival" style="width: 100%; display: block; margin: 0; padding: 0;">
+                <img src="prototype web.png" alt="Prototype Festival" style="width: 100%; display: block; margin: 0; padding: 0;">
+                <video src="web mock.mp4" alt="Web mock" style="width: 100%; display: block; margin: 0; padding: 0;" autoplay loop muted playsinline></video>
+                <div style="display: flex; flex-direction: column; width: 100%; gap: 0; border-top: 1px solid #000; padding-top: 28px; margin-top: 28px;">
+                    <p style="font-size: 12px; margin: 0 0 8px 0; padding: 0; line-height: 1.4;">Generative Design Tool</p>
+                    <p style="font-size: 12px; margin: 0 0 12px 0; padding: 0; line-height: 1.5;">Using Processing, I built a generative tool that deconstructs the PROTOTYPE Festival logotype into individual letterforms, distributing them across canvas edges with variable scale, stretch, and density, producing infinite unique compositions from a single identity system.</p>
+                    <video src="1.mp4" alt="Prototype Festival" style="width: 100%; display: block; margin: 0; padding: 0; object-fit: cover;" autoplay loop muted playsinline></video>
+                    <p style="font-size: 12px; margin: 16px 0 12px 0; padding: 0; line-height: 1.5;">Using Processing, I developed a multi-style typographic rendering engine that transforms the PROTOTYPE Festival logo into 15 distinct visual treatments, allowing multiple stylized instances to coexist on a single canvas with real-time parameter control.</p>
+                    <video src="2.mp4" alt="Prototype Festival" style="width: 100%; display: block; margin: 0; padding: 0; object-fit: cover;" autoplay loop muted playsinline></video>
+                </div>
+                <img src="street ads.jpg" alt="Prototype Festival" style="width: 100%; display: block; margin: 0; padding: 0;">
                 <div class="project-navigation">
                     <a href="#" class="project-nav-btn" id="prev-project">← Previous</a>
                     <a href="#" class="project-nav-btn" id="next-project">Next →</a>
@@ -361,7 +385,13 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const sidebar = document.querySelector('.sidebar');
-            const imageElements = document.querySelectorAll('.project-images img, .project-images > div');
+            const imageElements = document.querySelectorAll('.project-images img, .project-images video, .project-images > div');
+            
+            // 仅放慢第二个颜色视频的播放速度（“慢一点”的视觉效果）
+            const colorsVideo = document.querySelector('.project-images video[src*="PROTOTYPE_colors.webm"]');
+            if (colorsVideo) {
+                colorsVideo.playbackRate = 0.8;
+            }
             
             setTimeout(() => {
                 sidebar.classList.add('show');
@@ -377,7 +407,7 @@
         document.querySelector('.back-link').addEventListener('click', function(e) {
             e.preventDefault();
             const sidebar = document.querySelector('.sidebar');
-            const imageElements = document.querySelectorAll('.project-images img, .project-images > div');
+            const imageElements = document.querySelectorAll('.project-images img, .project-images video, .project-images > div');
             
             imageElements.forEach((element, index) => {
                 setTimeout(() => {
@@ -396,11 +426,12 @@
 
         (function() {
             const projects = [
+                '../prototype/index.html',
+                '../clostra-son-jon-mustair/index.html',
                 '../symposium-2025/index.html',
                 '../greentopia/index.html',
                 '../lumimoria/index.html',
                 '../the-little-food-book/index.html',
-                '../interview-with-muon-studio/index.html',
                 '../sewing-machine/index.html'
             ];
 
