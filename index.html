@@ -544,6 +544,10 @@
             filter: none;
         }
 
+        .project-item img[src="mustair.png"] {
+            transform: scale(1.296);
+        }
+
         .project-item:hover img {
             filter: none;
         }
@@ -563,12 +567,14 @@
         }
 
         .railroad-item img {
-            filter: blur(1.5px) brightness(1.25) opacity(0.35);
+            filter: none;
+            opacity: 1;
             object-fit: contain;
         }
 
         .railroad-item:hover img {
-            filter: blur(1.5px) brightness(1.25) opacity(0.35);
+            filter: none;
+            opacity: 1;
         }
 
         .railroad-item {
@@ -614,18 +620,6 @@
             51%, 100% {
                 opacity: 0;
             }
-        }
-
-        .project-item[href*="interview-with-muon-studio"] {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .project-item[href*="interview-with-muon-studio"] img {
-            width: 80%;
-            height: 80%;
-            object-fit: contain;
         }
 
         .project-item video {
@@ -818,6 +812,10 @@
 
         .project-image.active {
             opacity: 1;
+        }
+
+        .project-image[src="mustair.png"] {
+            transform: scale(1.296);
         }
 
         video.project-image {
@@ -1386,6 +1384,88 @@
         ::-webkit-scrollbar-thumb:hover {
             background: #bbb;
         }
+
+        /* Click-to-zoom modal for a single project tile image */
+        .image-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.85);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 3000;
+            padding: 24px;
+        }
+
+        .image-modal.show {
+            display: flex;
+        }
+
+        .image-modal__content {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .image-modal img {
+            max-width: 100%;
+            max-height: 90vh;
+            object-fit: contain;
+            background: #fff;
+        }
+
+        .image-modal iframe {
+            width: 100%;
+            height: 90vh;
+            border: 0;
+            background: #fff;
+        }
+
+        .image-modal__close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            width: 40px;
+            height: 40px;
+            background: #fff;
+            border: 1px solid #000;
+            color: #000;
+            cursor: pointer;
+            font-size: 20px;
+            line-height: 40px;
+            text-align: center;
+            border-radius: 0;
+            padding: 0;
+            user-select: none;
+            transition: all 0.3s ease;
+            z-index: 0;
+        }
+
+        .image-modal__close::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 6px;
+            height: 0;
+            background: #00ff88;
+            z-index: -1;
+            transition: height 0.3s ease;
+            pointer-events: none;
+        }
+
+        .image-modal__close:hover::after {
+            height: 8px;
+        }
+
+        .image-modal__close:hover {
+            color: #000;
+            background: #fff;
+            border-color: transparent;
+        }
     </style>
 </head>
 <body>
@@ -1440,22 +1520,25 @@
             <nav class="project-list">
                 <ol>
                     <li>
-                        <span class="project-number">01</span> <a href="projects/symposium-2025/index.html">Symposium 2025</a>
+                        <span class="project-number">01</span> <a href="projects/prototype/index.html">Prototype Festival</a>
                     </li>
                     <li>
-                        <span class="project-number">02</span> <a href="projects/greentopia/index.html">Greentopia</a>
+                        <span class="project-number">02</span> <a href="projects/clostra-son-jon-mustair/index.html">Clostra Son Jon Müstair</a>
                     </li>
                     <li>
-                        <span class="project-number">03</span> <a href="projects/lumimoria/index.html">Lumimoria</a>
+                        <span class="project-number">03</span> <a href="projects/symposium-2025/index.html">Symposium 2025</a>
                     </li>
                     <li>
-                        <span class="project-number">04</span> <a href="projects/the-little-food-book/index.html">The Little Food Book</a>
+                        <span class="project-number">04</span> <a href="projects/greentopia/index.html">Greentopia</a>
                     </li>
                     <li>
-                        <span class="project-number">05</span> <a href="projects/interview-with-muon-studio/index.html">Interview with muon studio</a>
+                        <span class="project-number">05</span> <a href="projects/lumimoria/index.html">Lumimoria</a>
                     </li>
                     <li>
-                        <span class="project-number">06</span> <a href="projects/sewing-machine/index.html">......sewing machine???</a>
+                        <span class="project-number">06</span> <a href="projects/the-little-food-book/index.html">The Little Food Book</a>
+                    </li>
+                    <li>
+                        <span class="project-number">07</span> <a href="projects/sewing-machine/index.html">......sewing machine???</a>
                     </li>
                 </ol>
             </nav>
@@ -1465,6 +1548,8 @@
             <div class="project-preview-wrapper" id="project-preview-wrapper">
             <div class="project-preview" id="project-preview">
                 <div class="project-carousel">
+                        <img src="projects/prototype/prototype-01.svg" alt="Prototype Festival" class="project-image">
+                        <img src="mustair.png" alt="Clostra Son Jon Müstair" class="project-image">
                         <div class="project-image project-image-container symposium-image">
                             <img src="symposium-01.webp" alt="Symposium 2025" class="static-img">
                             <img src="symposium logo animation.gif" alt="Symposium 2025" class="hover-gif">
@@ -1475,7 +1560,6 @@
                         </div>
                     <img src="13.png" alt="Lumimoria" class="project-image">
                         <img src="the little food book-01.png" alt="The Little Food Book" class="project-image">
-                    <img src="interview-01.png" alt="Interview with muon studio" class="project-image">
                         <img src="sewing machine main.webp" alt="......sewing machine???" class="project-image">
                 </div>
                 </div>
@@ -1483,6 +1567,14 @@
             </div>
             
             <div class="project-grid">
+                <a href="projects/prototype/index.html" class="project-item">
+                    <img src="projects/prototype/prototype-01.svg" alt="Prototype Festival">
+                </a>
+                
+                <a href="projects/clostra-son-jon-mustair/index.html" class="project-item">
+                    <img src="mustair.png" alt="Clostra Son Jon Müstair">
+                </a>
+                
                 <a href="projects/symposium-2025/index.html" class="project-item">
                     <img src="symposium-01.webp" alt="Symposium 2025">
                 </a>
@@ -1497,10 +1589,6 @@
                 
                 <a href="projects/the-little-food-book/index.html" class="project-item">
                     <img src="the little food book-01.png" alt="The Little Food Book">
-                </a>
-                
-                <a href="projects/interview-with-muon-studio/index.html" class="project-item">
-                    <img src="interview-01.png" alt="Interview with muon studio">
                 </a>
                 
                 <a href="projects/sewing-machine/index.html" class="project-item">
@@ -1527,21 +1615,20 @@
                     </div>
                 </a>
                 
-                <div class="project-item prototype-item">
-                    <img src="projects/prototype/prototype-01.svg" alt="Prototype">
-                    <div class="prototype-overlay">
-                        <span id="prototype-typewriter-text"></span><span class="typewriter-cursor">_</span>
-                    </div>
-                </div>
-                
                 <div class="project-item railroad-item">
-                    <img src="railroad-01.gif" alt="Railroad Hall of Fame">
-                    <div class="prototype-overlay">
-                        <span id="railroad-typewriter-text"></span><span class="typewriter-cursor">_</span>
-                    </div>
+                    <img src="country data.png" alt="Country Data">
                 </div>
             </div>
         </main>
+    </div>
+
+    <!-- Click-to-zoom modal -->
+    <div id="image-modal" class="image-modal" aria-hidden="true">
+        <div class="image-modal__content">
+            <button type="button" id="image-modal-close" class="image-modal__close" aria-label="Close">×</button>
+            <img id="image-modal-img" src="" alt="">
+            <iframe id="image-modal-iframe" src="" title="PDF Viewer" style="display: none;"></iframe>
+        </div>
     </div>
 
     <script>
@@ -1659,38 +1746,38 @@ function closeMoreInfo() {
         return;
     }
     
-    const paragraphs = document.querySelectorAll('.more-info-content p');
-    const image = document.querySelector('.more-info-image');
-    
-    paragraphs.forEach((p, index) => {
-        setTimeout(() => {
-            p.style.opacity = '0';
-            p.style.transform = 'translateY(5px)';
-        }, index * 15);
-    });
-    
-    if (image) {
-        setTimeout(() => {
-            image.style.opacity = '0';
-            image.style.transform = 'translateY(5px)';
-        }, paragraphs.length * 15);
-    }
-    
-    setTimeout(() => {
-        bio.classList.remove('expanded');
-        
-        setTimeout(() => {
-            paragraphs.forEach(p => {
-                p.style.opacity = '';
-                p.style.transform = '';
-            });
+            const paragraphs = document.querySelectorAll('.more-info-content p');
+            const image = document.querySelector('.more-info-image');
+            
+                paragraphs.forEach((p, index) => {
+                setTimeout(() => {
+                    p.style.opacity = '0';
+                    p.style.transform = 'translateY(5px)';
+                }, index * 15);
+                });
+            
             if (image) {
-                image.style.opacity = '';
-                image.style.transform = '';
+            setTimeout(() => {
+                    image.style.opacity = '0';
+                    image.style.transform = 'translateY(5px)';
+                }, paragraphs.length * 15);
             }
-        }, 350);
-    }, Math.max(paragraphs.length * 15 + 50, 100));
-}
+                
+                setTimeout(() => {
+                    bio.classList.remove('expanded');
+                
+                    setTimeout(() => {
+                        paragraphs.forEach(p => {
+                            p.style.opacity = '';
+                            p.style.transform = '';
+                    });
+                    if (image) {
+                        image.style.opacity = '';
+                        image.style.transform = '';
+                    }
+                }, 350);
+            }, Math.max(paragraphs.length * 15 + 50, 100));
+    }
 
 let autoScrollInterval = null;
 let currentProjectIndex = 0;
@@ -1710,11 +1797,12 @@ function startAutoScroll() {
     const descriptionDiv = document.getElementById('project-description');
     
     const projectDescriptions = [
+        ['2025', 'Personal Project', '—'],
+        ['2025', 'for Grad Type III', 'Advise by Doug Scott'],
         ['2025', 'for Design Studio IV', 'Advise by Kathy Wu'],
         ['2024', 'for Design Studio III', 'with Sarah Feng, Marie You and Nor Wu'],
         ['2024', 'for Typography III', 'Advise by Anastasiia Raina'],
         ['2024', 'for Typography II', 'Advise by Min Hee Lee'],
-        ['2025', 'for Design Studio IV', 'Advise by Elizabeth Goodspeed'],
         ['2024', 'for Design Studio III', 'Advise by Emily Rye']
     ];
     
@@ -1739,7 +1827,7 @@ function startAutoScroll() {
                 const projectHref = activeLink.getAttribute('href');
                 const projectName = activeLink.textContent.trim();
                 
-                const nonClickableProjects = ['prototype', 'railroad-hall-of-fame', 'intern'];
+                const nonClickableProjects = ['railroad-hall-of-fame', 'intern'];
                 const isNonClickable = nonClickableProjects.some(name => 
                     projectHref?.toLowerCase().includes(name) || 
                     projectName?.toLowerCase().includes(name)
@@ -1790,7 +1878,7 @@ function nextProject() {
     
     const didHighlight = highlightProject(currentProjectIndex);
     if (didHighlight) {
-        currentProjectIndex = (currentProjectIndex + 1) % projectLinks.length;
+    currentProjectIndex = (currentProjectIndex + 1) % projectLinks.length;
         autoScrollStartTime = Date.now();
     }
 }
@@ -1837,8 +1925,8 @@ function nextProject() {
             autoScrollStartTime = now;
         } else if (activeIndex === -1 || !autoScrollStartTime) {
             // 如果没有active项目或没有开始时间，显示第一个项目
-            highlightProject(0);
-            currentProjectIndex = 1;
+    highlightProject(0);
+    currentProjectIndex = 1;
             autoScrollStartTime = Date.now();
         }
     }
@@ -1902,11 +1990,12 @@ function setupManualHover() {
         const descriptionDiv = document.getElementById('project-description');
         
     const projectDescriptions = [
+        ['2025', 'Personal Project', '—'],
+        ['2025', 'for Grad Type III', 'Advise by Doug Scott'],
         ['2025', 'for Design Studio IV', 'Advise by Kathy Wu'],
         ['2024', 'for Design Studio III', 'with Sarah Feng, Marie You and Nor Wu'],
         ['2024', 'for Typography III', 'Advise by Anastasiia Raina'],
         ['2024', 'for Typography II', 'Advise by Min Hee Lee'],
-        ['2025', 'for Design Studio IV', 'Advise by Elizabeth Goodspeed'],
         ['2024', 'for Design Studio III', 'Advise by Emily Rye']
     ];
         
@@ -1928,7 +2017,7 @@ function setupManualHover() {
                     const projectHref = link.getAttribute('href');
                     const projectName = link.textContent.trim();
                     
-                    const nonClickableProjects = ['prototype', 'railroad-hall-of-fame', 'intern'];
+                    const nonClickableProjects = ['railroad-hall-of-fame', 'intern'];
                     const isNonClickable = nonClickableProjects.some(name => 
                         projectHref?.toLowerCase().includes(name) || 
                         projectName?.toLowerCase().includes(name)
@@ -2055,25 +2144,11 @@ document.addEventListener('DOMContentLoaded', function() {
             startPosterTypewriter();
         }
     }
-
-    const railroadTypewriterText = document.getElementById('railroad-typewriter-text');
-    if (railroadTypewriterText) {
-        function startRailroadTypewriter() {
-            railroadTypewriterText.textContent = '';
-            setTimeout(() => {
-                typeWriter(railroadTypewriterText, 'work in progress...', 80);
-            }, 500);
-        }
-        
-        if (document.body.classList.contains('collapsed')) {
-            startRailroadTypewriter();
-        }
-    }
     
-        setTimeout(() => {
-            startAutoScroll();
+    setTimeout(() => {
+        startAutoScroll();
             setupManualHover();
-            setupAutoScrollControls();
+        setupAutoScrollControls();
             
             // 确保第一个项目正确显示（如果preview-wrapper存在但没有show class）
         const previewWrapper = document.getElementById('project-preview-wrapper');
@@ -2119,15 +2194,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     posterTypewriterText.textContent = '';
                     setTimeout(() => {
                         typeWriter(posterTypewriterText, 'ongoing series', 80);
-                    }, 500);
-                }, 100);
-            }
-            
-            if (railroadTypewriterText) {
-                setTimeout(() => {
-                    railroadTypewriterText.textContent = '';
-                    setTimeout(() => {
-                        typeWriter(railroadTypewriterText, 'work in progress...', 80);
                     }, 500);
                 }, 100);
             }
@@ -2188,6 +2254,91 @@ window.addEventListener('focus', function() {
     // 从项目页返回时才移除show class并退出View All
     const isFromProjectPage = document.referrer && document.referrer.includes('/projects/');
     resetPreviewWrapper(isFromProjectPage, isFromProjectPage);
+});
+
+// Click-to-zoom (single-image) modal
+document.addEventListener('DOMContentLoaded', function() {
+    const modal = document.getElementById('image-modal');
+    const modalImg = document.getElementById('image-modal-img');
+    const modalIframe = document.getElementById('image-modal-iframe');
+    const closeBtn = document.getElementById('image-modal-close');
+    const railroadTile = document.querySelector('.project-grid .project-item.railroad-item');
+    const wayfindingCarousel = document.querySelector('.project-grid .project9-carousel');
+
+    if (!modal || !modalImg || !modalIframe || !closeBtn || !railroadTile || !wayfindingCarousel) return;
+
+    function openModalWithImage(tile) {
+        const img = tile.querySelector('img');
+        if (!img) return;
+
+        modalImg.src = img.getAttribute('src') || '';
+        modalImg.alt = img.getAttribute('alt') || '';
+        modalImg.style.display = 'block';
+
+        modalIframe.src = '';
+        modalIframe.style.display = 'none';
+
+        modal.classList.add('show');
+        modal.setAttribute('aria-hidden', 'false');
+    }
+
+    function openModalWithPdf(pdfSrc) {
+        modalImg.style.display = 'none';
+
+        modalIframe.src = pdfSrc;
+        modalIframe.style.display = 'block';
+
+        modal.classList.add('show');
+        modal.setAttribute('aria-hidden', 'false');
+    }
+
+    // Open a specific image source (used by carousel items)
+    function openModalWithSrc(src, altText) {
+        modalIframe.src = '';
+        modalIframe.style.display = 'none';
+
+        modalImg.style.display = 'block';
+        modalImg.src = src || '';
+        modalImg.alt = altText || '';
+
+        modal.classList.add('show');
+        modal.setAttribute('aria-hidden', 'false');
+    }
+
+    function closeModal() {
+        modal.classList.remove('show');
+        modal.setAttribute('aria-hidden', 'true');
+        modalImg.src = '';
+        modalImg.style.display = '';
+
+        modalIframe.src = '';
+        modalIframe.style.display = 'none';
+    }
+
+    railroadTile.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        openModalWithImage(railroadTile);
+    });
+
+    // Wayfinding (project9-carousel) display image instead of PDF
+    const wayfindingParentTile = wayfindingCarousel.closest('.project-item');
+    if (wayfindingParentTile) {
+        wayfindingParentTile.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            openModalWithSrc('wayfinding.png', 'Wayfinding');
+        });
+    }
+
+    closeBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal) closeModal();
+    });
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeModal();
+    });
 });
     </script>
 </body>
