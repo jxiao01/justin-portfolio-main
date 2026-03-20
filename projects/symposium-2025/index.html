@@ -106,6 +106,7 @@
         }
 
         .content .project-images img,
+        .content .project-images video,
         .content .project-images > div {
             opacity: 0;
             transform: translateY(30px);
@@ -115,6 +116,7 @@
         }
 
         .content .project-images img.show,
+        .content .project-images video.show,
         .content .project-images > div.show {
             opacity: 1;
             transform: translateY(0);
@@ -270,26 +272,6 @@
             pointer-events: none;
         }
 
-        /* 打字机效果 */
-        #typewriter-text {
-            display: inline-block;
-        }
-
-        .typewriter-cursor {
-            display: inline-block;
-            animation: blink 1s infinite;
-            margin-left: 2px;
-        }
-
-        @keyframes blink {
-            0%, 50% {
-                opacity: 1;
-            }
-            51%, 100% {
-                opacity: 0;
-            }
-        }
-
         /* 移动端适配 */
         @media (max-width: 768px) {
             .sidebar {
@@ -374,10 +356,12 @@
         <main class="content">
             <!-- 项目内容区域 -->
             <div class="project-images" style="padding: 40px 0;">
-                <!-- 项目图片将在这里添加 -->
-                <div style="padding: 100px 0; text-align: center; color: #999; font-style: italic;">
-                    <span id="typewriter-text"></span><span class="typewriter-cursor">_</span>
-                </div>
+                <video src="symposium_logo_animation.mp4" alt="Symposium logo animation" style="width: 100%; display: block; margin: 0; padding: 0;" autoplay loop muted playsinline></video>
+                <img src="symposium logo.jpg" alt="Symposium 2025" style="width: 100%; display: block; margin: 0; padding: 0;">
+                <img src="symposium logo grid.png" alt="Symposium logo grid" style="width: 100%; display: block; margin: 0; padding: 0;">
+                <video src="symposium_logo_grid_animation.mp4" alt="Symposium logo grid animation" style="width: 100%; display: block; margin: 0; padding: 0;" autoplay loop muted playsinline></video>
+                <img src="symposium posters.jpg" alt="Symposium posters" style="width: 100%; display: block; margin: 0; padding: 0;">
+                <img src="puzzle.png" alt="Symposium puzzle" style="width: 100%; display: block; margin: 0; padding: 0;">
                 <div class="project-navigation">
                     <a href="#" class="project-nav-btn" id="prev-project">← Previous</a>
                     <a href="#" class="project-nav-btn" id="next-project">Next →</a>
@@ -387,38 +371,14 @@
     </div>
 
     <script>
-        // 打字机效果
-        function typeWriter(element, text, speed = 100) {
-            let i = 0;
-            element.textContent = '';
-            
-            function type() {
-                if (i < text.length) {
-                    element.textContent += text.charAt(i);
-                    i++;
-                    setTimeout(type, speed);
-                }
-            }
-            
-            type();
-        }
-
         // 页面加载时的进入动画
         document.addEventListener('DOMContentLoaded', function() {
             const sidebar = document.querySelector('.sidebar');
-            const imageElements = document.querySelectorAll('.project-images img, .project-images > div');
-            const typewriterText = document.getElementById('typewriter-text');
+            const imageElements = document.querySelectorAll('.project-images img, .project-images video, .project-images > div');
             
             // 延迟一点时间让页面完全加载
             setTimeout(() => {
                 sidebar.classList.add('show');
-                
-                // 启动打字机效果
-                if (typewriterText) {
-                    setTimeout(() => {
-                        typeWriter(typewriterText, 'case study work in progress...', 80);
-                    }, 500);
-                }
                 
                 // 图片依次出现，每张间隔200ms
                 imageElements.forEach((element, index) => {
@@ -433,7 +393,7 @@
         document.querySelector('.back-link').addEventListener('click', function(e) {
             e.preventDefault();
             const sidebar = document.querySelector('.sidebar');
-            const imageElements = document.querySelectorAll('.project-images img, .project-images > div');
+            const imageElements = document.querySelectorAll('.project-images img, .project-images video, .project-images > div');
             
             // 图片依次退出
             imageElements.forEach((element, index) => {
@@ -456,12 +416,13 @@
         // 项目导航功能
         (function() {
             const projects = [
-                '../symposium-2025/index.html', // 01 Symposium
-                '../greentopia/index.html', // 02 Greentopia
-                '../lumimoria/index.html', // 03 Lumimoria
-                '../the-little-food-book/index.html', // 04 The Little Food Book
-                '../interview-with-muon-studio/index.html', // 05 Interview with muon studio
-                '../sewing-machine/index.html'   // 06 sewing machine
+                '../prototype/index.html', // 01 Prototype Festival
+                '../clostra-son-jon-mustair/index.html', // 02 Clostra Son Jon Müstair
+                '../symposium-2025/index.html', // 03 Symposium
+                '../greentopia/index.html', // 04 Greentopia
+                '../lumimoria/index.html', // 05 Lumimoria
+                '../the-little-food-book/index.html', // 06 The Little Food Book
+                '../sewing-machine/index.html'   // 07 sewing machine
             ];
 
             // 从当前URL获取项目编号
