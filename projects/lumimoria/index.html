@@ -338,6 +338,7 @@
             }
         }
     </style>
+    <script src="../../no-copy.js"></script>
 </head>
 <body>
     <a href="../../index.html" class="back-link">Back to Main</a>
@@ -367,7 +368,8 @@
                 </div>
                 <img src="lumimoria-10.png" alt="Lumimoria Project" style="width: 100%; display: block;">
                 <img src="lumimoria-12.webp" alt="Lumimoria Project" style="width: 100%; display: block;">
-                <div style="width: 100%; margin-top: 40px;">
+                <img src="web.png" alt="Lumimoria Website" style="width: 100%; display: block; margin: 0; padding: 0;">
+                <div style="width: 100%; margin-top: 0;">
                     <div style="display: flex; gap: 20px; width: 100%;">
                         <div style="flex: 1;">
                             <div style="position: relative; aspect-ratio: 5/3; border: 1px solid #000; overflow: hidden; background: #fff;">
@@ -439,6 +441,8 @@
         // 项目导航功能
         (function() {
             const projects = [
+                '../new-project/index.html',
+                '../new-project-2/index.html',
                 '../prototype/index.html', // 01 Prototype Festival
                 '../clostra-son-jon-mustair/index.html', // 02 Clostra Son Jon Müstair
                 '../symposium-2025/index.html', // 03 Symposium
@@ -450,7 +454,7 @@
 
             // 从当前URL获取项目编号
             const currentPath = window.location.pathname;
-            const currentProjectIndex = projects.findIndex(p => currentPath.includes(p.split('/')[1]));
+            const currentProjectIndex = projects.findIndex(p => currentPath.includes('/' + p.split('/')[1] + '/'));
 
             const prevBtn = document.getElementById('prev-project');
             const nextBtn = document.getElementById('next-project');

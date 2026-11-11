@@ -1,0 +1,143 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="1587" height="1123" viewBox="0 0 1587 1123" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Icon Lego">
+<path id="Front" d="M195.254 477.2L292.249 533.2V566.8L195.254 510.8V477.2Z" fill="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke="#222222"/>
+<path id="Side" d="M340.746 505.2L292.249 533.2V566.8L340.746 538.8V505.2Z" fill="#E9E9E9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke="#222222"/>
+<path id="Top" d="M243.751 449.2L340.746 505.2L292.249 533.2L195.254 477.2L243.751 449.2Z" fill="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke="#222222"/>
+<path id="Stud Wall" d="M234.149 453.12H253.353V463.2H234.149V453.12Z" fill="white"/>
+<g id="Ellipse">
+<ellipse cx="243.751" cy="463.2" rx="9.602" ry="5.54372" fill="white"/>
+<mask id="stroke0_0_10" fill="white">
+<path d="M253.353 463.2C253.353 466.262 249.054 468.744 243.751 468.744C238.448 468.744 234.149 466.262 234.149 463.2C234.149 460.138 238.448 457.656 243.751 457.656C249.054 457.656 253.353 460.138 253.353 463.2Z"/>
+</mask>
+<ellipse cx="243.751" cy="463.2" rx="9.602" ry="5.54372" stroke-width="3" stroke="#222222" mask="url(#stroke0_0_10)"/>
+</g>
+<path id="Vector" d="M234.149 453.12V463.2" stroke-width="1.5" stroke-linecap="round" stroke="#222222"/>
+<path id="Vector_2" d="M253.353 453.12V463.2" stroke-width="1.5" stroke-linecap="round" stroke="#222222"/>
+<g id="Ellipse_2">
+<ellipse cx="243.751" cy="453.12" rx="9.602" ry="5.54372" fill="white"/>
+<mask id="stroke1_0_10" fill="white">
+<path d="M253.353 453.12C253.353 456.182 249.054 458.664 243.751 458.664C238.448 458.664 234.149 456.182 234.149 453.12C234.149 450.058 238.448 447.576 243.751 447.576C249.054 447.576 253.353 450.058 253.353 453.12Z"/>
+</mask>
+<ellipse cx="243.751" cy="453.12" rx="9.602" ry="5.54372" stroke-width="3" stroke="#222222" mask="url(#stroke1_0_10)"/>
+</g>
+<path id="Stud Wall_2" d="M209.901 467.12H229.105V477.2H209.901V467.12Z" fill="white"/>
+<g id="Ellipse_3">
+<ellipse cx="219.503" cy="477.2" rx="9.602" ry="5.54372" fill="white"/>
+<mask id="stroke2_0_10" fill="white">
+<path d="M229.105 477.2C229.105 480.262 224.806 482.744 219.503 482.744C214.2 482.744 209.901 480.262 209.901 477.2C209.901 474.138 214.2 471.656 219.503 471.656C224.806 471.656 229.105 474.138 229.105 477.2Z"/>
+</mask>
+<ellipse cx="219.503" cy="477.2" rx="9.602" ry="5.54372" stroke-width="3" stroke="#222222" mask="url(#stroke2_0_10)"/>
+</g>
+<path id="Vector_3" d="M209.901 467.12V477.2" stroke-width="1.5" stroke-linecap="round" stroke="#222222"/>
+<path id="Vector_4" d="M229.105 467.12V477.2" stroke-width="1.5" stroke-linecap="round" stroke="#222222"/>
+<g id="Ellipse_4">
+<ellipse cx="219.503" cy="467.12" rx="9.602" ry="5.54372" fill="white"/>
+<mask id="stroke3_0_10" fill="white">
+<path d="M229.105 467.12C229.105 470.182 224.806 472.664 219.503 472.664C214.2 472.664 209.901 470.182 209.901 467.12C209.901 464.058 214.2 461.576 219.503 461.576C224.806 461.576 229.105 464.058 229.105 467.12Z"/>
+</mask>
+<ellipse cx="219.503" cy="467.12" rx="9.602" ry="5.54372" stroke-width="3" stroke="#222222" mask="url(#stroke3_0_10)"/>
+</g>
+<path id="Stud Wall_3" d="M258.398 467.12H277.602V477.2H258.398V467.12Z" fill="white"/>
+<g id="Ellipse_5">
+<ellipse cx="268" cy="477.2" rx="9.602" ry="5.54372" fill="white"/>
+<mask id="stroke4_0_10" fill="white">
+<path d="M277.602 477.2C277.602 480.262 273.303 482.744 268 482.744C262.697 482.744 258.398 480.262 258.398 477.2C258.398 474.138 262.697 471.656 268 471.656C273.303 471.656 277.602 474.138 277.602 477.2Z"/>
+</mask>
+<ellipse cx="268" cy="477.2" rx="9.602" ry="5.54372" stroke-width="3" stroke="#222222" mask="url(#stroke4_0_10)"/>
+</g>
+<path id="Vector_5" d="M258.398 467.12V477.2" stroke-width="1.5" stroke-linecap="round" stroke="#222222"/>
+<path id="Vector_6" d="M277.602 467.12V477.2" stroke-width="1.5" stroke-linecap="round" stroke="#222222"/>
+<g id="Ellipse_6">
+<ellipse cx="268" cy="467.12" rx="9.602" ry="5.54372" fill="white"/>
+<mask id="stroke5_0_10" fill="white">
+<path d="M277.602 467.12C277.602 470.182 273.303 472.664 268 472.664C262.697 472.664 258.398 470.182 258.398 467.12C258.398 464.058 262.697 461.576 268 461.576C273.303 461.576 277.602 464.058 277.602 467.12Z"/>
+</mask>
+<ellipse cx="268" cy="467.12" rx="9.602" ry="5.54372" stroke-width="3" stroke="#222222" mask="url(#stroke5_0_10)"/>
+</g>
+<path id="Stud Wall_4" d="M234.149 481.12H253.353V491.2H234.149V481.12Z" fill="white"/>
+<g id="Ellipse_7">
+<ellipse cx="243.751" cy="491.2" rx="9.602" ry="5.54372" fill="white"/>
+<mask id="stroke6_0_10" fill="white">
+<path d="M253.353 491.2C253.353 494.262 249.054 496.744 243.751 496.744C238.448 496.744 234.149 494.262 234.149 491.2C234.149 488.138 238.448 485.656 243.751 485.656C249.054 485.656 253.353 488.138 253.353 491.2Z"/>
+</mask>
+<ellipse cx="243.751" cy="491.2" rx="9.602" ry="5.54372" stroke-width="3" stroke="#222222" mask="url(#stroke6_0_10)"/>
+</g>
+<path id="Vector_7" d="M234.149 481.12V491.2" stroke-width="1.5" stroke-linecap="round" stroke="#222222"/>
+<path id="Vector_8" d="M253.353 481.12V491.2" stroke-width="1.5" stroke-linecap="round" stroke="#222222"/>
+<g id="Ellipse_8">
+<ellipse cx="243.751" cy="481.12" rx="9.602" ry="5.54372" fill="white"/>
+<mask id="stroke7_0_10" fill="white">
+<path d="M253.353 481.12C253.353 484.182 249.054 486.664 243.751 486.664C238.448 486.664 234.149 484.182 234.149 481.12C234.149 478.058 238.448 475.576 243.751 475.576C249.054 475.576 253.353 478.058 253.353 481.12Z"/>
+</mask>
+<ellipse cx="243.751" cy="481.12" rx="9.602" ry="5.54372" stroke-width="3" stroke="#222222" mask="url(#stroke7_0_10)"/>
+</g>
+<path id="Stud Wall_5" d="M282.647 481.12H301.851V491.2H282.647V481.12Z" fill="white"/>
+<g id="Ellipse_9">
+<ellipse cx="292.249" cy="491.2" rx="9.602" ry="5.54372" fill="white"/>
+<mask id="stroke8_0_10" fill="white">
+<path d="M301.851 491.2C301.851 494.262 297.552 496.744 292.249 496.744C286.946 496.744 282.647 494.262 282.647 491.2C282.647 488.138 286.946 485.656 292.249 485.656C297.552 485.656 301.851 488.138 301.851 491.2Z"/>
+</mask>
+<ellipse cx="292.249" cy="491.2" rx="9.602" ry="5.54372" stroke-width="3" stroke="#222222" mask="url(#stroke8_0_10)"/>
+</g>
+<path id="Vector_9" d="M282.647 481.12V491.2" stroke-width="1.5" stroke-linecap="round" stroke="#222222"/>
+<path id="Vector_10" d="M301.851 481.12V491.2" stroke-width="1.5" stroke-linecap="round" stroke="#222222"/>
+<g id="Ellipse_10">
+<ellipse cx="292.249" cy="481.12" rx="9.602" ry="5.54372" fill="white"/>
+<mask id="stroke9_0_10" fill="white">
+<path d="M301.851 481.12C301.851 484.182 297.552 486.664 292.249 486.664C286.946 486.664 282.647 484.182 282.647 481.12C282.647 478.058 286.946 475.576 292.249 475.576C297.552 475.576 301.851 478.058 301.851 481.12Z"/>
+</mask>
+<ellipse cx="292.249" cy="481.12" rx="9.602" ry="5.54372" stroke-width="3" stroke="#222222" mask="url(#stroke9_0_10)"/>
+</g>
+<path id="Stud Wall_6" d="M258.398 495.12H277.602V505.2H258.398V495.12Z" fill="white"/>
+<g id="Ellipse_11">
+<ellipse cx="268" cy="505.2" rx="9.602" ry="5.54372" fill="white"/>
+<mask id="stroke10_0_10" fill="white">
+<path d="M277.602 505.2C277.602 508.262 273.303 510.744 268 510.744C262.697 510.744 258.398 508.262 258.398 505.2C258.398 502.138 262.697 499.656 268 499.656C273.303 499.656 277.602 502.138 277.602 505.2Z"/>
+</mask>
+<ellipse cx="268" cy="505.2" rx="9.602" ry="5.54372" stroke-width="3" stroke="#222222" mask="url(#stroke10_0_10)"/>
+</g>
+<path id="Vector_11" d="M258.398 495.12V505.2" stroke-width="1.5" stroke-linecap="round" stroke="#222222"/>
+<path id="Vector_12" d="M277.602 495.12V505.2" stroke-width="1.5" stroke-linecap="round" stroke="#222222"/>
+<g id="Ellipse_12">
+<ellipse cx="268" cy="495.12" rx="9.602" ry="5.54372" fill="white"/>
+<mask id="stroke11_0_10" fill="white">
+<path d="M277.602 495.12C277.602 498.182 273.303 500.664 268 500.664C262.697 500.664 258.398 498.182 258.398 495.12C258.398 492.058 262.697 489.576 268 489.576C273.303 489.576 277.602 492.058 277.602 495.12Z"/>
+</mask>
+<ellipse cx="268" cy="495.12" rx="9.602" ry="5.54372" stroke-width="3" stroke="#222222" mask="url(#stroke11_0_10)"/>
+</g>
+<path id="Stud Wall_7" d="M306.895 495.12H326.099V505.2H306.895V495.12Z" fill="white"/>
+<g id="Ellipse_13">
+<ellipse cx="316.497" cy="505.2" rx="9.602" ry="5.54372" fill="white"/>
+<mask id="stroke12_0_10" fill="white">
+<path d="M326.099 505.2C326.099 508.262 321.8 510.744 316.497 510.744C311.194 510.744 306.895 508.262 306.895 505.2C306.895 502.138 311.194 499.656 316.497 499.656C321.8 499.656 326.099 502.138 326.099 505.2Z"/>
+</mask>
+<ellipse cx="316.497" cy="505.2" rx="9.602" ry="5.54372" stroke-width="3" stroke="#222222" mask="url(#stroke12_0_10)"/>
+</g>
+<path id="Vector_13" d="M306.895 495.12V505.2" stroke-width="1.5" stroke-linecap="round" stroke="#222222"/>
+<path id="Vector_14" d="M326.099 495.12V505.2" stroke-width="1.5" stroke-linecap="round" stroke="#222222"/>
+<g id="Ellipse_14">
+<ellipse cx="316.497" cy="495.12" rx="9.602" ry="5.54372" fill="white"/>
+<mask id="stroke13_0_10" fill="white">
+<path d="M326.099 495.12C326.099 498.182 321.8 500.664 316.497 500.664C311.194 500.664 306.895 498.182 306.895 495.12C306.895 492.058 311.194 489.576 316.497 489.576C321.8 489.576 326.099 492.058 326.099 495.12Z"/>
+</mask>
+<ellipse cx="316.497" cy="495.12" rx="9.602" ry="5.54372" stroke-width="3" stroke="#222222" mask="url(#stroke13_0_10)"/>
+</g>
+<path id="Stud Wall_8" d="M282.647 509.12H301.851V519.2H282.647V509.12Z" fill="white"/>
+<g id="Ellipse_15">
+<ellipse cx="292.249" cy="519.2" rx="9.602" ry="5.54372" fill="white"/>
+<mask id="stroke14_0_10" fill="white">
+<path d="M301.851 519.2C301.851 522.262 297.552 524.744 292.249 524.744C286.946 524.744 282.647 522.262 282.647 519.2C282.647 516.138 286.946 513.656 292.249 513.656C297.552 513.656 301.851 516.138 301.851 519.2Z"/>
+</mask>
+<ellipse cx="292.249" cy="519.2" rx="9.602" ry="5.54372" stroke-width="3" stroke="#222222" mask="url(#stroke14_0_10)"/>
+</g>
+<path id="Vector_15" d="M282.647 509.12V519.2" stroke-width="1.5" stroke-linecap="round" stroke="#222222"/>
+<path id="Vector_16" d="M301.851 509.12V519.2" stroke-width="1.5" stroke-linecap="round" stroke="#222222"/>
+<g id="Ellipse_16">
+<ellipse cx="292.249" cy="509.12" rx="9.602" ry="5.54372" fill="white"/>
+<mask id="stroke15_0_10" fill="white">
+<path d="M301.851 509.12C301.851 512.182 297.552 514.664 292.249 514.664C286.946 514.664 282.647 512.182 282.647 509.12C282.647 506.058 286.946 503.576 292.249 503.576C297.552 503.576 301.851 506.058 301.851 509.12Z"/>
+</mask>
+<ellipse cx="292.249" cy="509.12" rx="9.602" ry="5.54372" stroke-width="3" stroke="#222222" mask="url(#stroke15_0_10)"/>
+</g>
+</g>
+</svg>

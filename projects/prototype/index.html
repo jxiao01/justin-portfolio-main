@@ -335,6 +335,7 @@
             }
         }
     </style>
+    <script src="../../no-copy.js"></script>
 </head>
 <body>
     <a href="../../index.html" class="back-link">Back to Main</a>
@@ -426,6 +427,8 @@
 
         (function() {
             const projects = [
+                '../new-project/index.html',
+                '../new-project-2/index.html',
                 '../prototype/index.html',
                 '../clostra-son-jon-mustair/index.html',
                 '../symposium-2025/index.html',
@@ -436,7 +439,7 @@
             ];
 
             const currentPath = window.location.pathname;
-            const currentProjectIndex = projects.findIndex(p => currentPath.includes(p.split('/')[1]));
+            const currentProjectIndex = projects.findIndex(p => currentPath.includes('/' + p.split('/')[1] + '/'));
 
             const prevBtn = document.getElementById('prev-project');
             const nextBtn = document.getElementById('next-project');

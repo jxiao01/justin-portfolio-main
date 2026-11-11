@@ -339,6 +339,7 @@
             }
         }
     </style>
+    <script src="../../no-copy.js"></script>
 </head>
 <body>
     <a href="../../index.html" class="back-link">Back to Main</a>
@@ -357,6 +358,8 @@
             <!-- 项目内容区域 -->
             <div class="project-images" style="padding: 40px 0;">
                 <video src="symposium_logo_animation.mp4" alt="Symposium logo animation" style="width: 100%; display: block; margin: 0; padding: 0;" autoplay loop muted playsinline></video>
+                <img src="symposium concept.jpg" alt="Symposium concept" style="width: 100%; display: block; margin: 0; padding: 0;">
+                <img src="logo breakdown.png" alt="Symposium logo breakdown" style="width: 100%; display: block; margin: 0; padding: 0;">
                 <img src="symposium logo.jpg" alt="Symposium 2025" style="width: 100%; display: block; margin: 0; padding: 0;">
                 <img src="symposium logo grid.png" alt="Symposium logo grid" style="width: 100%; display: block; margin: 0; padding: 0;">
                 <video src="symposium_logo_grid_animation.mp4" alt="Symposium logo grid animation" style="width: 100%; display: block; margin: 0; padding: 0;" autoplay loop muted playsinline></video>
@@ -416,6 +419,8 @@
         // 项目导航功能
         (function() {
             const projects = [
+                '../new-project/index.html',
+                '../new-project-2/index.html',
                 '../prototype/index.html', // 01 Prototype Festival
                 '../clostra-son-jon-mustair/index.html', // 02 Clostra Son Jon Müstair
                 '../symposium-2025/index.html', // 03 Symposium
@@ -427,7 +432,7 @@
 
             // 从当前URL获取项目编号
             const currentPath = window.location.pathname;
-            const currentProjectIndex = projects.findIndex(p => currentPath.includes(p.split('/')[1]));
+            const currentProjectIndex = projects.findIndex(p => currentPath.includes('/' + p.split('/')[1] + '/'));
 
             const prevBtn = document.getElementById('prev-project');
             const nextBtn = document.getElementById('next-project');

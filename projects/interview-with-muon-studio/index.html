@@ -357,6 +357,7 @@
             }
         }
     </style>
+    <script src="../../no-copy.js"></script>
 </head>
 <body>
     <a href="../../index.html" class="back-link">Back to Main</a>
@@ -456,6 +457,8 @@
         // 项目导航功能
         (function() {
             const projects = [
+                '../new-project/index.html',
+                '../new-project-2/index.html',
                 '../prototype/index.html', // 01 Prototype
                 '../clostra-son-jon-mustair/index.html', // 02 Clostra Son Jon Müstair
                 '../symposium-2025/index.html', // 03 Symposium
@@ -467,7 +470,7 @@
 
             // 从当前URL获取项目编号
             const currentPath = window.location.pathname;
-            const currentProjectIndex = projects.findIndex(p => currentPath.includes(p.split('/')[1]));
+            const currentProjectIndex = projects.findIndex(p => currentPath.includes('/' + p.split('/')[1] + '/'));
 
             const prevBtn = document.getElementById('prev-project');
             const nextBtn = document.getElementById('next-project');

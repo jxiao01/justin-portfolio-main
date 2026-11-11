@@ -1,0 +1,27 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="1587" height="1123" viewBox="0 0 1587 1123" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Icon Pentomino">
+<path id="Fill" d="M153 878H217V910H185V926H153V878Z" fill="white"/>
+<path id="E" d="M153 878H169" stroke="#222222"/>
+<path id="E_2" d="M153 894H169" stroke="#222222"/>
+<path id="E_3" d="M153 878V894" stroke="#222222"/>
+<path id="E_4" d="M169 878H185" stroke="#222222"/>
+<path id="E_5" d="M169 894H185" stroke="#222222"/>
+<path id="E_6" d="M185 878H201" stroke="#222222"/>
+<path id="E_7" d="M185 894H201" stroke="#222222"/>
+<path id="E_8" d="M201 878H217" stroke="#222222"/>
+<path id="E_9" d="M217 878V894" stroke="#222222"/>
+<path id="E_10" d="M201 910H217" stroke="#222222"/>
+<path id="E_11" d="M201 894V910" stroke="#222222"/>
+<path id="E_12" d="M217 894V910" stroke="#222222"/>
+<path id="E_13" d="M153 894H169" stroke="#222222"/>
+<path id="E_14" d="M153 894V910" stroke="#222222"/>
+<path id="E_15" d="M169 894H185" stroke="#222222"/>
+<path id="E_16" d="M185 894H201" stroke="#222222"/>
+<path id="E_17" d="M185 910H201" stroke="#222222"/>
+<path id="E_18" d="M201 894V910" stroke="#222222"/>
+<path id="E_19" d="M153 926H169" stroke="#222222"/>
+<path id="E_20" d="M153 910V926" stroke="#222222"/>
+<path id="E_21" d="M169 926H185" stroke="#222222"/>
+<path id="E_22" d="M185 910V926" stroke="#222222"/>
+</g>
+</svg>

@@ -1,0 +1,1933 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blinkko</title>
+    <meta name="description" content="Blinkko project by Jinhang Xiao">
+    <link rel="icon" type="image/svg+xml" href="../../favicon-green-square.svg">
+    <link rel="shortcut icon" type="image/svg+xml" href="../../favicon-green-square.svg">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../favicon-green-square.svg">
+    <link rel="icon" type="image/svg+xml" sizes="32x32" href="../../favicon-green-square.svg">
+    <link rel="icon" type="image/svg+xml" sizes="16x16" href="../../favicon-green-square.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@600&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-size: 11.2px;
+            line-height: 1.4;
+            color: #000;
+            background-color: #fff;
+        }
+
+        /* 隐藏横向滚动条但保持功能 */
+        body::-webkit-scrollbar {
+            width: 0px;
+            background: transparent;
+        }
+
+        body::-webkit-scrollbar-thumb {
+            background: transparent;
+        }
+
+        /* Firefox */
+        html {
+            scrollbar-width: none;
+        }
+
+        h1 {
+            font-weight: normal;
+            font-size: 12.4px;
+            display: inline;
+        }
+
+        h1 a {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        h1 a:hover {
+            text-decoration: underline;
+        }
+
+        a {
+            color: #000;
+            text-decoration: none;
+            cursor: url('../../cursor-asset11-small.png') 13 13, pointer;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 208px;
+            border-right: 1px solid #000;
+            padding: 16px;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            background-color: #fff;
+            transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            transform: translateX(-100%);
+            z-index: 100;
+        }
+
+        .sidebar.show {
+            transform: translateX(0);
+        }
+
+        .content {
+            flex: 1;
+            margin-left: 208px;
+            padding: 16px;
+            transition: margin-left 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            background: transparent;
+        }
+
+        .content .project-images > img,
+        .content .project-images > video,
+        .content .project-images > div {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
+                        transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            will-change: opacity, transform;
+        }
+
+        .content .project-images > img.show,
+        .content .project-images > video.show,
+        .content .project-images > div.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .pair {
+            display: flex;
+            width: 100%;
+        }
+
+        .pair img,
+        .pair video {
+            width: 50%;
+            display: block;
+            object-fit: cover;
+        }
+
+        .note {
+            width: 100%;
+            border-top: 1px solid #000;
+            padding: 28px 0 24px;
+        }
+
+        .note.note-sub {
+            border-top: 0;
+        }
+
+        .note .kicker,
+        .app-copy .kicker {
+            font-size: 12px;
+            margin: 0 0 8px;
+            line-height: 1.4;
+        }
+
+        .note p {
+            font-size: 12px;
+            margin: 0 0 12px;
+            line-height: 1.5;
+        }
+
+        .note p:last-child {
+            margin-bottom: 0;
+        }
+
+        .note-grid {
+            display: flex;
+            gap: 28px;
+            margin-top: 16px;
+            flex-wrap: wrap;
+        }
+
+        .note-grid > div {
+            flex: 1;
+            min-width: 160px;
+        }
+
+        .note-grid strong {
+            display: block;
+            font-size: 12px;
+            font-weight: 500;
+            margin: 0 0 4px;
+        }
+
+        .note-grid span {
+            display: block;
+            font-size: 12px;
+            line-height: 1.5;
+            opacity: 0.5;
+        }
+
+        .flow {
+            list-style: none;
+            margin: 20px 0 0;
+            padding: 0;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 28px;
+        }
+
+        .flow li {
+            position: relative;
+            background: #f4f4f2;
+            border-radius: 14px;
+            padding: 14px 16px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            box-shadow: inset 0 0 0 1px transparent;
+            transition: background-color 0.45s ease, color 0.45s ease, box-shadow 0.45s ease, transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .flow li:not(:last-child)::after {
+            content: "→";
+            position: absolute;
+            right: -21px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 14px;
+            color: #000;
+            opacity: 0.2;
+            transition: opacity 0.45s ease;
+        }
+
+        .flow li.is-done::after {
+            opacity: 0.8;
+        }
+
+        .flow li.is-done {
+            background: #fff;
+            box-shadow: inset 0 0 0 1px #e2e2e2;
+        }
+
+        .flow-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            font-size: 10px;
+            margin-bottom: 14px;
+        }
+
+        .flow-meta b {
+            font-family: 'Host Grotesk', 'Poppins', sans-serif;
+            font-weight: 600;
+            opacity: 0.35;
+        }
+
+        .flow-meta i {
+            font-style: normal;
+            opacity: 0.45;
+        }
+
+        .flow strong {
+            font-size: 13px;
+            font-weight: 600;
+            line-height: 1.3;
+        }
+
+        .flow li > span {
+            font-size: 11.2px;
+            line-height: 1.45;
+            opacity: 0.55;
+        }
+
+        .flow li.is-on {
+            background: #000;
+            color: #fff;
+            transform: translateY(-4px);
+        }
+
+        .flow li.is-on .flow-meta b {
+            opacity: 0.6;
+        }
+
+        .flow li.is-on .flow-meta i,
+        .flow li.is-on > span {
+            opacity: 0.7;
+        }
+
+        .flow-meta b,
+        .flow-meta i,
+        .flow li > span {
+            transition: opacity 0.45s ease;
+        }
+
+        .flow-track {
+            position: relative;
+            height: 22px;
+            margin-top: 14px;
+        }
+
+        .flow-track::before,
+        .flow-fill {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 50%;
+            height: 2px;
+            border-radius: 2px;
+            transform: translateY(-50%);
+        }
+
+        .flow-track::before {
+            right: 0;
+            background: #eeeeec;
+        }
+
+        .flow-fill {
+            width: 0;
+            background: #000;
+            transition: width 1s cubic-bezier(0.65, 0, 0.35, 1);
+        }
+
+        .flow-runner {
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translate(0, -50%);
+            background: #000;
+            color: #fff;
+            font-family: 'Host Grotesk', 'Poppins', sans-serif;
+            font-style: normal;
+            font-weight: 600;
+            font-size: 10px;
+            line-height: 1;
+            padding: 5px 10px;
+            border-radius: 100px;
+            white-space: nowrap;
+            opacity: 0;
+            transition: transform 1s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.3s ease;
+        }
+
+        .flow-runner.is-live {
+            opacity: 1;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .flow li,
+            .flow li::after,
+            .flow-fill,
+            .flow-runner {
+                transition: none;
+            }
+
+            .flow li.is-on {
+                transform: none;
+            }
+        }
+
+        .spines {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .spine {
+            background: #f4f4f2;
+            border-radius: 14px;
+            padding: 14px 16px 6px;
+        }
+
+        .note .spine-head {
+            font-size: 13px;
+            font-weight: 600;
+            line-height: 1.3;
+            margin: 0 0 10px;
+        }
+
+        .spine-head b {
+            display: block;
+            font-family: 'Host Grotesk', 'Poppins', sans-serif;
+            font-size: 10px;
+            font-weight: 600;
+            opacity: 0.35;
+            margin-bottom: 14px;
+        }
+
+        .spine ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .spine li {
+            font-size: 11.2px;
+            line-height: 1.4;
+            padding: 8px 0;
+            border-top: 1px solid rgba(0, 0, 0, 0.08);
+        }
+
+        .spine-opts {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin-top: 6px;
+        }
+
+        .spine-opts i {
+            font-style: normal;
+            font-size: 10px;
+            line-height: 1;
+            padding: 4px 8px;
+            border-radius: 100px;
+            background: #fff;
+            opacity: 0.75;
+        }
+
+        .flow-tools {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 18px;
+            font-size: 11.2px;
+        }
+
+        .flow-tools > span:first-child {
+            opacity: 0.45;
+            margin-right: 4px;
+        }
+
+        .flow-tools .pill {
+            border: 1px solid #e2e2e2;
+            border-radius: 100px;
+            padding: 3px 11px;
+        }
+
+        .app-copy {
+            color: #fff;
+            padding: 32px 20px 0;
+            max-width: 42em;
+        }
+
+        .app-copy .kicker {
+            opacity: 0.45;
+        }
+
+        .app-copy p {
+            font-size: 12px;
+            line-height: 1.5;
+            margin: 0;
+            opacity: 0.88;
+        }
+
+        .app-stage {
+            width: 100%;
+            background: #070707;
+            padding: 8px 0 28px;
+        }
+
+        .phone-row {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 16px;
+            width: 100%;
+            padding: 16px 20px 32px;
+        }
+
+        .phone-stage {
+            width: min(24%, 220px);
+            flex-shrink: 0;
+        }
+
+        .phone-row:has(.phone-stage:nth-child(4)) .phone-stage {
+            width: min(21%, 190px);
+        }
+
+        .phone-frame {
+            width: 100%;
+            border-radius: 28px;
+            overflow: hidden;
+            background: #000;
+        }
+
+        .phone-frame img,
+        .phone-frame video {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .proto {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 18px;
+            padding: 8px 20px 32px;
+        }
+
+        .proto-phone {
+            width: min(42%, 280px);
+            padding: 0;
+            border: 0;
+            background: transparent;
+            cursor: pointer;
+            text-align: inherit;
+            font: inherit;
+            color: inherit;
+        }
+
+        .proto-stage {
+            position: relative;
+            display: block;
+            width: 100%;
+            aspect-ratio: 402 / 874;
+            border-radius: 28px;
+            overflow: hidden;
+            background: #000;
+        }
+
+        .proto-stage > img,
+        .proto-stage > video,
+        .proto-stage > .proto-scene {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s linear;
+        }
+
+        .proto-stage > img.is-on,
+        .proto-stage > video.is-on,
+        .proto-stage > .proto-scene.is-on {
+            opacity: 1;
+        }
+
+        .proto-stage > .proto-scene {
+            border-radius: 0;
+            aspect-ratio: auto;
+        }
+
+        .proto-stage > img.enter,
+        .proto-stage > video.enter {
+            z-index: 2;
+            animation: proto-move-in 0.3s ease-out both;
+        }
+
+        @keyframes proto-move-in {
+            from { transform: translateX(100%); }
+            to { transform: translateX(0); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .proto-stage > img.enter,
+            .proto-stage > video.enter {
+                animation: none;
+            }
+        }
+
+        .proto-strip {
+            padding: 0;
+            gap: 10px;
+        }
+
+        .proto-strip .phone-stage {
+            width: min(14%, 92px);
+            cursor: pointer;
+            opacity: 0.38;
+            transition: opacity 0.15s linear;
+        }
+
+        .proto-strip .phone-stage.is-current,
+        .proto-strip .phone-stage:hover {
+            opacity: 1;
+        }
+
+        .proto-hint {
+            font-size: 11px;
+            color: #fff;
+            opacity: 0.4;
+            margin: 0;
+        }
+
+        .encounter {
+            container-type: inline-size;
+            position: relative;
+            width: 100%;
+            aspect-ratio: 402 / 874;
+            border-radius: 28px;
+            overflow: hidden;
+            background: #000;
+        }
+
+        .encounter-home,
+        .encounter-backdrop,
+        .encounter-glow,
+        .encounter-head,
+        .encounter-pet,
+        .encounter-copy,
+        .encounter-sheet {
+            position: absolute;
+            pointer-events: none;
+            animation-duration: 5s;
+            animation-iteration-count: infinite;
+            animation-timing-function: linear;
+            animation-play-state: running;
+        }
+
+        .encounter-home {
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 0;
+            animation-name: encounter-home;
+        }
+
+        .encounter-backdrop {
+            inset: 0;
+            background: #000;
+            z-index: 1;
+            animation-name: encounter-backdrop;
+        }
+
+        .encounter-glow {
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 71.74%;
+            object-fit: fill;
+            z-index: 2;
+            animation-name: encounter-glow;
+        }
+
+        .encounter-head {
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 25.51%;
+            object-fit: fill;
+            z-index: 3;
+            animation-name: encounter-head;
+            animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+        }
+
+        .encounter-pet {
+            left: -22.64%;
+            top: 12.59%;
+            width: 145.27%;
+            height: 145.5%;
+            overflow: hidden;
+            z-index: 4;
+            animation-name: encounter-pet;
+            animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+        }
+
+        .encounter-pet img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: fill;
+        }
+
+        .encounter-copy {
+            left: 0;
+            top: 67.85%;
+            width: 100%;
+            z-index: 5;
+            text-align: center;
+            color: #fff;
+            font-family: 'Host Grotesk', 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: clamp(16px, 8cqi, 22px);
+            line-height: 1.2;
+            animation-name: encounter-copy;
+        }
+
+        .encounter-sheet {
+            left: 0;
+            right: 0;
+            top: calc(140 / 874 * 100%);
+            width: 100%;
+            height: calc(735 / 874 * 100%);
+            z-index: 6;
+            overflow: hidden;
+            padding: 0;
+            border-radius: 32px 32px 0 0;
+            background: #000;
+            animation-name: encounter-sheet;
+            animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+        }
+
+        .encounter-sheet-grab {
+            position: absolute;
+            left: calc(182 / 402 * 100%);
+            top: calc(16 / 735 * 100%);
+            width: calc(35 / 402 * 100%);
+            height: 4px;
+            border-radius: 2px;
+            background: rgba(255, 255, 255, 0.35);
+        }
+
+        .encounter-sheet-pet {
+            position: absolute;
+            left: calc(26 / 402 * 100%);
+            top: calc(71 / 735 * 100%);
+            width: calc(346 / 402 * 100%);
+            height: calc(276 / 735 * 100%);
+            object-fit: cover;
+            margin: 0;
+        }
+
+        .encounter-sheet-name {
+            position: absolute;
+            left: 0;
+            top: calc(367 / 735 * 100%);
+            width: 100%;
+            height: calc(80 / 735 * 100%);
+            margin: 0;
+            color: #fff;
+            font-family: 'Host Grotesk', 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: calc(60 / 402 * 100cqi);
+            line-height: calc(72 / 402 * 100cqi);
+            text-align: center;
+        }
+
+        .encounter-sheet-user {
+            position: absolute;
+            left: 0;
+            top: calc(447 / 735 * 100%);
+            width: 100%;
+            height: calc(36 / 735 * 100%);
+            margin: 0;
+            color: #fff;
+            font-size: calc(16 / 402 * 100cqi);
+            line-height: calc(21 / 402 * 100cqi);
+            text-align: center;
+            opacity: 0.9;
+        }
+
+        .encounter-sheet-cta {
+            position: absolute;
+            left: calc(12 / 402 * 100%);
+            top: calc(560 / 735 * 100%);
+            width: calc(374 / 402 * 100%);
+            height: calc(68 / 735 * 100%);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 49px;
+            text-align: center;
+            color: #181b25;
+            font-family: 'Host Grotesk', 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: calc(16 / 402 * 100cqi);
+            letter-spacing: -0.02em;
+            background: linear-gradient(90deg, #ff8d00, #f3e000);
+        }
+
+        .encounter-sheet-later {
+            position: absolute;
+            left: 0;
+            top: calc(638 / 735 * 100%);
+            width: 100%;
+            height: calc(40 / 735 * 100%);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: calc(14 / 402 * 100cqi);
+            line-height: calc(19 / 402 * 100cqi);
+            text-align: center;
+            text-decoration: underline;
+        }
+
+        @keyframes encounter-home {
+            0%, 24% { opacity: 1; }
+            30%, 62% { opacity: 0; }
+            72%, 100% { opacity: 1; }
+        }
+
+        @keyframes encounter-head {
+            0% { opacity: 0; transform: translateY(-74%); }
+            7% { opacity: 1; transform: translateY(-18%); }
+            20% { opacity: 1; transform: translateY(0); }
+            27%, 100% { opacity: 0; transform: translateY(0); }
+        }
+
+        @keyframes encounter-glow {
+            0% { opacity: 0; }
+            7%, 100% { opacity: 1; }
+        }
+
+        @keyframes encounter-backdrop {
+            0%, 24% { opacity: 0; }
+            30%, 64% { opacity: 1; }
+            72%, 100% { opacity: 0; }
+        }
+
+        @keyframes encounter-pet {
+            0%, 28% { opacity: 0; transform: translateY(28%); }
+            36% { opacity: 1; transform: translateY(8%); }
+            44%, 60% { opacity: 1; transform: translateY(0); }
+            66%, 100% { opacity: 0; transform: translateY(0); }
+        }
+
+        @keyframes encounter-copy {
+            0%, 32% { opacity: 0; }
+            40%, 60% { opacity: 1; }
+            66%, 100% { opacity: 0; }
+        }
+
+        @keyframes encounter-sheet {
+            0%, 64% { opacity: 0; transform: translateY(18%); }
+            72%, 100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .encounter:not(.is-live) > * {
+            animation: none;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .encounter > * {
+                animation: none !important;
+            }
+            .encounter-head,
+            .encounter-pet,
+            .encounter-copy,
+            .encounter-backdrop {
+                opacity: 0;
+            }
+            .encounter-home,
+            .encounter-glow,
+            .encounter-sheet {
+                opacity: 1;
+            }
+            .encounter-pet {
+                transform: none;
+            }
+        }
+
+        .report-block {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 18px;
+            padding: 8px 20px 32px;
+        }
+
+        .report {
+            container-type: inline-size;
+            position: relative;
+            width: min(42%, 280px);
+            aspect-ratio: 402 / 874;
+            border-radius: 28px;
+            overflow: hidden;
+            background: #000;
+        }
+
+        .report-home,
+        .report-intro,
+        .report-story {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            animation-duration: 7s;
+            animation-iteration-count: infinite;
+            animation-timing-function: linear;
+        }
+
+        .report-home,
+        .report-intro {
+            object-fit: cover;
+            z-index: 2;
+        }
+
+        .report-home {
+            animation-name: report-home;
+        }
+
+        .report-intro {
+            animation-name: report-intro;
+        }
+
+        .report-story {
+            z-index: 1;
+            animation-name: report-story;
+        }
+
+        .report-map {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .report-tag {
+            position: absolute;
+            width: auto;
+            height: auto;
+            max-width: none;
+            object-fit: contain;
+            pointer-events: none;
+            transform-origin: center;
+            background: none;
+            filter: none;
+            box-shadow: none;
+            mix-blend-mode: normal;
+            animation-duration: 7s;
+            animation-iteration-count: infinite;
+            animation-timing-function: linear;
+        }
+
+        .report-tag:nth-child(2) { left: 50.19%; top: -1.88%; width: 26.37%; --sx: -8.5cqi; --sy: -35.5cqi; --r0: 127.97deg; --r1: 81.97deg; --op: 1; animation-name: report-fall-a; }
+        .report-tag:nth-child(3) { left: 18.13%; top: -2.77%; width: 26.37%; --sx: 8.5cqi; --sy: -33.5cqi; --r0: -46deg; --r1: 0deg; --op: 1; animation-name: report-fall-a; }
+        .report-tag:nth-child(4) { left: 35.35%; top: 12.33%; width: 26.37%; --sx: -8.5cqi; --sy: -66.4cqi; --r0: 62.54deg; --r1: 16.54deg; --op: 1; animation-name: report-fall-b; }
+        .report-tag:nth-child(5) { left: 72.40%; top: 30.26%; width: 26.37%; --sx: 8.5cqi; --sy: -105.3cqi; --r0: -62.81deg; --r1: -16.81deg; --op: 1; animation-name: report-fall-b; }
+        .report-tag:nth-child(6) { left: 55.76%; top: 63.04%; width: 24.38%; --sx: -8.5cqi; --sy: -173.6cqi; --r0: 29.19deg; --r1: -16.81deg; --op: 1; animation-name: report-fall-c; }
+        .report-tag:nth-child(7) { left: 41.09%; top: 48.56%; width: 20.90%; --sx: 8.5cqi; --sy: -136.9cqi; --r0: -29.46deg; --r1: 16.54deg; --op: 1; animation-name: report-fall-c; }
+        .report-tag:nth-child(8) { left: 2.29%; top: 28.10%; width: 22.64%; --sx: -8.5cqi; --sy: -95.0cqi; --r0: 127.97deg; --r1: 81.97deg; --op: 1; animation-name: report-fall-b; }
+        .report-tag:nth-child(9) { left: 11.22%; top: 59.14%; width: 15.42%; --sx: 8.5cqi; --sy: -151.7cqi; --r0: 35.97deg; --r1: 81.97deg; --op: 1; animation-name: report-fall-c; }
+        .report-tag:nth-child(10) { left: 56.45%; top: 79.30%; width: 15.42%; --sx: -8.5cqi; --sy: -195.5cqi; --r0: 46.45deg; --r1: 0.45deg; --op: 1; animation-name: report-fall-d; }
+
+        @keyframes report-home {
+            0%, 16% { opacity: 1; }
+            20%, 100% { opacity: 0; }
+        }
+
+        @keyframes report-intro {
+            0%, 16% { opacity: 0; }
+            20%, 34% { opacity: 1; }
+            38%, 100% { opacity: 0; }
+        }
+
+        @keyframes report-story {
+            0%, 36% { opacity: 0; }
+            40%, 100% { opacity: 1; }
+        }
+
+        @keyframes report-fall-a {
+            0%, 40% { opacity: 0; transform: translate(var(--sx), var(--sy)) rotate(var(--r0)) scale(0.88); }
+            44% { opacity: calc(var(--op) * 0.24); transform: translate(calc(var(--sx) * 0.72), calc(var(--sy) * 0.55)) rotate(var(--r0)) scale(0.92); }
+            56% { opacity: var(--op); transform: translate(calc(var(--sx) * 0.06), 1.7cqi) rotate(var(--r1)) scale(1.015); }
+            60%, 100% { opacity: var(--op); transform: translate(0, 0) rotate(var(--r1)) scale(1); }
+        }
+
+        @keyframes report-fall-b {
+            0%, 43% { opacity: 0; transform: translate(var(--sx), var(--sy)) rotate(var(--r0)) scale(0.88); }
+            47% { opacity: calc(var(--op) * 0.24); transform: translate(calc(var(--sx) * 0.72), calc(var(--sy) * 0.55)) rotate(var(--r0)) scale(0.92); }
+            59% { opacity: var(--op); transform: translate(calc(var(--sx) * 0.06), 1.7cqi) rotate(var(--r1)) scale(1.015); }
+            63%, 100% { opacity: var(--op); transform: translate(0, 0) rotate(var(--r1)) scale(1); }
+        }
+
+        @keyframes report-fall-c {
+            0%, 47% { opacity: 0; transform: translate(var(--sx), var(--sy)) rotate(var(--r0)) scale(0.88); }
+            51% { opacity: calc(var(--op) * 0.24); transform: translate(calc(var(--sx) * 0.72), calc(var(--sy) * 0.55)) rotate(var(--r0)) scale(0.92); }
+            63% { opacity: var(--op); transform: translate(calc(var(--sx) * 0.06), 1.7cqi) rotate(var(--r1)) scale(1.015); }
+            67%, 100% { opacity: var(--op); transform: translate(0, 0) rotate(var(--r1)) scale(1); }
+        }
+
+        @keyframes report-fall-d {
+            0%, 50% { opacity: 0; transform: translate(var(--sx), var(--sy)) rotate(var(--r0)) scale(0.88); }
+            54% { opacity: calc(var(--op) * 0.24); transform: translate(calc(var(--sx) * 0.72), calc(var(--sy) * 0.55)) rotate(var(--r0)) scale(0.92); }
+            66% { opacity: var(--op); transform: translate(calc(var(--sx) * 0.06), 1.7cqi) rotate(var(--r1)) scale(1.015); }
+            70%, 100% { opacity: var(--op); transform: translate(0, 0) rotate(var(--r1)) scale(1); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .report-home,
+            .report-intro,
+            .report-story,
+            .report-tag {
+                animation: none;
+            }
+            .report-home,
+            .report-intro {
+                opacity: 0;
+            }
+            .report-story,
+            .report-tag {
+                opacity: 1;
+            }
+            .report-tag {
+                transform: rotate(var(--r1));
+            }
+        }
+
+        /* 隐藏侧边栏滚动条但保持功能 */
+        .sidebar::-webkit-scrollbar {
+            width: 0px;
+            background: transparent;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: transparent;
+        }
+
+        /* Firefox */
+        .sidebar {
+            scrollbar-width: none;
+        }
+
+        .bio {
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        .bio p {
+            font-size: 12px;
+            margin: 0;
+            line-height: 1.4;
+        }
+
+        .bio h1 {
+            position: relative;
+            display: inline-block;
+        }
+
+        .bio h1::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: calc(-0.15em + 3px);
+            height: 0.65em;
+            background: #00ff88;
+            z-index: -1;
+        }
+
+        .project-meta {
+            font-size: 11.2px;
+            margin: 12px 0 0 0;
+            line-height: 1.4;
+            color: #000;
+            opacity: 0.4;
+        }
+
+        .school-link {
+            text-decoration: underline;
+        }
+
+        .school-link:hover {
+            text-decoration: none;
+        }
+
+        .back-link {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #fff;
+            border: 1px solid #000;
+            padding: 8px 16px;
+            font-size: 10.4px;
+            z-index: 1001;
+            text-decoration: none;
+            color: #000;
+            transition: all 0.3s ease;
+            user-select: none;
+            border-radius: 0;
+            min-width: 120px;
+            text-align: center;
+        }
+
+        /* 绿色高亮效果 - 与主页按钮一致 */
+        .back-link::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 6px;
+            height: 0;
+            background: #00ff88;
+            z-index: -1;
+            transition: height 0.3s ease;
+        }
+
+        .back-link:hover::after {
+            height: 8px;
+        }
+
+        .back-link:hover {
+            color: #000;
+            background: #fff;
+            border-color: transparent;
+            text-decoration: none;
+        }
+
+        /* 项目导航按钮 */
+        .project-navigation {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-top: 40px;
+            padding: 0;
+            line-height: normal;
+        }
+
+        .project-nav-btn {
+            background: #fff;
+            border: 1px solid #000;
+            padding: 8px 16px;
+            font-size: 10.4px;
+            text-decoration: none;
+            color: #000;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .project-nav-btn::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 6px;
+            height: 0;
+            background: #00ff88;
+            z-index: -1;
+            transition: height 0.3s ease;
+        }
+
+        .project-nav-btn:hover::after {
+            height: 8px;
+        }
+
+        .project-nav-btn:hover {
+            color: #000;
+            background: #fff;
+            border-color: transparent;
+            text-decoration: none;
+        }
+
+        .project-nav-btn.disabled {
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                position: relative;
+                height: auto;
+                border-right: none;
+                border-bottom: 1px solid #000;
+            }
+
+            .content {
+                margin-left: 0;
+            }
+
+            .container {
+                flex-direction: column;
+            }
+
+            .bio p {
+                font-size: 11px;
+            }
+
+            .project-meta {
+                font-size: 11px;
+            }
+
+            .back-link {
+                position: relative;
+                top: auto;
+                right: auto;
+                margin-bottom: 16px;
+                display: inline-block;
+            }
+
+            .phone-row {
+                gap: 10px;
+                padding: 12px 10px 20px;
+            }
+
+            .app-copy {
+                padding: 28px 10px 0;
+            }
+
+            .note-grid {
+                gap: 16px;
+            }
+
+            .flow {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+
+            .flow li:not(:last-child)::after {
+                content: "↓";
+                right: auto;
+                left: 50%;
+                top: auto;
+                bottom: -21px;
+                transform: translateX(-50%);
+            }
+
+            .flow-meta {
+                margin-bottom: 4px;
+            }
+
+            .flow-track {
+                display: none;
+            }
+
+            .spines {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .phone-stage {
+                width: 31%;
+            }
+
+            .phone-row {
+                flex-wrap: wrap;
+            }
+
+            .phone-frame,
+            .proto-stage {
+                border-radius: 16px;
+            }
+
+            .proto-phone {
+                width: 48%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .sidebar {
+                padding: 12px;
+            }
+
+            .content {
+                padding: 12px;
+            }
+
+            .bio p {
+                font-size: 10px;
+            }
+
+            .project-meta {
+                font-size: 10px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .sidebar {
+                padding: 8px;
+            }
+
+            .content {
+                padding: 8px;
+            }
+
+            .bio p {
+                font-size: 9px;
+            }
+        }
+    </style>
+    <script src="../../no-copy.js"></script>
+</head>
+<body>
+    <a href="../../index.html" class="back-link">Back to Main</a>
+    
+    <div class="container">
+        <aside class="sidebar">
+            <div class="bio">
+                <h1>Blinkko</h1>
+                <p>Founding product designer for Blinkko, a shoulder-worn social AI companion (hardware + App). Led the App information architecture and UI system that shipped: four tabs (Explore, Home, Friends, Profile), free-app onboarding, City Explore, remote Glow, and hardware overlays for light, volume, bump, and wardrobe.</p>
+                <br>
+                <p class="project-meta">UI, Product / 2026</p>
+            </div>
+        </aside>
+
+        <main class="content">
+            <!-- 项目内容区域 -->
+            <div class="project-images" style="padding: 40px 0;">
+                <video src="product-demo.mp4" alt="Blinkko product demo" style="width: 100%; display: block; margin: 0; padding: 0;" autoplay loop muted playsinline></video>
+
+                <div class="note">
+                    <p class="kicker">Opportunity</p>
+                    <p>Blinkko is a shoulder-worn social AI companion — hardware plus App — for urban young people. The product should turn going out into exploring the city, making a connection, and showing who you are.</p>
+                    <p>I joined as founding product designer in June 2026, owning software design with the software team: user research, product strategy, information architecture, the UI system, interaction, and getting the App onto the hardware for the September launch.</p>
+                    <div class="note-grid">
+                        <div>
+                            <strong>The problem</strong>
+                            <span>Functions were scattered. Opening the App felt like configuring a device, not meeting a companion you wear in public.</span>
+                        </div>
+                        <div>
+                            <strong>The job</strong>
+                            <span>Rebuild the App around real use: home as the hub, five daily spines, 96 touchpoints, software and hardware in one loop.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <video src="hero.mp4" alt="Blinkko character" style="width: 100%; display: block; margin: 0; padding: 0;" autoplay loop muted playsinline></video>
+                <img src="shoulder.jpg" alt="Blinkko on the shoulder" style="width: 100%; display: block; margin: 0; padding: 0;">
+                <img src="render.jpg" alt="Blinkko product render" style="width: 100%; display: block; margin: 0; padding: 0;">
+                <div class="pair">
+                    <img src="night.jpg" alt="Blinkko at night">
+                    <img src="beach.jpg" alt="Blinkko at the beach">
+                </div>
+
+                <div class="note">
+                    <p class="kicker">Insight</p>
+                    <p>If other people can read the glow and the touch, the opening stays low-risk — so you keep wearing it, and it keeps sensing. Wear, sense, understand, respond: a visible companion on the shoulder; light, proximity, and motion; place, people, and events; then light, haptics, and the tail.</p>
+                    <p>Research with Gen Z pushed the interface toward large, bold, spoken type — “sup, kai” instead of settings-speak. The first session should introduce a companion, not configure a device. Dark UI keeps color, light, and Glow as the focus, echoing the physical body.</p>
+                </div>
+
+                <div class="note">
+                    <p class="kicker">System</p>
+                    <p>From information architecture to a shared component library. After I took over, I folded scattered functions into five spines and a shared component set. The shipped App is four tabs — Explore, Home, Friends, Profile — with a short shift-and-fade between them on black. Home is the hub: Urbanist greeting, HEVC wardrobe pet, and a control menu for light, volume, closet, and tasks. Explore is the City Explore map (posts, events, check-in, field adventure). Friends is chats plus Send Glow and hardware Bump. Profile holds account and optional device settings. Hardware is optional: no ownership gate on software; light, bump, and three-tap check-in appear when a session is live.</p>
+                </div>
+
+                <div class="note" id="ia-workflow">
+                    <p class="kicker">Workflow</p>
+                    <p>Design shipped along this path. Skill generated UI on the design system; I took over for flow, then pixels.</p>
+                    <ol class="flow">
+                        <li>
+                            <span class="flow-meta"><b>01</b><i>Input</i></span>
+                            <strong>PRD lands</strong>
+                            <span>From product, marketing, or engineering.</span>
+                        </li>
+                        <li class="is-on">
+                            <span class="flow-meta"><b>02</b><i>Skill</i></span>
+                            <strong>Skill ships UI</strong>
+                            <span>PRD → frontend, built on the design system.</span>
+                        </li>
+                        <li>
+                            <span class="flow-meta"><b>03</b><i>Anyone</i></span>
+                            <strong>Spec-aligned layout</strong>
+                            <span>Generate as needed; anyone can produce it.</span>
+                        </li>
+                        <li>
+                            <span class="flow-meta"><b>04</b><i>Me</i></span>
+                            <strong>Designer takes over</strong>
+                            <span>Flow first, then pixels.</span>
+                        </li>
+                        <li>
+                            <span class="flow-meta"><b>05</b><i>Ship</i></span>
+                            <strong>Launch</strong>
+                            <span>Missing screens filled on the launch cadence.</span>
+                        </li>
+                    </ol>
+                    <div class="flow-track" aria-hidden="true"><span class="flow-fill"></span><i class="flow-runner">PRD</i></div>
+                    <div class="flow-tools">
+                        <span>Tools used</span>
+                        <span class="pill">Claude Code</span>
+                        <span class="pill">Claude Cowork</span>
+                        <span class="pill">Figma MCP</span>
+                        <span class="pill">Lovart</span>
+                        <span class="pill">Codex</span>
+                    </div>
+                </div>
+
+                <div class="note">
+                    <p class="kicker">Principles</p>
+                    <div class="note-grid">
+                        <div>
+                            <strong>01 · Type is the interface</strong>
+                            <span>Large, bold, spoken lowercase (“sup, kai”). That came from looking at how Gen Z actually talks — the type is the UI, not decoration on top of it.</span>
+                        </div>
+                        <div>
+                            <strong>02 · Dark base, light as signal</strong>
+                            <span>Dark UI lets the character, lights, and Glow take focus, echoing the companion on the shoulder.</span>
+                        </div>
+                        <div>
+                            <strong>03 · State stays in sync</strong>
+                            <span>Light, volume, bump, and Send Glow have a place in the UI because they exist on the hardware. Tap Glow, and the other person’s tail lights up.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="note" id="ia-map">
+                    <p class="kicker">Information architecture</p>
+                    <p>Home as the hub for five spines. Start → Onboarding → Home hub, then Homepage, Friend loop, City Explore, Pet growth, and Settings.</p>
+                    <div class="spines">
+                        <div class="spine">
+                            <p class="spine-head"><b>02</b>Homepage</p>
+                            <ul>
+                                <li>Device status</li>
+                                <li>Quick controls</li>
+                                <li>Primary nav<span class="spine-opts"><i>Places</i><i>Blinkko</i><i>Friends</i><i>Profile</i></span></li>
+                                <li>Profile entry</li>
+                            </ul>
+                        </div>
+                        <div class="spine">
+                            <p class="spine-head"><b>03</b>Friend loop</p>
+                            <ul>
+                                <li>Find people</li>
+                                <li>Bump</li>
+                                <li>Chat + share</li>
+                                <li>Plan an event<span class="spine-opts"><i>Accept</i><i>Decline</i><i>Expired</i></span></li>
+                                <li>Relationship history</li>
+                            </ul>
+                        </div>
+                        <div class="spine">
+                            <p class="spine-head"><b>04</b>City Explore</p>
+                            <ul>
+                                <li>Map + search</li>
+                                <li>Place detail</li>
+                                <li>Create Glow<span class="spine-opts"><i>Publish</i><i>Save draft</i></span></li>
+                                <li>Events<span class="spine-opts"><i>Browse</i><i>Host</i><i>Join</i></span></li>
+                                <li>Navigate + check in</li>
+                            </ul>
+                        </div>
+                        <div class="spine">
+                            <p class="spine-head"><b>05</b>Pet growth</p>
+                            <ul>
+                                <li>Care + feedback</li>
+                                <li>Light + volume</li>
+                                <li>Virtual wardrobe</li>
+                                <li>Earn + unlock<span class="spine-opts"><i>Lumi</i><i>Items</i><i>New outfit</i></span></li>
+                                <li>Monthly report<span class="spine-opts"><i>Review</i><i>Share</i><i>Save</i></span></li>
+                            </ul>
+                        </div>
+                        <div class="spine">
+                            <p class="spine-head"><b>—</b>Settings</p>
+                            <ul>
+                                <li>Edit profile</li>
+                                <li>Blinkko devices</li>
+                                <li>Notifications</li>
+                                <li>Privacy + safety</li>
+                                <li>Account + help</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <img src="sys-ia-map.png" alt="Blinkko information architecture: Start to Onboarding to Home hub, then five spines" style="width: 100%; display: block; margin: 0; padding: 0;">
+
+                <div class="note" id="ds-lib">
+                    <p class="kicker">UI component library</p>
+                    <p>The shared library in the file is four groups — foundations &amp; Glow, controls &amp; navigation, cards &amp; feedback, social &amp; companion. Shown here in the order the system is built: Type → Character → Core UI → Cards → Home → Place → Friends. Used across onboarding, Home, Friends, Explore, and Glow.</p>
+                </div>
+                <div class="note note-sub">
+                    <p class="kicker">Type</p>
+                    <p>DM Sans for UI copy. Host Grotesk for spoken headlines.</p>
+                </div>
+                <img src="ds-type.png" alt="Blinkko type: DM Sans and Host Grotesk" style="width: 100%; display: block; margin: 0; padding: 0;">
+                <div class="note note-sub">
+                    <p class="kicker">Character</p>
+                    <p>Pet states on Home, plus intimacy from friend profiles.</p>
+                </div>
+                <img src="ds-character.png" alt="Blinkko character states and intimacy" style="width: 100%; display: block; margin: 0; padding: 0;">
+                <div class="note note-sub">
+                    <p class="kicker">Core UI</p>
+                    <p>Buttons, hardware controls, tabs, and Glow marks from the live variant set.</p>
+                </div>
+                <img src="ds-core.png" alt="Blinkko core UI variants: buttons, hardware, tabs, glow marks" style="width: 100%; display: block; margin: 0; padding: 0;">
+                <div class="note note-sub">
+                    <p class="kicker">Cards</p>
+                    <p>Event cards and namecards — default, waiting, accept.</p>
+                </div>
+                <img src="ds-cards.png" alt="Blinkko event cards and namecards" style="width: 100%; display: block; margin: 0; padding: 0;">
+                <div class="note note-sub">
+                    <p class="kicker">Home</p>
+                    <p>Daily tasks, Glow list, search, and settings rows.</p>
+                </div>
+                <img src="ds-home.png" alt="Blinkko home modules: daily tasks, glow list, settings" style="width: 100%; display: block; margin: 0; padding: 0;">
+                <div class="note note-sub">
+                    <p class="kicker">Place</p>
+                    <p>Location, Glow edit, and map sheets.</p>
+                </div>
+                <img src="ds-place.png" alt="Blinkko place and map sheets" style="width: 100%; display: block; margin: 0; padding: 0;">
+                <div class="note note-sub">
+                    <p class="kicker">Friends</p>
+                    <p>Bump sheet, invite, friend cards, and popovers.</p>
+                </div>
+                <img src="ds-social.png" alt="Blinkko friend, bump, and invite modules" style="width: 100%; display: block; margin: 0; padding: 0;">
+
+                <div class="note">
+                    <p class="kicker">Five loops</p>
+                    <p>Onboarding, Homepage, Friend loop, City Explore, Pet growth — in that order. Screens below are the landed UI, autoplaying; tap to step.</p>
+                </div>
+
+                <div class="app-stage" id="app-ui">
+                    <div class="app-copy">
+                        <p class="kicker">Onboarding</p>
+                        <p>Welcome: “a light born from what you feel…” then let’s go. Sign-in is Apple / Google first; avatar and username finish the free-app path. Quiz and permission stacks are no longer required.</p>
+                    </div>
+                    <div class="proto" data-first="move-in">
+                        <button class="proto-phone" type="button" aria-label="Step onboarding prototype">
+                            <span class="proto-stage">
+                                <img class="is-on" src="app-welcome.png" alt="Blinkko welcome">
+                                <img src="app-signin.png" alt="Blinkko sign in">
+                            </span>
+                        </button>
+                        <p class="proto-hint">Welcome → sign in</p>
+                        <div class="phone-row proto-strip">
+                            <div class="phone-stage is-current"><div class="phone-frame"><img src="app-welcome.png" alt=""></div></div>
+                            <div class="phone-stage"><div class="phone-frame"><img src="app-signin.png" alt=""></div></div>
+                        </div>
+                    </div>
+
+                    <div class="app-copy">
+                        <p class="kicker">Homepage</p>
+                        <p>Hallway greetings from the App — “sup, kai”, “yo, kai”. Light and volume open as overlays on that same character, not separate settings pages.</p>
+                    </div>
+                    <div class="proto">
+                        <button class="proto-phone" type="button" aria-label="Step home prototype">
+                            <span class="proto-stage">
+                                <img class="is-on" src="ui-home-v3.png" alt="Blinkko home">
+                                <img src="ui-lights.png" alt="Blinkko lights">
+                                <img src="ui-volume.png" alt="Blinkko volume">
+                            </span>
+                        </button>
+                        <p class="proto-hint">Home → light overlay → volume overlay</p>
+                        <div class="phone-row proto-strip">
+                            <div class="phone-stage is-current"><div class="phone-frame"><img src="ui-home-v3.png" alt=""></div></div>
+                            <div class="phone-stage"><div class="phone-frame"><img src="ui-lights.png" alt=""></div></div>
+                            <div class="phone-stage"><div class="phone-frame"><img src="ui-volume.png" alt=""></div></div>
+                        </div>
+                    </div>
+
+                    <div class="app-copy">
+                        <p class="kicker">Friend loop</p>
+                        <p>Chats, Send Glow, then hardware Bump: two devices meet, “a new encounter,” then the contact sheet.</p>
+                    </div>
+                    <div class="proto">
+                        <button class="proto-phone" type="button" aria-label="Step friends prototype">
+                            <span class="proto-stage">
+                                <img class="is-on" src="app-friends.png" alt="Blinkko chats">
+                                <img src="ui-glow.png" alt="Blinkko send glow">
+                                <div class="encounter proto-scene" data-dwell="5200" aria-label="Bump to connect, a new encounter">
+                                <img class="encounter-home" src="ui-home.png" alt="">
+                                <div class="encounter-backdrop"></div>
+                                <img class="encounter-glow" src="app-bump-glow.png" alt="">
+                                <img class="encounter-head" src="app-bump-head.png" alt="">
+                                <div class="encounter-pet"><img src="app-bump-pet.gif" alt=""></div>
+                                <p class="encounter-copy">a new encounter.</p>
+                                <div class="encounter-sheet">
+                                    <span class="encounter-sheet-grab"></span>
+                                    <img class="encounter-sheet-pet" src="app-bump-sheet-pet.png" alt="">
+                                    <p class="encounter-sheet-name">taco</p>
+                                    <p class="encounter-sheet-user">kai ›</p>
+                                    <p class="encounter-sheet-cta">chat now !</p>
+                                    <p class="encounter-sheet-later">maybe later</p>
+                                </div>
+                                </div>
+                            </span>
+                        </button>
+                        <p class="proto-hint">Chats → Send Glow → Bump</p>
+                        <div class="phone-row proto-strip">
+                            <div class="phone-stage is-current"><div class="phone-frame"><img src="app-friends.png" alt=""></div></div>
+                            <div class="phone-stage"><div class="phone-frame"><img src="ui-glow.png" alt=""></div></div>
+                            <div class="phone-stage"><div class="phone-frame"><img src="ui-bump.png" alt=""></div></div>
+                        </div>
+                    </div>
+
+                    <div class="app-copy">
+                        <p class="kicker">City Explore</p>
+                        <p>The map tab: discovery, events in town, Glow create, posts, and phone check-in. Field adventure and fog sit on the same map, not a second app.</p>
+                    </div>
+                    <div class="proto">
+                        <button class="proto-phone" type="button" aria-label="Step city prototype">
+                            <span class="proto-stage">
+                                <img class="is-on" src="app-map.png" alt="Blinkko city map">
+                                <img src="app-events.png" alt="Blinkko events in town">
+                                <img src="app-glow-create.png" alt="Blinkko create glow">
+                            </span>
+                        </button>
+                        <p class="proto-hint">Map → events → create Glow</p>
+                        <div class="phone-row proto-strip">
+                            <div class="phone-stage is-current"><div class="phone-frame"><img src="app-map.png" alt=""></div></div>
+                            <div class="phone-stage"><div class="phone-frame"><img src="app-events.png" alt=""></div></div>
+                            <div class="phone-stage"><div class="phone-frame"><img src="app-glow-create.png" alt=""></div></div>
+                        </div>
+                    </div>
+
+                    <div class="app-copy">
+                        <p class="kicker">Pet growth</p>
+                        <p>The companion grows in the App: Lumi shop for outfits, then the monthly recap. Preview, spend, confirm, owned — then tags drop onto the city.</p>
+                    </div>
+                    <div class="proto">
+                        <button class="proto-phone" type="button" aria-label="Step closet prototype">
+                            <span class="proto-stage">
+                                <img class="is-on" src="app-closet-shop.png" alt="Closet shop, not owned">
+                                <img src="app-closet-purchase.png" alt="Purchase confirm">
+                                <img src="app-closet-owned.png" alt="Closet, owned">
+                            </span>
+                        </button>
+                        <p class="proto-hint">Shop → purchase → owned</p>
+                        <div class="phone-row proto-strip">
+                            <div class="phone-stage is-current"><div class="phone-frame"><img src="app-closet-shop.png" alt=""></div></div>
+                            <div class="phone-stage"><div class="phone-frame"><img src="app-closet-purchase.png" alt=""></div></div>
+                            <div class="phone-stage"><div class="phone-frame"><img src="app-closet-owned.png" alt=""></div></div>
+                        </div>
+                    </div>
+                    <div class="phone-row">
+                        <div class="phone-stage" style="width: min(31%, 260px);">
+                            <div class="phone-frame">
+                                <video src="app-wardrobe.mp4" autoplay loop muted playsinline></video>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="report-block">
+                        <div class="report is-live" aria-label="Monthly report, location tags drop onto the city">
+                            <img class="report-home" src="ui-home.png" alt="">
+                            <img class="report-intro" src="app-report-intro.png" alt="">
+                            <div class="report-story">
+                                <img class="report-map" src="report-base.png" alt="">
+                                <img class="report-tag" src="report-burger.png" alt="">
+                                <img class="report-tag" src="report-burger.png" alt="">
+                                <img class="report-tag" src="report-burger.png" alt="">
+                                <img class="report-tag" src="report-burger.png" alt="">
+                                <img class="report-tag" src="report-burger.png" alt="">
+                                <img class="report-tag" src="report-burger.png" alt="">
+                                <img class="report-tag" src="report-burger.png" alt="">
+                                <img class="report-tag" src="report-burger.png" alt="">
+                                <img class="report-tag" src="report-burger.png" alt="">
+                            </div>
+                        </div>
+                        <p class="proto-hint">Report intro → tags drop in</p>
+                        <div class="phone-row proto-strip">
+                            <div class="phone-stage is-current"><div class="phone-frame"><img src="app-report-intro.png" alt=""></div></div>
+                            <div class="phone-stage"><div class="phone-frame"><img src="ui-monthly.png" alt=""></div></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="note">
+                    <p class="kicker">Launch</p>
+                    <p>After software was ready I went back to the US with the team for the September 2026 launch, demoing on-site so people could try the App and the creature on the shoulder together. Plenty wanted to wear it and change the light; fewer knew what to play yet — early content still depends on users. After launch I kept a solo-game exploration toward MVP, and still sit with hardware, marketing, and engineering on demand, schedule, and sign-off.</p>
+                    <p>Hardware owns form, sensing, battery, and the light module — a stable input and output. Software translates that limit into what the shoulder and the App each do. Engineering keeps bump, battery, and light state the same thing on both ends.</p>
+                    <div class="note-grid">
+                        <div>
+                            <strong>1,900+</strong>
+                            <span>Waitlist signups</span>
+                        </div>
+                        <div>
+                            <strong>658</strong>
+                            <span>San Francisco launch RSVPs</span>
+                        </div>
+                        <div>
+                            <strong>7.6%</strong>
+                            <span>Meta ad CTR</span>
+                        </div>
+                        <div>
+                            <strong>$0.30</strong>
+                            <span>Cost per click · as of 2026.09.05</span>
+                        </div>
+                    </div>
+                </div>
+
+                <img src="team-photo.jpg" alt="Blinkko team" style="width: 100%; display: block; margin: 0; padding: 0;">
+
+                <div style="width: 100%; margin: 28px 0 0 0; padding: 0;">
+                    <a href="https://www.blinkko.co/" target="_blank" rel="noopener noreferrer" style="font-size: 12px; color: #000; text-decoration: underline;">Visit Site</a>
+                </div>
+                <div class="project-navigation">
+                    <a href="#" class="project-nav-btn" id="prev-project">← Previous</a>
+                    <a href="#" class="project-nav-btn" id="next-project">Next →</a>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // 页面加载时的进入动画
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebar = document.querySelector('.sidebar');
+            const imageElements = document.querySelectorAll('.project-images > img, .project-images > video, .project-images > div');
+            
+            const skipStagger = location.hash === '#app-ui' || location.hash === '#ds-lib' || location.hash === '#ia-workflow' || location.hash === '#ia-map';
+            setTimeout(() => {
+                sidebar.classList.add('show');
+                imageElements.forEach((element, index) => {
+                    if (skipStagger) {
+                        element.classList.add('show');
+                        return;
+                    }
+                    setTimeout(() => {
+                        element.classList.add('show');
+                    }, 200 + (Math.min(index, 8) * 120));
+                });
+                if (skipStagger) {
+                    const target = document.getElementById(location.hash.slice(1));
+                    if (target) target.scrollIntoView();
+                }
+            }, 100);
+
+            document.querySelectorAll('video').forEach(function(video) {
+                video.muted = true;
+                video.playsInline = true;
+                const play = function() { video.play().catch(function() {}); };
+                play();
+                video.addEventListener('canplay', play);
+            });
+
+            const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            document.querySelectorAll('.proto').forEach(function(proto, protoIndex) {
+                const frames = Array.from(proto.querySelectorAll('.proto-stage > img, .proto-stage > video, .proto-stage > .proto-scene'));
+                const thumbs = Array.from(proto.querySelectorAll('.proto-strip .phone-stage'));
+                const stage = proto.querySelector('.proto-stage');
+                const phone = proto.querySelector('.proto-phone');
+                if (frames.length < 2 || !stage || !phone) return;
+
+                let idx = frames.findIndex(function(img) { return img.classList.contains('is-on'); });
+                if (idx < 0) idx = 0;
+                let paused = false;
+                let timer = null;
+                const dwell = 1600 + (protoIndex % 3) * 120;
+
+                function show(next) {
+                    if (next === idx) return;
+                    const from = idx;
+                    idx = (next + frames.length) % frames.length;
+                    const useMoveIn = proto.dataset.first === 'move-in' && from === 0 && idx === 1;
+                    frames.forEach(function(img, i) {
+                        img.classList.toggle('is-on', i === idx || (useMoveIn && i === from));
+                        img.classList.toggle('enter', useMoveIn && i === idx);
+                        if (img.classList.contains('encounter')) {
+                            img.classList.remove('is-live');
+                            if (i === idx) {
+                                void img.offsetWidth;
+                                img.classList.add('is-live');
+                            }
+                        }
+                    });
+                    thumbs.forEach(function(thumb, i) {
+                        thumb.classList.toggle('is-current', i === idx);
+                    });
+                    if (useMoveIn) {
+                        const enter = frames[idx];
+                        const leave = frames[from];
+                        enter.addEventListener('animationend', function() {
+                            enter.classList.remove('enter');
+                            leave.classList.remove('is-on');
+                        }, { once: true });
+                    }
+                }
+
+                function stop() {
+                    if (timer) {
+                        clearTimeout(timer);
+                        timer = null;
+                    }
+                }
+
+                function tick() {
+                    stop();
+                    if (reduceMotion || paused || document.hidden) return;
+                    timer = setTimeout(function() {
+                        show(idx + 1);
+                        tick();
+                    }, Number(frames[idx].dataset.dwell) || dwell);
+                }
+
+                phone.addEventListener('click', function() {
+                    show(idx + 1);
+                    tick();
+                });
+                thumbs.forEach(function(thumb, i) {
+                    thumb.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        show(i);
+                        tick();
+                    });
+                });
+                if (reduceMotion) return;
+
+                tick();
+                document.addEventListener('visibilitychange', function() {
+                    if (document.hidden) stop();
+                    else tick();
+                });
+            });
+        });
+
+        // 返回主页时的退出动画
+        document.querySelector('.back-link').addEventListener('click', function(e) {
+            e.preventDefault();
+            const sidebar = document.querySelector('.sidebar');
+            const imageElements = document.querySelectorAll('.project-images > img, .project-images > video, .project-images > div');
+            
+            // 图片依次退出
+            imageElements.forEach((element, index) => {
+                setTimeout(() => {
+                    element.classList.remove('show');
+                }, index * 50);
+            });
+            
+            // 侧边栏稍后退出
+            setTimeout(() => {
+                sidebar.classList.remove('show');
+            }, 200);
+            
+            // 等待动画完成后跳转
+            setTimeout(() => {
+                window.location.href = this.href;
+            }, 800);
+        });
+
+        // 项目导航功能
+        (function() {
+            const projects = [
+                '../new-project/index.html', // 01 New Project
+                '../new-project-2/index.html', // 02 New Project 2
+                '../prototype/index.html', // 03 Prototype Festival
+                '../clostra-son-jon-mustair/index.html', // 02 Clostra Son Jon Müstair
+                '../symposium-2025/index.html', // 03 Symposium
+                '../greentopia/index.html', // 04 Greentopia
+                '../lumimoria/index.html', // 05 Lumimoria
+                '../the-little-food-book/index.html', // 06 The Little Food Book
+                '../sewing-machine/index.html'   // 07 sewing machine
+            ];
+
+            // 从当前URL获取项目编号
+            const currentPath = window.location.pathname;
+            const currentProjectIndex = projects.findIndex(p => currentPath.includes('/' + p.split('/')[1] + '/'));
+
+            const prevBtn = document.getElementById('prev-project');
+            const nextBtn = document.getElementById('next-project');
+
+            // 设置上一个项目按钮
+            if (currentProjectIndex > 0) {
+                prevBtn.href = projects[currentProjectIndex - 1];
+                prevBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const sidebar = document.querySelector('.sidebar');
+                    const imageElements = document.querySelectorAll('.project-images > img, .project-images > video, .project-images > div');
+                    imageElements.forEach((element, index) => {
+                        setTimeout(() => {
+                            element.classList.remove('show');
+                        }, index * 50);
+                    });
+                    setTimeout(() => {
+                        sidebar.classList.remove('show');
+                    }, 200);
+                    setTimeout(() => {
+                        window.location.href = this.href;
+                    }, 800);
+                });
+            } else {
+                prevBtn.classList.add('disabled');
+                prevBtn.href = '#';
+            }
+
+            // 设置下一个项目按钮
+            if (currentProjectIndex < projects.length - 1) {
+                nextBtn.href = projects[currentProjectIndex + 1];
+                nextBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const sidebar = document.querySelector('.sidebar');
+                    const imageElements = document.querySelectorAll('.project-images > img, .project-images > video, .project-images > div');
+                    imageElements.forEach((element, index) => {
+                        setTimeout(() => {
+                            element.classList.remove('show');
+                        }, index * 50);
+                    });
+                    setTimeout(() => {
+                        sidebar.classList.remove('show');
+                    }, 200);
+                    setTimeout(() => {
+                        window.location.href = this.href;
+                    }, 800);
+                });
+            } else {
+                nextBtn.classList.add('disabled');
+                nextBtn.href = '#';
+            }
+        })();
+
+        (function () {
+            const flow = document.querySelector('.flow');
+            if (!flow) return;
+            const steps = Array.from(flow.children);
+            const track = flow.parentElement.querySelector('.flow-track');
+            const fill = track && track.querySelector('.flow-fill');
+            const runner = track && track.querySelector('.flow-runner');
+            const labels = ['PRD', 'UI', 'Layout', 'Pixels', 'Live'];
+            const light = (i) => {
+                steps.forEach((step, k) => {
+                    step.classList.toggle('is-on', k === i);
+                    step.classList.toggle('is-done', k < i);
+                });
+            };
+            const moveTo = (i, animate) => {
+                if (!runner || !track.offsetWidth) return;
+                const box = steps[i].getBoundingClientRect();
+                const cx = box.left + box.width / 2 - track.getBoundingClientRect().left;
+                runner.style.transition = animate ? '' : 'none';
+                fill.style.transition = animate ? '' : 'none';
+                runner.style.transform = 'translate(calc(' + cx + 'px - 50%), -50%)';
+                fill.style.width = cx + 'px';
+                if (!animate) {
+                    runner.offsetWidth;
+                    runner.style.transition = '';
+                    fill.style.transition = '';
+                }
+            };
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                light(1);
+                if (runner) {
+                    runner.textContent = labels[1];
+                    runner.classList.add('is-live');
+                    moveTo(1, false);
+                }
+                return;
+            }
+            const run = (i) => {
+                moveTo(i, i > 0);
+                if (i === 0 && runner) {
+                    runner.textContent = labels[0];
+                    light(-1);
+                    requestAnimationFrame(() => runner.classList.add('is-live'));
+                }
+                setTimeout(() => {
+                    light(i);
+                    if (runner) runner.textContent = labels[i];
+                    const last = i === steps.length - 1;
+                    setTimeout(() => {
+                        if (!last) return run(i + 1);
+                        if (runner) runner.classList.remove('is-live');
+                        setTimeout(() => run(0), 400);
+                    }, last ? 2200 : 700);
+                }, i > 0 ? 1000 : 300);
+            };
+            light(-1);
+            const io = new IntersectionObserver((entries) => {
+                if (!entries.some((e) => e.isIntersecting)) return;
+                io.disconnect();
+                run(0);
+            }, { threshold: 0.4 });
+            io.observe(flow);
+        })();
+    </script>
+</body>
+</html>

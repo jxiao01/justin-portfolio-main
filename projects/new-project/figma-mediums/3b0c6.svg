@@ -1,0 +1,9 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="54.3787" height="31.3955" viewBox="0 0 54.3787 31.3955" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Stud Base">
+<ellipse cx="27.1893" cy="15.6978" rx="27.1893" ry="15.6978" fill="white"/>
+<mask id="stroke0_0_124" fill="white">
+<path d="M54.3787 15.6978C54.3787 24.3674 42.2056 31.3955 27.1893 31.3955C12.1731 31.3955 0 24.3674 0 15.6978C0 7.02813 12.1731 0 27.1893 0C42.2056 0 54.3787 7.02813 54.3787 15.6978Z"/>
+</mask>
+<ellipse cx="27.1893" cy="15.6978" rx="27.1893" ry="15.6978" stroke-width="2" stroke="#222222" mask="url(#stroke0_0_124)"/>
+</g>
+</svg>

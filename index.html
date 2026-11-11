@@ -512,6 +512,9 @@
         body.collapsed .project-item:nth-child(8) { animation-delay: 0.4s; }
         body.collapsed .project-item:nth-child(9) { animation-delay: 0.45s; }
         body.collapsed .project-item:nth-child(10) { animation-delay: 0.5s; }
+        body.collapsed .project-item:nth-child(11) { animation-delay: 0.55s; }
+        body.collapsed .project-item:nth-child(12) { animation-delay: 0.6s; }
+        body.collapsed .project-item:nth-child(13) { animation-delay: 0.65s; }
 
         @keyframes fadeInUp {
             from {
@@ -1467,6 +1470,7 @@
             border-color: transparent;
         }
     </style>
+    <script src="no-copy.js"></script>
 </head>
 <body>
     <div class="view-toggle-btn back-to-auto" id="back-to-auto">Back to Main</div>
@@ -1520,25 +1524,31 @@
             <nav class="project-list">
                 <ol>
                     <li>
-                        <span class="project-number">01</span> <a href="projects/prototype/index.html">Prototype Festival</a>
+                        <span class="project-number">01</span> <a href="projects/new-project/index.html">TOY R US</a>
                     </li>
                     <li>
-                        <span class="project-number">02</span> <a href="projects/clostra-son-jon-mustair/index.html">Clostra Son Jon Müstair</a>
+                        <span class="project-number">02</span> <a href="projects/new-project-2/index.html">Blinkko</a>
                     </li>
                     <li>
-                        <span class="project-number">03</span> <a href="projects/symposium-2025/index.html">Symposium 2025</a>
+                        <span class="project-number">03</span> <a href="projects/prototype/index.html">Prototype Festival</a>
                     </li>
                     <li>
-                        <span class="project-number">04</span> <a href="projects/greentopia/index.html">Greentopia</a>
+                        <span class="project-number">04</span> <a href="projects/clostra-son-jon-mustair/index.html">Clostra Son Jon Müstair</a>
                     </li>
                     <li>
-                        <span class="project-number">05</span> <a href="projects/lumimoria/index.html">Lumimoria</a>
+                        <span class="project-number">05</span> <a href="projects/symposium-2025/index.html">Symposium 2025</a>
                     </li>
                     <li>
-                        <span class="project-number">06</span> <a href="projects/the-little-food-book/index.html">The Little Food Book</a>
+                        <span class="project-number">06</span> <a href="projects/greentopia/index.html">Greentopia</a>
                     </li>
                     <li>
-                        <span class="project-number">07</span> <a href="projects/sewing-machine/index.html">......sewing machine???</a>
+                        <span class="project-number">07</span> <a href="projects/lumimoria/index.html">Lumimoria</a>
+                    </li>
+                    <li>
+                        <span class="project-number">08</span> <a href="projects/the-little-food-book/index.html">The Little Food Book</a>
+                    </li>
+                    <li>
+                        <span class="project-number">09</span> <a href="projects/sewing-machine/index.html">......sewing machine???</a>
                     </li>
                 </ol>
             </nav>
@@ -1548,6 +1558,8 @@
             <div class="project-preview-wrapper" id="project-preview-wrapper">
             <div class="project-preview" id="project-preview">
                 <div class="project-carousel">
+                        <img src="projects/new-project/book.png" alt="TOY R US" class="project-image">
+                        <img src="projects/new-project-2/cover.jpg" alt="Blinkko" class="project-image">
                         <img src="projects/prototype/prototype-01.svg" alt="Prototype Festival" class="project-image">
                         <img src="mustair.png" alt="Clostra Son Jon Müstair" class="project-image">
                         <div class="project-image project-image-container symposium-image">
@@ -1567,6 +1579,14 @@
             </div>
             
             <div class="project-grid">
+                <a href="projects/new-project/index.html" class="project-item">
+                    <img src="projects/new-project/book.png" alt="TOY R US">
+                </a>
+                
+                <a href="projects/new-project-2/index.html" class="project-item">
+                    <img src="projects/new-project-2/cover.jpg" alt="Blinkko">
+                </a>
+                
                 <a href="projects/prototype/index.html" class="project-item">
                     <img src="projects/prototype/prototype-01.svg" alt="Prototype Festival">
                 </a>
@@ -1595,14 +1615,14 @@
                     <img src="sewing machine main.webp" alt="......sewing machine???">
                 </a>
                 
-                <div class="project-item">
+                <a href="projects/wayfinding/index.html" class="project-item">
                     <div class="project9-carousel">
-                        <img src="wayfinding-01.webp" alt="Project 9" class="carousel-image active">
-                        <img src="wayfinding-02.webp" alt="Project 9" class="carousel-image">
-                        <img src="wayfinding-03.webp" alt="Project 9" class="carousel-image">
-                        <img src="wayfinding-04.webp" alt="Project 9" class="carousel-image">
+                        <img src="wayfinding-01.webp" alt="Wayfinding" class="carousel-image active">
+                        <img src="wayfinding-02.webp" alt="Wayfinding" class="carousel-image">
+                        <img src="wayfinding-03.webp" alt="Wayfinding" class="carousel-image">
+                        <img src="wayfinding-04.webp" alt="Wayfinding" class="carousel-image">
                     </div>
-                </div>
+                </a>
                 
                 <div class="project-item">
                     <img src="xiaohongshu.gif" alt="Intern">
@@ -1797,6 +1817,8 @@ function startAutoScroll() {
     const descriptionDiv = document.getElementById('project-description');
     
     const projectDescriptions = [
+        ['2026', 'Degree Project', 'Advise by Paul Soulellis'],
+        ['2026', 'UI, Product', '—'],
         ['2025', 'Personal Project', '—'],
         ['2025', 'for Grad Type III', 'Advise by Doug Scott'],
         ['2025', 'for Design Studio IV', 'Advise by Kathy Wu'],
@@ -1990,6 +2012,8 @@ function setupManualHover() {
         const descriptionDiv = document.getElementById('project-description');
         
     const projectDescriptions = [
+        ['2026', 'Degree Project', 'Advise by Paul Soulellis'],
+        ['2026', 'UI, Product', '—'],
         ['2025', 'Personal Project', '—'],
         ['2025', 'for Grad Type III', 'Advise by Doug Scott'],
         ['2025', 'for Design Studio IV', 'Advise by Kathy Wu'],
@@ -2263,9 +2287,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const modalIframe = document.getElementById('image-modal-iframe');
     const closeBtn = document.getElementById('image-modal-close');
     const railroadTile = document.querySelector('.project-grid .project-item.railroad-item');
-    const wayfindingCarousel = document.querySelector('.project-grid .project9-carousel');
 
-    if (!modal || !modalImg || !modalIframe || !closeBtn || !railroadTile || !wayfindingCarousel) return;
+    if (!modal || !modalImg || !modalIframe || !closeBtn || !railroadTile) return;
 
     function openModalWithImage(tile) {
         const img = tile.querySelector('img');
@@ -2320,18 +2343,6 @@ document.addEventListener('DOMContentLoaded', function() {
         e.stopPropagation();
         openModalWithImage(railroadTile);
     });
-
-    // Wayfinding (project9-carousel) display image instead of PDF
-    const wayfindingParentTile = wayfindingCarousel.closest('.project-item');
-    if (wayfindingParentTile) {
-        wayfindingParentTile.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            openModalWithSrc('wayfinding.png', 'Wayfinding');
-        });
-    }
-
     closeBtn.addEventListener('click', closeModal);
     modal.addEventListener('click', function(e) {
         if (e.target === modal) closeModal();
