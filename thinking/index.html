@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thinking</title>
+    <meta name="description" content="Prototype Festival project by Jinhang Xiao">
+    <link rel="icon" type="image/svg+xml" href="../favicon-green-square.svg">
+    <link rel="shortcut icon" type="image/svg+xml" href="../favicon-green-square.svg">
+    <link rel="apple-touch-icon" sizes="180x180" href="../favicon-green-square.svg">
+    <link rel="icon" type="image/svg+xml" sizes="32x32" href="../favicon-green-square.svg">
+    <link rel="icon" type="image/svg+xml" sizes="16x16" href="../favicon-green-square.svg">
+    <link rel="stylesheet" href="../fonts/fonts.css">
+    <link rel="stylesheet" href="../cursor/cursor.css">
+    <link rel="stylesheet" href="../motion.css">
+    <script src="../motion.js" defer></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-size: 11.2px;
+            line-height: 1.4;
+            color: #000;
+            background-color: #fff;
+        }
+
+        body::-webkit-scrollbar {
+            width: 0px;
+            background: transparent;
+        }
+
+        body::-webkit-scrollbar-thumb {
+            background: transparent;
+        }
+
+        html {
+            scrollbar-width: none;
+        }
+
+        h1 {
+            font-weight: normal;
+            font-size: 12.4px;
+            display: inline;
+        }
+
+        h1 a {
+            color: #000;
+            text-decoration: none;
+            cursor: var(--cursor-link, pointer);
+        }
+
+        h1 a:hover {
+            text-decoration: underline;
+        }
+
+        a {
+            color: #000;
+            text-decoration: none;
+            cursor: var(--cursor-link, pointer);
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0;
+            padding: 0;
+            vertical-align: top;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 208px;
+            border-right: 1px solid #000;
+            padding: 16px;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            background-color: #fff;
+            transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            transform: translateX(-100%);
+            z-index: 100;
+        }
+
+        .sidebar.show {
+            transform: translateX(0);
+        }
+
+        .content {
+            flex: 1;
+            margin-left: 208px;
+            padding: 16px;
+            transition: margin-left 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            background: transparent;
+        }
+
+        .content .project-images img,
+        .content .project-images video,
+        .content .project-images > div {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
+                        transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            will-change: opacity, transform;
+        }
+
+        .content .project-images img.show,
+        .content .project-images video.show,
+        .content .project-images > div.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .sidebar::-webkit-scrollbar {
+            width: 0px;
+            background: transparent;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: transparent;
+        }
+
+        .sidebar {
+            scrollbar-width: none;
+        }
+
+        .bio {
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        .bio p {
+            font-size: 12px;
+            margin: 0;
+            line-height: 1.4;
+        }
+
+        .bio h1 {
+            position: relative;
+            display: inline-block;
+        }
+
+        .bio h1::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: calc(-0.15em + 3px);
+            height: 0.65em;
+            background: #00ff88;
+            z-index: -1;
+        }
+
+        .project-meta {
+            font-size: 11.2px;
+            margin: 12px 0 0 0;
+            line-height: 1.4;
+            color: #000;
+            opacity: 0.4;
+        }
+
+        .school-link {
+            text-decoration: underline;
+        }
+
+        .school-link:hover {
+            text-decoration: none;
+        }
+
+        .back-link {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #fff;
+            border: 1px solid #000;
+            padding: 8px 16px;
+            font-size: 10.4px;
+            z-index: 1001;
+            text-decoration: none;
+            color: #000;
+            transition: all 0.3s ease;
+            user-select: none;
+            border-radius: 0;
+            min-width: 120px;
+            text-align: center;
+        }
+
+        .back-link::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 6px;
+            height: 0;
+            background: #00ff88;
+            z-index: -1;
+            transition: height 0.3s ease;
+        }
+
+        .back-link:hover::after {
+            height: 8px;
+        }
+
+        .back-link:hover {
+            color: #000;
+            background: #fff;
+            border-color: transparent;
+            text-decoration: none;
+        }
+
+        .project-navigation {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-top: 40px;
+            padding: 0;
+            line-height: normal;
+        }
+
+        .project-nav-btn {
+            background: #fff;
+            border: 1px solid #000;
+            padding: 8px 16px;
+            font-size: 10.4px;
+            text-decoration: none;
+            color: #000;
+            position: relative;
+            cursor: var(--cursor-link, pointer);
+            transition: all 0.3s ease;
+        }
+
+        .project-nav-btn::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 6px;
+            height: 0;
+            background: #00ff88;
+            z-index: -1;
+            transition: height 0.3s ease;
+        }
+
+        .project-nav-btn:hover::after {
+            height: 8px;
+        }
+
+        .project-nav-btn:hover {
+            color: #000;
+            background: #fff;
+            border-color: transparent;
+            text-decoration: none;
+        }
+
+        .project-nav-btn.disabled {
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                position: relative;
+                height: auto;
+                border-right: none;
+                border-bottom: 1px solid #000;
+            }
+
+            .content {
+                margin-left: 0;
+            }
+
+            .container {
+                flex-direction: column;
+            }
+
+            .bio p {
+                font-size: 11px;
+            }
+
+            .project-meta {
+                font-size: 11px;
+            }
+
+            .back-link {
+                position: relative;
+                top: auto;
+                right: auto;
+                margin-bottom: 16px;
+                display: inline-block;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .sidebar {
+                padding: 12px;
+            }
+
+            .content {
+                padding: 12px;
+            }
+
+            .bio p {
+                font-size: 10px;
+            }
+
+            .project-meta {
+                font-size: 10px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .sidebar {
+                padding: 8px;
+            }
+
+            .content {
+                padding: 8px;
+            }
+
+            .bio p {
+                font-size: 9px;
+            }
+        }
+    
+        /* ---- Thinking: a flight through a space of notes ----
+           The page scrolls, but nothing moves up or down: scrolling moves a camera forward. The
+           sentence and the six notes sit one behind another in depth; each arrives from far away,
+           stops in front of you, and flies past as you go on. Pixel dust fills the space and
+           streams by as you travel. */
+        html {
+            scroll-snap-type: y mandatory;
+            overflow-y: auto;
+            height: auto;
+        }
+
+        body {
+            overflow: visible;
+            height: auto;
+            min-height: 0;
+        }
+
+        #stars {
+            position: fixed;
+            inset: 0;
+            width: 100vw;
+            height: 100vh;
+            image-rendering: pixelated;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .track {
+            position: relative;
+            z-index: 0;
+        }
+
+        .stop {
+            height: 100vh;
+            scroll-snap-align: start;
+            scroll-snap-stop: always;
+        }
+
+        .stage {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        /* on this page the way back stays pinned in the corner at every screen size (on the project
+           pages it drops into the flow on small screens; here nothing flows) */
+        .back-link {
+            position: fixed;
+            top: 16px;
+            right: 16px;
+            margin: 0;
+        }
+
+        .page-title {
+            position: fixed;
+            left: 16px;
+            top: 16px;
+            z-index: 10;
+            margin: 0;
+            font-size: 12.4px;
+            font-weight: normal;
+        }
+
+        .page-title span {
+            position: relative;
+            display: inline-block;
+        }
+
+        /* everything in the space is placed from the centre of the window by the script */
+        .hub,
+        .thought {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            opacity: 0;
+            will-change: transform, opacity;
+        }
+
+        .hub {
+            text-align: center;
+        }
+
+        .hub p {
+            font-size: 12.4px;
+            line-height: 1.35;
+            margin: 0;
+            white-space: nowrap;
+        }
+
+        .hub .hub-meta {
+            margin-top: 10px;
+            font-size: 10.4px;
+            color: #8a8a84;
+        }
+
+        .thought {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 2px;
+            width: 250px;
+            max-width: 78vw;
+            padding: 0;
+            border: 0;
+            background: none;
+            font: inherit;
+            font-size: 12.4px;
+            color: #000;
+            text-align: left;
+            cursor: var(--cursor-link, pointer);
+        }
+
+        .thought.is-on {
+            cursor: var(--cursor-dot, default);
+        }
+
+        .thought canvas {
+            width: 64px;
+            height: 64px;
+            image-rendering: pixelated;
+        }
+
+        .thought-label {
+            position: relative;
+            display: inline-block;
+            white-space: nowrap;
+        }
+
+        .thought i {
+            font-style: normal;
+            margin-right: 10px;
+        }
+
+        .thought.is-on .doodle-hl::after {
+            clip-path: inset(0);
+            animation: hl-in 0.28s steps(4, end);
+        }
+
+        .thought:focus-visible {
+            outline: 1px dashed #000;
+            outline-offset: 6px;
+        }
+
+        /* The text unfolds when a note has arrived, and folds away slowly as you leave it.
+           Both happen in steps, like the rest of the doodles. */
+        .thought-body {
+            display: grid;
+            grid-template-rows: 0fr;
+            transition: grid-template-rows 1.1s steps(11, end);
+        }
+
+        .thought-body > span {
+            overflow: hidden;
+            min-height: 0;
+            font-size: 12.4px;
+            line-height: 1.6;
+            opacity: 0;
+            transition: opacity 0.7s steps(5, end);
+        }
+
+        .thought.is-on .thought-body {
+            grid-template-rows: 1fr;
+            transition: grid-template-rows 0.36s steps(6, end) 0.15s;
+        }
+
+        .thought.is-on .thought-body > span {
+            padding-top: 8px;
+            opacity: 1;
+            transition: opacity 0.3s steps(3, end) 0.25s;
+        }
+
+        /* The overview at the end behaves like a still page: notes are grey and folded until you
+           point at one. Nothing moves when you do, so the pointer never loses it. */
+        .is-overview .thought {
+            cursor: var(--cursor-link, pointer);
+        }
+
+        .is-overview .thought canvas,
+        .is-overview .thought-label {
+            opacity: 0.4;
+        }
+
+        .is-overview .thought:hover,
+        .is-overview .thought.is-on,
+        .is-overview .thought:focus-visible {
+            z-index: 5;
+        }
+
+        .is-overview .thought:hover canvas,
+        .is-overview .thought:hover .thought-label,
+        .is-overview .thought.is-on canvas,
+        .is-overview .thought.is-on .thought-label,
+        .is-overview .thought:focus-visible canvas,
+        .is-overview .thought:focus-visible .thought-label {
+            opacity: 1;
+        }
+
+        .is-overview .thought:hover .doodle-hl::after,
+        .is-overview .thought:focus-visible .doodle-hl::after {
+            clip-path: inset(0);
+            animation: hl-in 0.28s steps(4, end);
+        }
+
+        .is-overview .thought-body {
+            background: #fff;
+            transition: grid-template-rows 1.3s steps(13, end) 0.25s;
+        }
+
+        .is-overview .thought-body > span {
+            transition: opacity 0.9s steps(6, end) 0.25s;
+        }
+
+        .is-overview .thought:hover .thought-body,
+        .is-overview .thought.is-on .thought-body,
+        .is-overview .thought:focus-visible .thought-body {
+            grid-template-rows: 1fr;
+            transition: grid-template-rows 0.36s steps(6, end);
+        }
+
+        .is-overview .thought:hover .thought-body > span,
+        .is-overview .thought.is-on .thought-body > span,
+        .is-overview .thought:focus-visible .thought-body > span {
+            padding-top: 8px;
+            opacity: 1;
+            transition: opacity 0.3s steps(3, end) 0.1s;
+        }
+
+        /* where you are: seven pixel squares, the current one filled */
+        .stops {
+            position: fixed;
+            left: 50%;
+            bottom: 18px;
+            transform: translateX(-50%);
+            z-index: 10;
+            display: flex;
+            gap: 4px;
+        }
+
+        .stops button {
+            width: 20px;
+            height: 20px;
+            padding: 7px;
+            border: 0;
+            background: none;
+            cursor: var(--cursor-link, pointer);
+        }
+
+        .stops button::before {
+            content: '';
+            display: block;
+            width: 6px;
+            height: 6px;
+            outline: 1px solid #000;
+            background: #fff;
+        }
+
+        .stops button.is-here::before {
+            background: #00ff88;
+        }
+
+        .hint {
+            position: fixed;
+            left: 50%;
+            bottom: 46px;
+            transform: translateX(-50%);
+            z-index: 10;
+            margin: 0;
+            font-size: 10.4px;
+            color: #8a8a84;
+            transition: opacity 0.4s steps(4, end);
+        }
+
+        .hint.is-gone {
+            opacity: 0;
+        }
+
+        /* one jump straight through the whole space to the last stop, where all six sit together */
+        .skip {
+            position: fixed;
+            right: 16px;
+            bottom: 16px;
+            z-index: 10;
+            padding: 4px 0;
+            border: 0;
+            background: none;
+            font: inherit;
+            font-size: 12.4px;
+            color: #000;
+            cursor: var(--cursor-link, pointer);
+            transition: opacity 0.3s steps(3, end);
+        }
+
+        .skip span {
+            position: relative;
+            display: inline-block;
+        }
+
+        .skip:hover .doodle-hl::after,
+        .skip:focus-visible .doodle-hl::after {
+            clip-path: inset(0);
+            animation: hl-in 0.28s steps(4, end);
+        }
+
+        .skip.is-gone {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* the last dot stands for the overview: four small squares instead of one */
+        .stops button.is-all::before {
+            width: 2px;
+            height: 2px;
+            outline: 0;
+            background: #000;
+            box-shadow: 4px 0 0 #000, 0 4px 0 #000, 4px 4px 0 #000;
+        }
+
+        .stops button.is-all.is-here::before {
+            background: #00ff88;
+            box-shadow: 4px 0 0 #00ff88, 0 4px 0 #00ff88, 4px 4px 0 #00ff88;
+            outline: 0;
+        }
+
+        /* phones: smaller way back, and the skip sits above the row of dots instead of beside it */
+        @media (max-width: 700px) {
+            .back-link {
+                min-width: 0;
+                padding: 6px 12px;
+            }
+
+            .hint {
+                bottom: 76px;
+            }
+
+            .skip {
+                right: auto;
+                left: 50%;
+                bottom: 42px;
+                transform: translateX(-50%);
+            }
+
+            .stops {
+                bottom: 12px;
+            }
+
+            .thought canvas {
+                width: 52px;
+                height: 52px;
+            }
+        }
+    </style>
+    <script src="../no-copy.js"></script>
+</head>
+<body>
+    <canvas id="stars" aria-hidden="true"></canvas>
+    <a href="../index.html" class="back-link">Back to Main</a>
+    <h1 class="page-title"><span class="doodle-hl is-on">Thinking</span></h1>
+
+    <!-- one screen of scrolling per stop; the stage itself never moves -->
+    <div class="track" id="track" aria-hidden="true">
+        <div class="stop"></div><div class="stop"></div><div class="stop"></div><div class="stop"></div><div class="stop"></div><div class="stop"></div><div class="stop"></div><div class="stop"></div>
+    </div>
+
+    <main class="stage" id="stage">
+        <div class="hub" data-stop="0">
+            <p>Six things I keep coming back to<br>when I design.</p>
+            <p class="hub-meta">Notes to myself as much as to anyone else · 2026</p>
+        </div>
+            <button class="thought" type="button" data-id="conditions" data-stop="1">
+                <canvas width="64" height="64" aria-hidden="true"></canvas>
+                <span class="thought-label doodle-hl"><i>01</i>Rules before shapes</span>
+                <span class="thought-body"><span>A form is one answer. A rule is a way of getting many. When I am stuck on how something should look, I go back and ask what it is allowed to do, what it must never do, and what happens at its edges. The shape usually follows.</span></span>
+            </button>
+            <button class="thought" type="button" data-id="type" data-stop="2">
+                <canvas width="64" height="64" aria-hidden="true"></canvas>
+                <span class="thought-label doodle-hl"><i>02</i>Words are the interface</span>
+                <span class="thought-body"><span>Most of what people do with a product is read it. I write the words early, in the voice the product should speak in, and let layout and components grow around them. If the sentence is wrong, no amount of visual work makes the screen right.</span></span>
+            </button>
+            <button class="thought" type="button" data-id="pacing" data-stop="3">
+                <canvas width="64" height="64" aria-hidden="true"></canvas>
+                <span class="thought-label doodle-hl"><i>03</i>Pacing before polish</span>
+                <span class="thought-body"><span>A flow has a rhythm before it has a look: what comes first, where it slows down, where it asks for something. I work that out in rough frames while it is still cheap to change. A well-drawn screen in the wrong order is still in the wrong order.</span></span>
+            </button>
+            <button class="thought" type="button" data-id="sync" data-stop="4">
+                <canvas width="64" height="64" aria-hidden="true"></canvas>
+                <span class="thought-label doodle-hl"><i>04</i>Make it to find out</span>
+                <span class="thought-body"><span>I trust a prototype more than an argument. Building the thing, even badly, tells me in an hour what a week of discussion will not: whether it feels right in the hand, and what I forgot to design.</span></span>
+            </button>
+            <button class="thought" type="button" data-id="introduce" data-stop="5">
+                <canvas width="64" height="64" aria-hidden="true"></canvas>
+                <span class="thought-label doodle-hl"><i>05</i>Meet first, ask later</span>
+                <span class="thought-body"><span>The first minutes with a product should feel like meeting something, not filling something in. I look at what a person gets before anything is asked of them, and I move every request as late as it can go.</span></span>
+            </button>
+            <button class="thought" type="button" data-id="loop" data-stop="6">
+                <canvas width="64" height="64" aria-hidden="true"></canvas>
+                <span class="thought-label doodle-hl"><i>06</i>Leave it open</span>
+                <span class="thought-body"><span>I like work that can be picked up again: by me, by a teammate, by the person using it. So I try to end with something others can extend, such as a system, a tool, or a clear note on what comes next, and not only a finished picture.</span></span>
+            </button>
+    </main>
+
+    <p class="hint" id="hint">scroll to travel</p>
+    <button class="skip" id="skip" type="button"><span class="doodle-hl">skip to all six</span></button>
+    <nav class="stops" id="stops" aria-label="Notes"></nav>
+
+    <script>
+        const THOUGHTS = ["conditions", "type", "pacing", "sync", "introduce", "loop"];
+
+        // Leaving: the dust rushes past once, then the page changes
+        document.querySelector('.back-link').addEventListener('click', function(e) {
+            e.preventDefault();
+            const href = this.href;
+            document.getElementById('stage').style.transition = 'opacity 0.3s steps(3, end)';
+            document.getElementById('stage').style.opacity = '0';
+            setTimeout(function() { window.location.href = href; }, 450);
+        });
+
+        // The flight. One screen of scrolling moves the camera one stop forward. Each thing in the
+        // space is drawn at scale F / distance, from a vanishing point at the centre of the window,
+        // so it grows as it approaches, is exactly life-size when you stop at it, and slides out
+        // past the edge of the window as you go on.
+        (function() {
+            const canvas = document.getElementById('stars');
+            const ctx = canvas.getContext('2d');
+            const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+            const F = 500;                                    // distance at which a thing is life-size
+            const GAP = 1400;                                 // depth between two stops
+            const things = Array.prototype.slice.call(document.querySelectorAll('#stage [data-stop]')).map(function(el) {
+                return { el: el, n: +el.dataset.stop, on: false };
+            });
+            // where each note sits when you have stopped at it, as a fraction of the window:
+            // alternately left and right of the centre line, so they pass on either side of you
+            const SPOTS = [[0, 0], [-0.2, -0.05], [0.16, 0.03], [-0.17, 0.06], [0.19, -0.06], [-0.15, 0.02], [0.14, 0.05]];
+            // The last stop is the overview: the sentence in the middle and the six notes scattered
+            // around it, folded, exactly as a still page. There a note unfolds when you point at it,
+            // folds away slowly when you leave, and a click pins it open.
+            const LAST = things.length;                       // index of the overview stop
+            const slot = function(n) {                        // top-left corner of each thing, as a fraction of the window
+                if (W >= 900) return [[0.5, 0.44], [0.07, 0.11], [0.39, 0.07], [0.71, 0.15], [0.64, 0.6], [0.33, 0.66], [0.05, 0.45]][n];
+                // narrow windows: the sentence under the title, then the six in a single column
+                if (n === 0) return [0.5, Math.max(0.11, 92 / H)];
+                // fit the six between the sentence and the row of dots, whatever the height of the window
+                // (a phone's browser toolbars can take a fifth of it)
+                const first = 150, last = H - 62 - 74, step = Math.min(100, (last - first) / 5);
+                return [0.08, (first + (n - 1) * step) / H];
+            };
+            let pinned = 0;                                   // the note clicked open in the overview (0 = none)
+            let warp = null;                                  // the skip: a timed run straight to the end
+            let W = 0, H = 0;
+            const size = function() { W = canvas.width = innerWidth; H = canvas.height = innerHeight; };
+            // One stop of scrolling is the height of a .stop element. That is NOT always innerHeight:
+            // on phones 100vh is the height with the browser's toolbars hidden, while innerHeight is
+            // the height that is visible right now, so always measure the element itself.
+            const firstStop = document.querySelector('.stop');
+            const stopH = function() { return firstStop.offsetHeight || innerHeight; };
+            size();
+            window.addEventListener('resize', size);
+
+            let seed = 41;
+            const rnd = function() { seed = (seed * 16807) % 2147483647; return seed / 2147483647; };
+            const RANGE = 2600, NEAR = 60;
+            const stars = [];
+            for (let i = 0; i < 220; i++) stars.push({ x: (rnd() - 0.5) * 4200, y: (rnd() - 0.5) * 3000, z: rnd() * RANGE, green: rnd() < 0.05 });
+
+            let cam = -900, target = 0, drift = 0, vel = 0;   // arrive from a little way back
+            let mx = 0, my = 0, cx = 0, cy = 0, hovering = false;
+            window.addEventListener('pointermove', function(e) {
+                if (hovering) return;                             // hold the view still while a note is under the pointer
+                mx = e.clientX / innerWidth * 2 - 1; my = e.clientY / innerHeight * 2 - 1;
+            });
+            const stage = document.getElementById('stage');
+            stage.addEventListener('pointerover', function(e) { hovering = !!e.target.closest('.thought'); });
+            stage.addEventListener('pointerout', function() { hovering = false; });
+
+            const stopsNav = document.getElementById('stops');
+            const hint = document.getElementById('hint');
+            things.forEach(function(th) {
+                const b = document.createElement('button');
+                b.type = 'button';
+                b.setAttribute('aria-label', th.n === 0 ? 'Start' : 'Note ' + th.n);
+                b.addEventListener('click', function() { goTo(th.n); });
+                stopsNav.appendChild(b);
+                th.dot = b;
+                // a note you have not reached yet takes you to it when clicked
+                if (th.n > 0) th.el.addEventListener('click', function() {
+                    if (stage.classList.contains('is-overview')) pinned = pinned === th.n ? 0 : th.n;   // overview: pin or unpin
+                    else if (!th.on) goTo(th.n);
+                });
+            });
+            const allDot = document.createElement('button');
+            allDot.type = 'button';
+            allDot.className = 'is-all';
+            allDot.setAttribute('aria-label', 'All six notes');
+            allDot.addEventListener('click', function() { goTo(LAST); });
+            stopsNav.appendChild(allDot);
+            const skip = document.getElementById('skip');
+            skip.addEventListener('click', function() {
+                // jump the scroll position to the end at once, and fly the camera there in one go
+                const to = LAST * GAP;
+                warp = { from: cam, to: to, t0: performance.now(), dur: reduce ? 1 : 1500 };
+                document.documentElement.style.scrollBehavior = 'auto';
+                window.scrollTo(0, LAST * stopH());
+                if (reduce) frame(performance.now());
+            });
+            const goTo = function(n) { window.scrollTo({ top: n * stopH(), behavior: reduce ? 'auto' : 'smooth' }); };
+            window.addEventListener('keydown', function(e) {
+                const here = Math.round(window.scrollY / stopH());
+                if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ') { e.preventDefault(); goTo(Math.min(LAST, here + 1)); }
+                if (e.key === 'ArrowLeft' || e.key === 'ArrowUp' || e.key === 'PageUp') { e.preventDefault(); goTo(Math.max(0, here - 1)); }
+            });
+
+            let last = performance.now();
+            const frame = function(now) {
+                const dt = Math.min(0.05, Math.max(0.001, (now - last) / 1000));
+                last = now;
+                target = window.scrollY / stopH() * GAP;
+                const before = cam;
+                if (warp) {
+                    // ease in, tear through the middle, ease out
+                    const q = Math.min(1, (now - warp.t0) / warp.dur);
+                    cam = warp.from + (warp.to - warp.from) * (q < 0.5 ? 4 * q * q * q : 1 - Math.pow(-2 * q + 2, 3) / 2);
+                    if (q >= 1) warp = null;
+                } else {
+                    cam += (target - cam) * Math.min(1, dt * (reduce ? 60 : 5));
+                }
+                vel = (cam - before) / dt;                        // how fast you are travelling, for the dust
+                if (!reduce) drift += dt * 16;                    // the space is never completely still
+                cx += (mx - cx) * Math.min(1, dt * 3);
+                cy += (my - cy) * Math.min(1, dt * 3);
+                if (window.scrollY > 20) hint.classList.add('is-gone');
+
+                // the notes
+                const here = Math.round(cam / GAP);
+                things.forEach(function(th) {
+                    // once the last single note has gone by, the six regroup on the overview plane
+                    const grouped = cam > (LAST - 1) * GAP + F * 0.6;
+                    const d = (grouped ? LAST : th.n) * GAP + F - cam;        // distance from the camera
+                    const k = F / Math.max(d, 1);
+                    const spot = SPOTS[th.n];
+                    const narrow = W < 700 && !grouped ? 0.25 : 1;      // on a phone, keep them near the centre line
+                    const x = (spot[0] * W * narrow - cx * 26) * k, y = (spot[1] * H - cy * 18) * k;
+                    // far away: invisible, then faint; at the stop: solid; passing you: gone
+                    let o = d > F ? 1 - (d - F) / (GAP * 2.2) : 1 - (F - d) / (F * 0.55);
+                    o = Math.max(0, Math.min(1, o));
+                    o = d > F ? Math.pow(o, 1.6) : o;            // the next note is already visible, small and faint, ahead of you
+                    if (W < 700 && !grouped && d > F * 2.4) o = 0;   // on a phone everything is near the centre line, so a far note would sit on top of the open one
+                    const el = th.el;
+                    if (o <= 0.01 || d <= 20) { el.style.opacity = '0'; el.style.visibility = 'hidden'; }
+                    else {
+                        el.style.visibility = 'visible';
+                        el.style.opacity = o.toFixed(3);
+                        if (grouped) {
+                            // placed by its top-left corner, so unfolding grows downwards and the title stays put
+                            const sl = slot(th.n);
+                            const gx = (sl[0] - 0.5) * W * k - cx * 10 * k, gy = (sl[1] - 0.5) * H * k - cy * 8 * k;
+                            el.style.transformOrigin = '0 0';
+                            el.style.transform = (th.n === 0 ? 'translate(-50%, -50%) ' : '') + 'translate(' + gx.toFixed(1) + 'px,' + gy.toFixed(1) + 'px) scale(' + k.toFixed(4) + ')';
+                        } else {
+                            el.style.transformOrigin = '';
+                            el.style.transform = 'translate(-50%, -50%) translate(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px) scale(' + k.toFixed(4) + ')';
+                        }
+                        el.style.pointerEvents = o > 0.12 ? 'auto' : 'none';
+                        el.style.zIndex = grouped ? '' : String(1000 - Math.round(d / 10));
+                    }
+                    const on = !warp && Math.abs(d - F) < GAP * 0.12 && (grouped ? th.n > 0 && pinned === th.n : th.n === here);
+                    if (on !== th.on) {
+                        th.on = on;
+                        el.classList.toggle('is-on', on);
+                        if (th.n > 0) el.setAttribute('aria-expanded', on);
+                    }
+                    th.dot.classList.toggle('is-here', th.n === here);
+                });
+                allDot.classList.toggle('is-here', here === LAST);
+                const arrived = here === LAST && !warp && Math.abs(LAST * GAP - cam) < GAP * 0.08;
+                if (!arrived) pinned = 0;
+                stage.classList.toggle('is-overview', arrived);
+                skip.classList.toggle('is-gone', here === LAST || !!warp);
+
+                // the dust: every dot has a depth, wraps around as you pass it, and stretches into a
+                // short streak along its line of flight when you are moving fast
+                ctx.clearRect(0, 0, W, H);
+                const streak = Math.min(1, Math.abs(vel) / 2600);
+                for (let i = 0; i < stars.length; i++) {
+                    const st = stars[i];
+                    let z = (st.z - cam - drift) % RANGE;
+                    if (z < 0) z += RANGE;
+                    z += NEAR;
+                    const k = 420 / z;
+                    const sx = (st.x - cx * 160) * k, sy = (st.y - cy * 110) * k;
+                    const x = W / 2 + sx, y = H / 2 + sy;
+                    if (x < -20 || y < -20 || x > W + 20 || y > H + 20) continue;
+                    const near = 1 - (z - NEAR) / RANGE;
+                    const px = near > 0.8 ? 3 : near > 0.5 ? 2 : 1;
+                    ctx.fillStyle = st.green && px > 1 ? '#00ff88' : near > 0.7 ? '#77776f' : near > 0.4 ? '#a5a5a0' : '#cdcdc8';
+                    const steps = 1 + Math.round(streak * near * (warp ? 26 : 9));   // long streaks during the skip
+                    for (let j = 0; j < steps; j++) {
+                        const f = 1 - j * (warp ? 0.02 : 0.035) * (vel > 0 ? 1 : -1);
+                        ctx.fillRect(Math.round(W / 2 + sx * f), Math.round(H / 2 + sy * f), px, px);
+                    }
+                }
+                if (!reduce) requestAnimationFrame(frame);
+            };
+            requestAnimationFrame(frame);
+            window.addEventListener('scroll', function() { if (reduce) frame(performance.now()); }, { passive: true });
+        })();
+
+        // Pixel doodles, drawn the way the cursor is: 2px black line with hard edges, one canvas
+        // pixel per CSS pixel, re-stamped a few times a second with the dots nudged by a pixel.
+        // Each doodle is a tiny hand-drawn GIF: `t` counts frames while the note is hovered (or
+        // pinned open) and runs back down when the pointer leaves, and each doodle decides what to
+        // draw at frame t.
+        (function() {
+            const NS = 'http://www.w3.org/2000/svg';
+            const svg = document.createElementNS(NS, 'svg');
+            svg.setAttribute('width', '0'); svg.setAttribute('height', '0'); svg.setAttribute('aria-hidden', 'true');
+            svg.style.cssText = 'position:absolute;width:0;height:0';
+            document.body.appendChild(svg);
+            const S = function(d) {                                  // path -> evenly spaced points
+                const pts = [];
+                d.split(/(?=M)/).forEach(function(seg) {
+                    const el = document.createElementNS(NS, 'path');
+                    el.setAttribute('d', seg);
+                    svg.appendChild(el);
+                    const len = el.getTotalLength();
+                    for (let l = 0; l <= len; l += 0.7) pts.push(el.getPointAtLength(l));
+                });
+                return pts;
+            };
+            const wob = function(i, f) {
+                return [Math.round(0.9 * Math.sin(i * 0.05 + f * 2.1) + 0.4 * Math.sin(i * 0.13 + f * 4.7)),
+                        Math.round(0.9 * Math.sin(i * 0.045 + f * 3.3 + 1.7) + 0.4 * Math.sin(i * 0.16 + f * 1.9))];
+            };
+            const clamp = function(v) { return Math.max(0, Math.min(1, v)); };
+            const box = function(x, y, w, h) { return S('M' + x + ' ' + y + ' L' + (x + w) + ' ' + (y - 1) + ' L' + (x + w + 1) + ' ' + (y + h) + ' L' + (x + 1) + ' ' + (y + h + 1) + ' Z'); };
+            let frame = 0;
+
+            // what each doodle draws at frame t. `ink(points, dx, dy)` is the black line,
+            // `green(points, howMuch)` the highlighter, drawn from its start up to that fraction.
+            const DOODLES = {
+                // Rules before shapes: one square becomes four, placed by the same rule
+                conditions: (function() {
+                    const frameBox = S('M14 16 L50 14 L52 50 L15 52 Z');
+                    const centre = box(27, 27, 10, 10);
+                    const cells = [box(20, 21, 10, 10), box(34, 20, 10, 10), box(21, 35, 10, 10), box(35, 34, 10, 10)];
+                    const fill = S('M37 37 L43 38 L37 40 L43 42');
+                    return { max: 8, draw: function(t, ink, green) {
+                        green(fill, clamp((t - 4) / 3));
+                        ink(frameBox);
+                        if (t === 0) ink(centre);
+                        else for (let i = 0; i < Math.min(t, 4); i++) ink(cells[i]);
+                    } };
+                })(),
+                // Words are the interface: the letter keeps being rewritten
+                type: (function() {
+                    const letters = [
+                        S('M41 27 C35 20 22 22 21 33 C20 43 34 45 41 37 M41 23 L42 45'),
+                        S('M22 14 L23 45 M23 32 C28 23 43 25 43 35 C43 45 28 47 23 39'),
+                        S('M42 28 C36 21 22 23 21 33 C20 43 34 46 42 39')
+                    ];
+                    const under = S('M15 53 L30 52 L49 51');
+                    return { max: 4, loop: 9, draw: function(t, ink, green) {
+                        green(under, clamp(t / 3));
+                        ink(letters[t === 0 ? 0 : [1, 2, 0][Math.floor((t - 1) / 3) % 3]]);
+                    } };
+                })(),
+                // Pacing before polish: the three frames light up in order
+                pacing: (function() {
+                    const frames = [box(8, 20, 13, 25), box(26, 20, 13, 25), box(44, 20, 13, 25)];
+                    const fills = [11, 29, 47].map(function(x) { return S('M' + x + ' 25 L' + (x + 8) + ' 28 L' + x + ' 32 L' + (x + 8) + ' 36 L' + x + ' 40'); });
+                    return { max: 8, draw: function(t, ink, green) {
+                        fills.forEach(function(f, i) { green(f, clamp((t - i * 2) / 2)); });
+                        frames.forEach(function(f) { ink(f); });
+                    } };
+                })(),
+                // Make it to find out: the round thing bumps the square thing
+                sync: (function() {
+                    const ball = S('M12 34 C10 22 26 16 32 26 C36 34 30 46 20 45 C15 45 12 40 12 34 Z');
+                    const block = box(41, 18, 15, 30);
+                    const tilted = S('M44 16 L59 20 L55 50 L40 46 Z');
+                    const spark = S('M37 21 L39 15 M40 28 L35 30 M41 24 L35 22');
+                    const push = [0, 3, 6, 8, 5, 2, 0];
+                    return { max: 6, loop: 6, draw: function(t, ink, green) {
+                        const hit = t === 3 || t === 4;
+                        if (hit) green(spark, 1);
+                        ink(ball, push[t] || 0, 0);
+                        ink(hit ? tilted : block);
+                    } };
+                })(),
+                // Meet first, ask later: a lopsided head with no mouth. It blinks, the eyes open far
+                // too wide, with big black pupils that dart about; then it winks at you, with a green
+                // glint beside the winking eye, and keeps winking every so often. Now and then it twitches.
+                introduce: (function() {
+                    const head = S('M19 15 C27 10 43 11 48 16 C53 23 52 41 49 48 C42 54 23 54 17 49 C11 42 12 23 19 15');
+                    const disc = function(cx, cy, r) {            // a filled dot, as a list of points
+                        const pts = [];
+                        for (let y = -r; y <= r; y++) for (let x = -r; x <= r; x++) if (x * x + y * y <= r * r + 1) pts.push({ x: cx + x, y: cy + y });
+                        return pts;
+                    };
+                    const small = disc(24, 30, 2).concat(disc(40, 30, 2));       // at rest: two solid black dots
+                    const shut = S('M21 30 L28 30 M36 30 L43 30');
+                    const eyeL = S('M24 23 C17 23 17 37 24 37 C31 37 31 23 24 23');
+                    const eyeR = S('M40 23 C33 23 33 37 40 37 C47 37 47 23 40 23');
+                    const winkR = S('M35 29 L40 32 L45 29');
+                    const pupilL = disc(24, 30, 3), pupilR = disc(40, 30, 3);  // large pupils, with white left around them
+                    const glint = S('M50 21 L55 16 M53 26 L58 26 M49 17 L50 11');
+                    const look = [-2, -2, 0, 2, 2, 0, -1, 2, -2, 0];
+                    return { max: 7, loop: 18, hold: 9, draw: function(t, ink, green) {
+                        const wink = (t >= 4 && t <= 6) || (t > 9 && (t - 10) % 9 >= 5 && (t - 10) % 9 <= 7);
+                        const twitch = t > 9 && (t - 10) % 9 === 2 ? 1 : 0;       // a one-frame jolt
+                        if (wink) green(glint, 1);
+                        ink(head, twitch, -twitch);
+                        if (t === 0) return ink(small);
+                        if (t <= 2) return ink(shut);
+                        const dx = (wink ? 2 : look[t % look.length]) + twitch;   // while winking, it looks at the glint
+                        ink(eyeL, twitch, -twitch);
+                        ink(pupilL, dx, -twitch);
+                        if (wink) ink(winkR, twitch, -twitch);
+                        else { ink(eyeR, twitch, -twitch); ink(pupilR, dx, -twitch); }
+                    } };
+                })(),
+                // Leave it open: the ring arrow from the first version. Its gap is filled in green, and
+                // the arrow goes round, an eighth of a turn per frame.
+                loop: (function() {
+                    const ring = S('M46 20 C36 10 18 14 15 30 C12 46 30 56 44 46 M46 20 L45 30 M46 20 L36 21');
+                    const gap = S('M49 41 C54 34 52 27 49 23');
+                    const turn = function(pts, a) {
+                        const c = Math.cos(a), sn = Math.sin(a);
+                        return pts.map(function(q) { return { x: 31 + (q.x - 31) * c - (q.y - 32) * sn, y: 32 + (q.x - 31) * sn + (q.y - 32) * c }; });
+                    };
+                    const rings = [], gaps = [];
+                    for (let i = 0; i < 8; i++) { rings.push(turn(ring, -i * Math.PI / 4)); gaps.push(turn(gap, -i * Math.PI / 4)); }
+                    return { max: 8, loop: 8, draw: function(t, ink, green) {
+                        const i = t % 8;
+                        green(gaps[i], clamp(t / 3));
+                        ink(rings[i]);
+                    } };
+                })()
+            };
+
+            const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+            const icons = [];
+            document.querySelectorAll('.thought').forEach(function(btn) {
+                const d = DOODLES[btn.dataset.id];
+                const ctx = btn.querySelector('canvas').getContext('2d');
+                const ink = function(pts, dx, dy) {
+                    ctx.fillStyle = '#000';
+                    for (let i = 0; i < pts.length; i++) {
+                        const k = wob(i, frame);
+                        ctx.fillRect(Math.round(pts[i].x) + (dx || 0) + k[0] - 1, Math.round(pts[i].y) + (dy || 0) + k[1] - 1, 2, 2);
+                    }
+                };
+                const green = function(pts, howMuch) {
+                    ctx.fillStyle = '#00ff88';
+                    const upto = Math.round(howMuch * pts.length);
+                    for (let i = 0; i < upto; i++) {
+                        const k = wob(i, frame + 5);
+                        ctx.fillRect(Math.round(pts[i].x) + k[0] - 2, Math.round(pts[i].y) + k[1] - 2, 4, 4);
+                    }
+                };
+                const icon = { btn: btn, t: 0, was: false };
+                icon.step = function() {
+                    const on = btn.matches(':hover, :focus-visible, .is-on') && btn.style.visibility !== 'hidden';
+                    if (on) {
+                        icon.t++;
+                        // looping doodles go round again; the others stop on their last frame
+                        if (d.loop && icon.t > (d.hold || 0) + d.loop) icon.t = (d.hold || 0) + 1;
+                        else if (!d.loop && icon.t > d.max) icon.t = d.max;
+                    } else if (icon.t > 0) {
+                        if (icon.was) icon.t = Math.min(icon.t, d.max);      // leave from a frame near the start
+                        icon.t = Math.max(0, icon.t - 2);                    // and run back twice as fast
+                    }
+                    icon.was = on;
+                    ctx.clearRect(0, 0, 64, 64);
+                    d.draw(icon.t, ink, green);
+                };
+                icons.push(icon);
+            });
+            const tick = function() { icons.forEach(function(icon) { icon.step(); }); };
+            tick();
+            if (!reduce) setInterval(function() { if (!document.hidden) { frame = (frame + 1) % 3; tick(); } }, 120);
+
+        })();
+    </script>
+</body>
+</html>

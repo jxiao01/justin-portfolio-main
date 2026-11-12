@@ -1,0 +1,88 @@
+/* Small shared motions. Loaded by every page.
+   Every doodle on the site is drawn the way the cursor is: black 2px pixel line, hard blocky edges,
+   one drawing pixel per CSS pixel, never smoothed. Nothing slides; things are drawn, painted, or
+   stepped frame by frame. motion.js flips html between .boil-0/1/2 about seven times a second and
+   each doodle shows a slightly different stamping of itself, like the frames of a hand-drawn GIF. */
+
+/* 1. The green highlighter: a pixel bar with a rough, hard edge (drawn by motion.js for each word),
+      painted on in a few frames. */
+html .project-list li a::after,
+html .sidebar .bio h1::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    height: 8px;
+    z-index: -1;
+    background: var(--hl-0, linear-gradient(#00ff88, #00ff88)) no-repeat 0 0 / 100% 100%;
+    image-rendering: pixelated;
+    transform: none;
+    clip-path: inset(0 0 0 100%);
+    transition: clip-path 0.22s steps(3, end);
+}
+
+html.boil-1 .project-list li a::after,
+html.boil-1 .sidebar .bio h1::after { background-image: var(--hl-1, linear-gradient(#00ff88, #00ff88)); }
+html.boil-2 .project-list li a::after,
+html.boil-2 .sidebar .bio h1::after { background-image: var(--hl-2, linear-gradient(#00ff88, #00ff88)); }
+
+html .project-list li.active a::after {
+    clip-path: inset(0);
+    animation: hl-in 0.28s steps(4, end);
+}
+
+/* project pages: painted once the sidebar has arrived, wiped when it leaves */
+html .sidebar.show .bio h1::after {
+    clip-path: inset(0);
+    animation: hl-in 0.4s steps(5, end) 0.45s backwards;
+}
+
+/* when the title arrives inside a doodled ring, the green waits until the ring has let go */
+html.ring-in .sidebar.show .bio h1::after {
+    animation-delay: 1.25s;
+}
+
+@keyframes hl-in {
+    from { clip-path: inset(0 100% 0 0); }
+    to { clip-path: inset(0); }
+}
+
+/* the same bar for any other word: class="doodle-hl", shown with .is-on */
+.doodle-hl::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    height: 8px;
+    z-index: -1;
+    background: var(--hl-0, linear-gradient(#00ff88, #00ff88)) no-repeat 0 0 / 100% 100%;
+    image-rendering: pixelated;
+    clip-path: inset(0 0 0 100%);
+}
+
+html.boil-1 .doodle-hl::after { background-image: var(--hl-1, linear-gradient(#00ff88, #00ff88)); }
+html.boil-2 .doodle-hl::after { background-image: var(--hl-2, linear-gradient(#00ff88, #00ff88)); }
+
+.doodle-hl.is-on::after {
+    clip-path: inset(0);
+    animation: hl-in 0.32s steps(4, end);
+}
+
+/* 2. Going between the homepage and a project: a pixel line is doodled around the name, the page
+      changes, and the same ring is still around it on the other side before it is rubbed out. */
+.doodle-ring {
+    position: absolute;
+    pointer-events: none;
+    z-index: 2;
+    image-rendering: pixelated;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html .project-list li a::after,
+    html .sidebar .bio h1::after {
+        transition: none;
+        animation: none;
+    }
+}

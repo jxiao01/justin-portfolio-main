@@ -12,10 +12,15 @@
     <link rel="icon" type="image/svg+xml" sizes="16x16" href="favicon-green-square.svg">
     <link rel="stylesheet" href="fonts/fonts.css">
     <link rel="stylesheet" href="cursor/cursor.css">
+    <link rel="stylesheet" href="motion.css">
+    <script src="motion.js" defer></script>
     <script>
-        // Intro: plays once per browser tab, never for visitors who prefer reduced motion
+        // Intro: plays on every load and refresh of the homepage. It is skipped when coming back from
+        // one of the project pages, and for visitors who prefer reduced motion.
         try {
-            if (!sessionStorage.getItem('intro-seen') && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            const nav = performance.getEntriesByType('navigation')[0];
+            const fromProject = (!nav || nav.type !== 'reload') && /^\/(projects|thinking)\//.test(document.referrer.slice(location.origin.length)) && document.referrer.indexOf(location.origin) === 0;
+            if (!fromProject && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
                 document.documentElement.classList.add('intro');
             }
         } catch (e) {}
@@ -35,7 +40,7 @@
             background-color: #fff;
         }
 
-        /* Intro: a box doodled by hand around the name, then a highlighter scribble behind it */
+        /* Intro: a box doodled by hand around the name, then a solid green highlighter mark with a rough pixel edge */
         .intro-screen {
             display: none;
         }
@@ -54,6 +59,63 @@
         html.intro .intro-screen.is-leaving {
             opacity: 0;
             pointer-events: none;
+        }
+
+        /* Landing: the name slides to its place in the sidebar and the green mark flattens into the
+           highlight under the current project, while the page underneath fades up around them. */
+        html.intro .container {
+            opacity: 0;
+        }
+
+        html.intro.intro-landing .container {
+            opacity: 1;
+            transition: opacity 0.5s ease 0.3s;
+        }
+
+        html.intro.intro-landing .name-link,
+        html.intro.intro-landing .project-list li.active a::after {
+            opacity: 0;
+        }
+
+        html.intro.intro-landing .intro-screen {
+            background: transparent;
+            pointer-events: none;
+            transition: background-color 0.45s ease 0.1s;
+        }
+
+        .intro-landing #intro-name,
+        .intro-landing #intro-canvas {
+            transition: transform 0.55s steps(6, end);   /* frame by frame, like a flipbook */
+        }
+
+        #intro-name {
+            display: inline-block;
+        }
+
+        /* the greeting around the name switches language with a quick blink */
+        .intro-rest,
+        #intro-name {
+            white-space: pre;
+        }
+
+        .intro-rest,
+        html.intro:not(.intro-landing) #intro-name {
+            transition: opacity 0.12s linear;
+        }
+
+        #intro-canvas {
+            transform-origin: 0 0;
+            mix-blend-mode: multiply;
+        }
+
+        .intro-landing .intro-rest {
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        .intro-landing #intro-box-canvas {
+            opacity: 0;
+            transition: opacity 0.3s steps(3, end);
         }
 
         .intro-stage {
@@ -76,28 +138,21 @@
 
         .intro-stage svg {
             position: absolute;
+        }
+
+        /* every doodle is drawn one canvas pixel per CSS pixel and never smoothed: the same hard,
+           blocky edge as the cursor */
+        .intro-stage canvas {
+            position: absolute;
             inset: 0;
-            width: 100%;
-            height: 100%;
-            overflow: visible;
+            width: 300px;
+            height: 300px;
+            image-rendering: pixelated;
         }
 
-        .intro-line {
-            stroke-dasharray: 100 100;
-            stroke-dashoffset: 100;
-        }
-
-        /* uneven easing so the pen speeds up on the straights and slows into the corners */
-        .intro-box {
-            animation: intro-draw 1.35s cubic-bezier(0.45, 0.05, 0.3, 1) 0.3s forwards;
-        }
-
-        .intro-mark {
-            animation: intro-draw 0.42s cubic-bezier(0.3, 0, 0.6, 1) 1.7s forwards;
-        }
-
-        @keyframes intro-draw {
-            to { stroke-dashoffset: 0; }
+        .intro-stage svg.intro-geometry {
+            width: 0;
+            height: 0;
         }
 
         @keyframes intro-text {
@@ -207,6 +262,28 @@
             display: inline-block;
             transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
             position: relative;
+        }
+
+        /* "thinking" in the sentence is the way into the Thinking notes. It looks like the words
+           around it: no underline, no highlight, nothing on hover. The only hint is that it keeps
+           being rubbed out and written back. It stays put when the other words are knocked about. */
+        .description .think-word,
+        .description .think-word:hover {
+            color: #000;
+            text-decoration: none;
+        }
+
+        /* its letters are rubbed out and written back every few seconds */
+        .think-word span {
+            transition: none;
+        }
+
+        .think-word span.is-out {
+            opacity: 0;
+        }
+
+        h1:has(.name-link:hover) ~ .description a.think-word {
+            animation: none;
         }
 
         h1:has(.name-link:hover) ~ .description .word {
@@ -482,6 +559,17 @@
             margin-bottom: 24px;
         }
 
+        /* two groups by priority, not by discipline: the lead projects first, then the rest */
+        .project-list .list-label {
+            font-size: 10.4px;
+            color: #8a8a84;
+            margin: 0 0 6px;
+        }
+
+        .project-list ol + .list-label {
+            margin-top: 20px;
+        }
+
         .project-list ol {
             list-style: none;
             padding-left: 0;
@@ -578,6 +666,25 @@
             animation: fadeInUp 0.6s cubic-bezier(0.19, 1, 0.22, 1) forwards;
         }
 
+        /* Paper ball: switching views scrunches the current view into a doodled ball of paper,
+           which hops across and is smoothed out into the other view. While that is happening the
+           cards skip their own fade-in; they are already on the paper. */
+        body.no-card-anim .project-item {
+            animation: none;
+            opacity: 1;
+            transform: none;
+        }
+
+        .paper-ball {
+            position: fixed;
+            width: 96px;
+            height: 96px;
+            margin: -48px 0 0 -48px;
+            z-index: 1200;
+            image-rendering: pixelated;
+            pointer-events: none;
+        }
+
         body.collapsed .project-item:nth-child(1) { animation-delay: 0.05s; }
         body.collapsed .project-item:nth-child(2) { animation-delay: 0.1s; }
         body.collapsed .project-item:nth-child(3) { animation-delay: 0.15s; }
@@ -614,6 +721,21 @@
 
         .project-item:not(a):hover {
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        /* cards with no page behind them say so, instead of looking like a broken link */
+        .project-item:not(a)::after {
+            content: 'Image only';
+            position: absolute;
+            left: 8px;
+            bottom: 8px;
+            padding: 2px 6px;
+            font-size: 9.6px;
+            line-height: 1.4;
+            color: #000;
+            background: #fff;
+            border: 1px solid #000;
+            z-index: 3;
         }
 
         .project-item img {
@@ -1633,18 +1755,13 @@
 
     <div class="intro-screen" id="intro" aria-hidden="true">
         <div class="intro-stage">
-            <svg viewBox="0 0 300 300" fill="none">
-                <defs>
-                    <filter id="intro-boil-0" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="3"/><feDisplacementMap in="SourceGraphic" scale="2.6"/></filter>
-                    <filter id="intro-boil-1" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="8"/><feDisplacementMap in="SourceGraphic" scale="2.6"/></filter>
-                    <filter id="intro-boil-2" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="15"/><feDisplacementMap in="SourceGraphic" scale="2.6"/></filter>
-                </defs>
-                <g id="intro-ink" filter="url(#intro-boil-0)" stroke-linecap="round" stroke-linejoin="round">
-                    <path class="intro-line intro-mark" pathLength="100" d="M88.0 147.0 L91.8 137.9 L102.8 163.5 L110.3 140.0 L115.9 159.6 L124.1 136.9 L134.8 160.5 L143.4 138.4 L152.3 162.7 L155.8 137.5 L168.6 160.8 L177.3 138.5 L181.0 161.6 L192.8 137.8 L197.7 160.2 L210.3 140.3 L214.0 152.0" stroke="#00ff88" stroke-width="7.5"/>
-                    <path class="intro-line intro-box" pathLength="100" d="M77.7 104.2 C80.5 104.1 88.8 103.9 94.5 103.6 C100.1 103.4 105.8 103.1 111.5 102.8 C117.1 102.5 122.9 102.1 128.6 101.8 C134.4 101.6 140.1 101.3 145.9 101.0 C151.7 100.8 157.4 100.7 163.2 100.5 C169.0 100.4 174.9 100.4 180.8 100.3 C186.8 100.2 192.8 100.1 198.9 100.0 C204.9 99.9 211.1 99.7 217.1 99.7 C223.1 99.7 230.1 98.7 234.7 100.0 C239.4 101.3 242.3 104.4 244.8 107.6 C247.4 110.8 249.4 114.4 250.2 119.1 C251.0 123.8 249.7 130.2 249.5 135.7 C249.2 141.3 248.9 146.7 248.6 152.3 C248.3 157.8 248.2 163.5 247.9 169.0 C247.5 174.4 248.0 180.7 246.4 185.0 C244.8 189.2 241.8 191.9 238.4 194.3 C235.0 196.6 231.0 198.3 226.0 199.0 C221.0 199.7 214.4 198.7 208.6 198.6 C202.8 198.5 197.1 198.4 191.3 198.3 C185.5 198.2 179.7 198.1 173.9 198.1 C168.1 198.1 162.4 198.2 156.6 198.3 C150.9 198.5 145.2 198.8 139.5 199.1 C133.8 199.4 128.1 199.7 122.4 200.0 C116.7 200.3 111.1 200.6 105.4 200.8 C99.7 200.9 94.0 201.0 88.3 201.0 C82.5 201.0 75.6 201.9 70.9 200.6 C66.1 199.3 62.9 196.2 59.7 193.1 C56.6 189.9 53.5 186.6 52.2 181.7 C50.8 176.9 51.7 169.7 51.5 163.8 C51.3 157.8 51.2 152.0 51.2 146.2 C51.2 140.5 51.3 134.8 51.4 129.1 C51.5 123.5 50.6 116.7 52.1 112.3 C53.5 107.9 56.8 105.3 60.1 102.7 C63.4 100.1 67.0 97.8 71.8 96.8 C76.7 95.8 83.4 96.7 89.2 96.7 C95.0 96.7 100.8 96.6 106.6 96.5 C112.4 96.5 118.3 96.4 124.1 96.4 C130.0 96.4 135.9 96.3 141.8 96.3 C147.8 96.2 153.7 96.1 159.6 96.1 C165.6 96.0 171.5 95.9 177.4 95.8 C183.4 95.7 189.4 95.5 195.4 95.4 C201.5 95.2 207.6 94.9 213.7 94.7 C219.9 94.4 227.1 93.1 232.3 93.9 C237.4 94.8 241.2 97.0 244.4 99.7 C247.7 102.4 250.8 105.4 252.0 110.3 C253.2 115.1 252.0 122.4 251.8 128.6 C251.6 134.8 251.3 141.1 250.9 147.4 C250.6 153.8 250.1 160.2 249.8 166.6 C249.5 172.9 250.1 180.4 248.9 185.7 C247.6 190.9 245.1 194.7 242.2 198.0 C239.3 201.3 236.1 204.1 231.3 205.3 C226.5 206.6 219.4 205.4 213.4 205.5 C207.5 205.5 201.5 205.5 195.5 205.6 C189.5 205.6 183.5 205.6 177.4 205.6 C171.4 205.6 165.3 205.6 159.1 205.7 C153.0 205.8 146.8 205.9 140.5 206.0 C134.3 206.2 128.0 206.5 121.7 206.7 C115.4 207.0 109.0 207.3 102.8 207.5 C96.5 207.8 90.2 208.0 84.0 208.2 C77.7 208.3 70.5 209.4 65.4 208.4 C60.4 207.4 56.6 205.1 53.5 202.1 C50.5 199.2 47.9 196.0 47.1 190.9 C46.2 185.9 48.1 178.2 48.6 171.9 C49.1 165.5 49.6 159.2 49.9 153.0 C50.3 146.7 50.4 140.6 50.6 134.4 C50.7 128.3 49.7 121.4 50.6 116.3 C51.5 111.1 53.3 107.1 55.9 103.7 C58.4 100.2 61.2 97.1 65.8 95.8 C70.4 94.5 77.6 95.7 83.6 95.7 C89.5 95.7 95.8 95.9 101.7 95.9 C107.7 95.9 113.7 95.9 119.5 95.8 C125.3 95.8 131.0 95.7 136.6 95.6 C142.3 95.5 150.7 95.3 153.5 95.3" stroke="#000" stroke-width="1.25"/>
-                </g>
+            <svg class="intro-geometry" viewBox="0 0 300 300" aria-hidden="true">
+                <path id="intro-path-box" d="M77.7 104.2 C80.5 104.1 88.8 103.9 94.5 103.6 C100.1 103.4 105.8 103.1 111.5 102.8 C117.1 102.5 122.9 102.1 128.6 101.8 C134.4 101.6 140.1 101.3 145.9 101.0 C151.7 100.8 157.4 100.7 163.2 100.5 C169.0 100.4 174.9 100.4 180.8 100.3 C186.8 100.2 192.8 100.1 198.9 100.0 C204.9 99.9 211.1 99.7 217.1 99.7 C223.1 99.7 230.1 98.7 234.7 100.0 C239.4 101.3 242.3 104.4 244.8 107.6 C247.4 110.8 249.4 114.4 250.2 119.1 C251.0 123.8 249.7 130.2 249.5 135.7 C249.2 141.3 248.9 146.7 248.6 152.3 C248.3 157.8 248.2 163.5 247.9 169.0 C247.5 174.4 248.0 180.7 246.4 185.0 C244.8 189.2 241.8 191.9 238.4 194.3 C235.0 196.6 231.0 198.3 226.0 199.0 C221.0 199.7 214.4 198.7 208.6 198.6 C202.8 198.5 197.1 198.4 191.3 198.3 C185.5 198.2 179.7 198.1 173.9 198.1 C168.1 198.1 162.4 198.2 156.6 198.3 C150.9 198.5 145.2 198.8 139.5 199.1 C133.8 199.4 128.1 199.7 122.4 200.0 C116.7 200.3 111.1 200.6 105.4 200.8 C99.7 200.9 94.0 201.0 88.3 201.0 C82.5 201.0 75.6 201.9 70.9 200.6 C66.1 199.3 62.9 196.2 59.7 193.1 C56.6 189.9 53.5 186.6 52.2 181.7 C50.8 176.9 51.7 169.7 51.5 163.8 C51.3 157.8 51.2 152.0 51.2 146.2 C51.2 140.5 51.3 134.8 51.4 129.1 C51.5 123.5 50.6 116.7 52.1 112.3 C53.5 107.9 56.8 105.3 60.1 102.7 C63.4 100.1 67.0 97.8 71.8 96.8 C76.7 95.8 83.4 96.7 89.2 96.7 C95.0 96.7 100.8 96.6 106.6 96.5 C112.4 96.5 118.3 96.4 124.1 96.4 C130.0 96.4 135.9 96.3 141.8 96.3 C147.8 96.2 153.7 96.1 159.6 96.1 C165.6 96.0 171.5 95.9 177.4 95.8 C183.4 95.7 189.4 95.5 195.4 95.4 C201.5 95.2 207.6 94.9 213.7 94.7 C219.9 94.4 227.1 93.1 232.3 93.9 C237.4 94.8 241.2 97.0 244.4 99.7 C247.7 102.4 250.8 105.4 252.0 110.3 C253.2 115.1 252.0 122.4 251.8 128.6 C251.6 134.8 251.3 141.1 250.9 147.4 C250.6 153.8 250.1 160.2 249.8 166.6 C249.5 172.9 250.1 180.4 248.9 185.7 C247.6 190.9 245.1 194.7 242.2 198.0 C239.3 201.3 236.1 204.1 231.3 205.3 C226.5 206.6 219.4 205.4 213.4 205.5 C207.5 205.5 201.5 205.5 195.5 205.6 C189.5 205.6 183.5 205.6 177.4 205.6 C171.4 205.6 165.3 205.6 159.1 205.7 C153.0 205.8 146.8 205.9 140.5 206.0 C134.3 206.2 128.0 206.5 121.7 206.7 C115.4 207.0 109.0 207.3 102.8 207.5 C96.5 207.8 90.2 208.0 84.0 208.2 C77.7 208.3 70.5 209.4 65.4 208.4 C60.4 207.4 56.6 205.1 53.5 202.1 C50.5 199.2 47.9 196.0 47.1 190.9 C46.2 185.9 48.1 178.2 48.6 171.9 C49.1 165.5 49.6 159.2 49.9 153.0 C50.3 146.7 50.4 140.6 50.6 134.4 C50.7 128.3 49.7 121.4 50.6 116.3 C51.5 111.1 53.3 107.1 55.9 103.7 C58.4 100.2 61.2 97.1 65.8 95.8 C70.4 94.5 77.6 95.7 83.6 95.7 C89.5 95.7 95.8 95.9 101.7 95.9 C107.7 95.9 113.7 95.9 119.5 95.8 C125.3 95.8 131.0 95.7 136.6 95.6 C142.3 95.5 150.7 95.3 153.5 95.3"/>
+                <path id="intro-path-mark" d="M82.7 131.1 C101.3 120.8 124.5 129.4 150.0 125.9 C170.9 122.5 189.4 127.6 206.8 122.5 C217.3 120.8 223.1 127.6 226.6 136.2 C230.0 148.3 227.7 162.0 220.8 170.6 C208.0 179.2 189.4 170.6 168.6 174.1 C147.7 177.5 129.1 170.6 110.6 175.8 C96.6 179.2 82.7 175.8 76.9 165.5 C72.3 153.4 74.6 138.0 82.7 131.1 Z"/>
             </svg>
-            <p>Xiao Jinhang,<br>portfolio 2026.</p>
+            <canvas id="intro-canvas" width="300" height="300"></canvas>
+            <canvas id="intro-box-canvas" width="300" height="300"></canvas>
+            <p><span class="intro-rest" id="intro-hello" lang="zh-Hans">你好，</span><br><span class="intro-rest" id="intro-pre" lang="zh-Hans">我是</span><span id="intro-name" lang="zh-Hans">肖金杭</span><span class="intro-rest" id="intro-post"></span></p>
         </div>
     </div>
     <div class="view-toggle-btn back-to-auto" id="back-to-auto">Back to Main</div>
@@ -1669,6 +1786,9 @@
                         <span class="word">a</span> 
                         <span class="word">designer</span> 
                         <span class="word">exploring</span> 
+                        <span class="word">and</span> 
+                        <a class="word think-word" href="thinking/index.html">thinking</a> 
+                        <span class="word">about</span> 
                         <span class="word">the</span> 
                         <span class="word">connections</span> 
                         <span class="word">between</span> 
@@ -1696,6 +1816,7 @@
             </div>
 
             <nav class="project-list">
+                <p class="list-label">Selected</p>
                 <ol>
                     <li>
                         <span class="project-number">01</span> <a href="projects/blinkko/index.html">Blinkko</a>
@@ -1703,6 +1824,9 @@
                     <li>
                         <span class="project-number">02</span> <a href="projects/toy-r-us/index.html">TOY R US</a>
                     </li>
+                </ol>
+                <p class="list-label">Other projects</p>
+                <ol>
                     <li>
                         <span class="project-number">03</span> <a href="projects/prototype/index.html">Prototype Festival</a>
                     </li>
@@ -2008,14 +2132,14 @@ function startAutoScroll() {
     
     const projectDescriptions = [
         ['2026', 'UIUX, Product, Design Engineering', '—'],
-        ['2026', 'Degree Project', 'Advise by Paul Soulellis'],
-        ['2025', 'Personal Project', '—'],
-        ['2025', 'for Grad Type III', 'Advise by Doug Scott'],
-        ['2025', 'for Design Studio IV', 'Advise by Kathy Wu'],
-        ['2024', 'for Design Studio III', 'with Sarah Feng, Marie You and Nor Wu'],
-        ['2024', 'for Typography III', 'Advise by Anastasiia Raina'],
-        ['2024', 'for Typography II', 'Advise by Min Hee Lee'],
-        ['2024', 'for Design Studio III', 'Advise by Emily Rye']
+        ['2026', 'HCI, Creative Coding, Physical Computing · Degree Project', 'Advise by Paul Soulellis'],
+        ['2025', 'Identity, Creative Coding · Personal Project', '—'],
+        ['2025', 'Identity, Editorial · for Grad Type III', 'Advise by Doug Scott'],
+        ['2025', 'Branding · for Design Studio IV', 'Advise by Kathy Wu'],
+        ['2024', 'Mapping, Web, Exhibition · for Design Studio III', 'with Sarah Feng, Marie You and Nor Wu'],
+        ['2024', 'Editorial, Book, Web · for Typography III', 'Advise by Anastasiia Raina'],
+        ['2024', 'Editorial · for Typography II', 'Advise by Min Hee Lee'],
+        ['2024', 'Poster, Textiles · for Design Studio III', 'Advise by Emily Rye']
     ];
     
     if (projectLinks.length === 0) return;
@@ -2205,14 +2329,14 @@ function setupManualHover() {
         
     const projectDescriptions = [
         ['2026', 'UIUX, Product, Design Engineering', '—'],
-        ['2026', 'Degree Project', 'Advise by Paul Soulellis'],
-        ['2025', 'Personal Project', '—'],
-        ['2025', 'for Grad Type III', 'Advise by Doug Scott'],
-        ['2025', 'for Design Studio IV', 'Advise by Kathy Wu'],
-        ['2024', 'for Design Studio III', 'with Sarah Feng, Marie You and Nor Wu'],
-        ['2024', 'for Typography III', 'Advise by Anastasiia Raina'],
-        ['2024', 'for Typography II', 'Advise by Min Hee Lee'],
-        ['2024', 'for Design Studio III', 'Advise by Emily Rye']
+        ['2026', 'HCI, Creative Coding, Physical Computing · Degree Project', 'Advise by Paul Soulellis'],
+        ['2025', 'Identity, Creative Coding · Personal Project', '—'],
+        ['2025', 'Identity, Editorial · for Grad Type III', 'Advise by Doug Scott'],
+        ['2025', 'Branding · for Design Studio IV', 'Advise by Kathy Wu'],
+        ['2024', 'Mapping, Web, Exhibition · for Design Studio III', 'with Sarah Feng, Marie You and Nor Wu'],
+        ['2024', 'Editorial, Book, Web · for Typography III', 'Advise by Anastasiia Raina'],
+        ['2024', 'Editorial · for Typography II', 'Advise by Min Hee Lee'],
+        ['2024', 'Poster, Textiles · for Design Studio III', 'Advise by Emily Rye']
     ];
         
     projectLinks.forEach((li, index) => {
@@ -2390,9 +2514,34 @@ document.addEventListener('DOMContentLoaded', function() {
     if (switchToGridBtn) {
         switchToGridBtn.addEventListener('click', function() {
             closeMoreInfo();
-            stopAutoScroll();
-            
-            document.body.classList.add('collapsed');
+            if (paperBusy) return;
+
+            // paper ball: scrunch the preview, hop to the middle of the page, smooth out into the grid
+            const preview = document.querySelector('.project-preview');
+            const grid = document.querySelector('.project-grid');
+            const pr = preview.getBoundingClientRect();
+            if (matchMedia('(prefers-reduced-motion: reduce)').matches || !pr.width) {
+                stopAutoScroll();
+                document.body.classList.add('collapsed');
+            } else {
+                paperBusy = true;
+                const from = [pr.left + pr.width / 2, pr.top + pr.height / 2];
+                const to = [innerWidth / 2, innerHeight / 2];
+                scrunch(preview, from, true, function() {
+                    const ball = paperBall(from);
+                    stopAutoScroll();                      // only now: until here the preview has to stay on screen
+                    document.body.classList.add('collapsed', 'no-card-anim');
+                    grid.style.opacity = '0';
+                    preview.style.cssText = '';
+                    ball.tighten(function() {
+                        ball.hop(to, function() {
+                            ball.loosen(function() {
+                                scrunch(grid, to, false, function() { paperBusy = false; }, function() { ball.remove(); });
+                            });
+                        });
+                    });
+                });
+            }
             
             if (prototypeTypewriterText) {
                 setTimeout(() => {
@@ -2417,17 +2566,320 @@ document.addEventListener('DOMContentLoaded', function() {
     if (backToAutoBtn) {
         backToAutoBtn.addEventListener('click', function() {
             closeMoreInfo();
-            document.body.classList.remove('collapsed');
-            isManualHover = false;
-            isHighlighting = false;
-            
-            setTimeout(() => {
-                currentProjectIndex = 0;
-                startAutoScroll();
-            }, 100);
+            if (paperBusy) return;
+            const restart = function() {
+                document.body.classList.remove('collapsed', 'no-card-anim');
+                isManualHover = false;
+                isHighlighting = false;
+                setTimeout(() => {
+                    currentProjectIndex = 0;
+                    startAutoScroll();
+                }, 100);
+            };
+            const grid = document.querySelector('.project-grid');
+            const preview = document.querySelector('.project-preview');
+            if (matchMedia('(prefers-reduced-motion: reduce)').matches || isMobileView()) {
+                restart();
+            } else {
+                // paper ball: scrunch the grid, hop to where the preview lives, smooth out into it
+                paperBusy = true;
+                const from = [innerWidth / 2, innerHeight / 2];
+                scrunch(grid, from, true, function() {
+                    const ball = paperBall(from);
+                    preview.style.opacity = '0';
+                    restart();
+                    grid.style.cssText = '';
+                    const to = [innerWidth / 2 + 104, innerHeight / 2 - 12];      // centre of the preview card
+                    const wrapper = document.getElementById('project-preview-wrapper');
+                    ball.tighten(function() {
+                        ball.hop(to, function() {
+                            ball.loosen(function() {
+                                wrapper.style.transition = 'none';     // the preview must be fully there before it is smoothed out
+                                wrapper.classList.add('show');
+                                scrunch(preview, to, false, function() { wrapper.style.transition = ''; paperBusy = false; }, function() { ball.remove(); });
+                            });
+                        });
+                    });
+                });
+            }
         });
     }
 });
+
+// ---- Paper ball ---------------------------------------------------------------------------
+// Everything here is flat and stepped, in the same hand as the other doodles: no perspective, no
+// shading. A view is "scrunched" by cutting it to a jagged outline that gets smaller and turns a
+// little in each held frame; the ball itself is a pixel line drawing.
+let paperBusy = false;
+
+// A view is crumpled in eight stages, 0 = flat .. 7 = a tight wad. At each stage the view is cut
+// to a lumpier outline, drawn round with the black pixel line, and criss-crossed with more
+// creases. Opening runs the stages backwards, so the paper visibly loosens, spreads and is
+// smoothed flat, with the last creases disappearing only at the very end.
+const PAPER_STAGES = 8;
+const PAPER_RING = 22;                                    // points round the edge of the sheet
+// where the creases run: between points on the edge (e) and points inside the sheet (i)
+const PAPER_INNER = [[34, 38], [63, 33], [50, 60], [28, 68], [72, 66], [48, 22], [50, 84]];
+const PAPER_CREASES = [['e', 2, 'i', 0], ['i', 0, 'i', 1], ['e', 6, 'i', 1], ['i', 1, 'i', 2], ['i', 2, 'e', 13], ['i', 0, 'i', 3],
+                       ['i', 3, 'e', 17], ['i', 2, 'i', 4], ['i', 4, 'e', 9], ['e', 4, 'i', 5], ['i', 5, 'i', 0], ['i', 2, 'i', 6],
+                       ['i', 6, 'e', 15], ['i', 3, 'e', 20], ['i', 4, 'e', 11], ['i', 5, 'i', 1]];
+const paperNoise = function(n) { const v = Math.sin(n * 127.1 + 311.7) * 43758.5453; return v - Math.floor(v); };
+
+// The outline of the sheet at a stage, as points in % of the element.
+// Flat paper has straight edges and square corners; a wad of paper has a soft, lumpy, roundish
+// outline. So the outline changes character as the sheet is crumpled: the points on its edge
+// drift from the rectangle towards a lumpy blob the size of the paper ball, and the line through
+// them goes from straight segments to a rounded curve. By the tightest stage it is the same kind
+// of shape as the ball that takes over, so there is no jump from a hard edge to a soft one.
+const PAPER_SUB = 5;                                      // points drawn between two edge points
+function paperOutline(stage, r, at, scale) {
+    const q = stage / (PAPER_STAGES - 1);
+    const cx = at[0] - r.left, cy = at[1] - r.top;        // the point everything gathers towards, inside the element
+    const blobR = 58 / scale;                             // radius that ends up the size of the loose wad on screen
+    const toBlob = Math.pow(q, 2.1);                      // stays a sheet for a while, then balls up quickly
+    const jag = stage * 0.026 * Math.min(r.width, r.height) * (1 - toBlob * 0.6);
+    const ring = [];
+    for (let k = 0; k < PAPER_RING; k++) {
+        const t = k / PAPER_RING * 4;
+        let x, y;
+        if (t < 1) { x = t * r.width; y = 0; } else if (t < 2) { x = r.width; y = (t - 1) * r.height; } else if (t < 3) { x = (3 - t) * r.width; y = r.height; } else { x = 0; y = (4 - t) * r.height; }
+        const dx = cx - x, dy = cy - y, d = Math.hypot(dx, dy) || 1;
+        // as a crumpled sheet: the edge pulled in unevenly
+        const pull = jag * (0.35 + paperNoise(k * 3 + stage * 17));
+        const sx = x + dx / d * pull + (paperNoise(k + stage * 5) - 0.5) * jag * 0.5;
+        const sy = y + dy / d * pull + (paperNoise(k * 7 + stage) - 0.5) * jag * 0.5;
+        // as a wad: a lumpy circle round the gathering point
+        const a = Math.atan2(-dy, -dx);
+        const rad = blobR * (1 + 0.13 * Math.sin(3 * a + 1) + 0.08 * Math.sin(5 * a + 2.4) + (paperNoise(k * 11) - 0.5) * 0.08);
+        ring.push([sx + (cx + Math.cos(a) * rad - sx) * toBlob, sy + (cy + Math.sin(a) * rad - sy) * toBlob]);
+    }
+    // straight lines when flat, a rounded curve through the same points when crumpled
+    const round = Math.min(1, q * 1.7);
+    const pts = [];
+    for (let k = 0; k < PAPER_RING; k++) {
+        const p0 = ring[(k + PAPER_RING - 1) % PAPER_RING], p1 = ring[k], p2 = ring[(k + 1) % PAPER_RING], p3 = ring[(k + 2) % PAPER_RING];
+        for (let j = 0; j < PAPER_SUB; j++) {
+            const t = j / PAPER_SUB, t2 = t * t, t3 = t2 * t;
+            const curve = function(i) { return 0.5 * (2 * p1[i] + (p2[i] - p0[i]) * t + (2 * p0[i] - 5 * p1[i] + 4 * p2[i] - p3[i]) * t2 + (3 * p1[i] - p0[i] - 3 * p2[i] + p3[i]) * t3); };
+            const lx = p1[0] + (p2[0] - p1[0]) * t, ly = p1[1] + (p2[1] - p1[1]) * t;
+            pts.push([(lx + (curve(0) - lx) * round) / r.width * 100, (ly + (curve(1) - ly) * round) / r.height * 100]);
+        }
+    }
+    // the points inside the sheet (where creases meet) are drawn in towards the middle of the wad too
+    const squeeze = 1 + (blobR * 0.62 / (Math.max(r.width, r.height) / 2) - 1) * toBlob;
+    const inner = PAPER_INNER.map(function(pt) {
+        const x = pt[0] / 100 * r.width, y = pt[1] / 100 * r.height;
+        return [(cx + (x - cx) * squeeze) / r.width * 100, (cy + (y - cy) * squeeze) / r.height * 100];
+    });
+    return { edge: pts, inner: inner };
+}
+
+// scrunch(el, [x, y], shut, done, midway): crumple `el` down towards the point (shut) or open it
+// out from that point (not shut). `midway` runs once an opening is under way.
+function scrunch(el, at, shut, done, midway) {
+    const r = el.getBoundingClientRect();
+    const smallest = Math.min(0.5, 130 / Math.max(r.width, r.height));        // the wad is about the size of the loose ball
+    el.style.transformOrigin = (at[0] - r.left) + 'px ' + (at[1] - r.top) + 'px';
+    el.style.transition = 'none';
+    el.style.willChange = 'transform, clip-path';
+    const ink = document.createElement('canvas');          // the drawn edge and creases, over the view
+    ink.width = innerWidth; ink.height = innerHeight;
+    ink.style.cssText = 'position:fixed;left:0;top:0;width:100vw;height:100vh;z-index:1150;pointer-events:none;image-rendering:pixelated';
+    document.body.appendChild(ink);
+    const ctx = ink.getContext('2d');
+    const line = function(a, b, size) {
+        const n = Math.max(1, Math.ceil(Math.hypot(b[0] - a[0], b[1] - a[1])));
+        for (let i = 0; i <= n; i++) ctx.fillRect(Math.round(a[0] + (b[0] - a[0]) * i / n) - (size >> 1), Math.round(a[1] + (b[1] - a[1]) * i / n) - (size >> 1), size, size);
+    };
+    const show = function(stage) {
+        ctx.clearRect(0, 0, ink.width, ink.height);
+        el.style.opacity = '1';
+        if (!stage) { el.style.clipPath = ''; el.style.transform = ''; return; }
+        const q = stage / (PAPER_STAGES - 1);
+        const scale = Math.pow(smallest, Math.pow(q, 1.25));                  // slow to start shrinking, then quicker
+        const turn = [0, 1.5, -3, 4, -6, 7, -8, 7][stage];
+        const shape = paperOutline(stage, r, at, scale);
+        const outline = shape.edge;
+        el.style.clipPath = 'polygon(' + outline.map(function(pt) { return pt[0].toFixed(2) + '% ' + pt[1].toFixed(2) + '%'; }).join(', ') + ')';
+        el.style.transform = 'scale(' + scale.toFixed(4) + ') rotate(' + turn + 'deg)';
+        // where a point of the sheet (in %) ends up on the screen
+        const c = Math.cos(turn * Math.PI / 180), sn = Math.sin(turn * Math.PI / 180);
+        const place = function(pt) {
+            const x = (r.left + pt[0] / 100 * r.width - at[0]) * scale, y = (r.top + pt[1] / 100 * r.height - at[1]) * scale;
+            return [at[0] + x * c - y * sn, at[1] + x * sn + y * c];
+        };
+        ctx.fillStyle = '#000';
+        const edge = outline.map(place);
+        edge.forEach(function(pt, k) { line(pt, edge[(k + 1) % edge.length], 2); });
+        // the tighter the wad, the more creases; the last few are lighter and thinner
+        const inner = shape.inner.map(place);
+        const count = Math.round(q * PAPER_CREASES.length);
+        for (let k = 0; k < count; k++) {
+            const cr = PAPER_CREASES[k];
+            const from = cr[0] === 'e' ? edge[cr[1] * PAPER_SUB] : inner[cr[1]], to = cr[2] === 'e' ? edge[cr[3] * PAPER_SUB] : inner[cr[3]];
+            // in the tight wad the creases stop short, like the short strokes on the ball
+            const reach = stage >= 6 ? 0.55 : stage === 5 ? 0.8 : 1;
+            line(from, [from[0] + (to[0] - from[0]) * reach, from[1] + (to[1] - from[1]) * reach], stage < 3 ? 1 : 2);
+        }
+    };
+    const order = [];
+    if (shut) for (let k = 1; k < PAPER_STAGES; k++) order.push(k);
+    else for (let k = PAPER_STAGES - 1; k >= 0; k--) order.push(k);
+    let n = 0;
+    const next = function() {
+        if (n < order.length) {
+            show(order[n]);
+            if (!shut && n === 1 && midway) midway();
+            // opening lingers on the last, nearly flat stages, where the paper is being smoothed
+            const hold = shut ? 46 : (order[n] <= 2 ? 120 : 72);
+            n++;
+            return setTimeout(next, hold);
+        }
+        ink.remove();
+        if (shut) el.style.opacity = '0';                  // the ball takes over from here
+        else el.style.cssText = '';
+        if (done) done();
+    };
+    next();
+}
+
+// A ball of crumpled paper: a lumpy outline, a few short creases that start at the dents and stop
+// short, and two flat grey facets. Drawn with the 2px black pixel line and re-stamped every frame.
+function paperBall(at) {
+    const NS = 'http://www.w3.org/2000/svg';
+    const c = document.createElement('canvas');
+    c.className = 'paper-ball';
+    c.width = c.height = 96;
+    c.style.left = at[0] + 'px';
+    c.style.top = at[1] + 'px';
+    document.body.appendChild(c);
+    const ctx = c.getContext('2d');
+    const svg = document.createElementNS(NS, 'svg');
+    svg.style.cssText = 'position:absolute;width:0;height:0';
+    document.body.appendChild(svg);
+    const outline = 'M31 21 C36 11 50 9 58 16 C67 9 81 17 80 30 C91 36 91 52 82 58 C85 71 72 83 60 80 C52 91 34 89 30 78 C16 79 7 64 14 54 C5 44 12 27 31 21 Z';
+    const creases = ['M58 16 C55 26 60 32 51 38', 'M51 38 C44 43 40 40 33 47', 'M82 58 C72 54 68 59 61 54', 'M61 54 C63 49 62 46 66 42',
+                     'M30 78 C36 70 33 64 42 60', 'M14 54 C22 52 25 57 31 52', 'M60 80 C58 73 62 70 58 66'];
+    const facets = ['M58 16 C67 9 81 17 80 30 C91 36 91 52 82 58 C72 54 68 59 61 54 C63 49 62 46 66 42 L51 38 C60 32 55 26 58 16 Z',
+                    'M30 78 C36 70 33 64 42 60 L58 66 C62 70 58 73 60 80 C52 91 34 89 30 78 Z'];
+    const lines = [outline].concat(creases).map(function(d) {
+        const el = document.createElementNS(NS, 'path');
+        el.setAttribute('d', d);
+        svg.appendChild(el);
+        const pts = [], len = el.getTotalLength();
+        for (let l = 0; l <= len; l += 0.7) pts.push(el.getPointAtLength(l));
+        return pts;
+    });
+    svg.remove();
+    // the paper and its two shaded facets, with hard edges (flat tones only)
+    const base = document.createElement('canvas');
+    base.width = base.height = 96;
+    const bctx = base.getContext('2d');
+    bctx.fillStyle = '#fff';
+    bctx.fill(new Path2D(outline));
+    bctx.fillStyle = '#e3e3de';
+    facets.forEach(function(d) { bctx.fill(new Path2D(d)); });
+    const img = bctx.getImageData(0, 0, 96, 96);
+    for (let i = 3; i < img.data.length; i += 4) img.data[i] = img.data[i] > 127 ? 255 : 0;
+    bctx.putImageData(img, 0, 0);
+    let f = 0, turn = 0, size = 1.3, loose = true;        // it first appears a little bigger and looser
+    const pose = function() { c.style.transform = 'rotate(' + turn + 'deg) scale(' + size + ')'; };
+    pose();
+    const draw = function() {
+        ctx.clearRect(0, 0, 96, 96);
+        ctx.drawImage(base, 0, 0);
+        ctx.fillStyle = '#000';
+        // a loose wad has fewer creases pressed into it
+        (loose ? lines.slice(0, 4) : lines).forEach(function(pts, n) {
+            for (let i = 0; i < pts.length; i++) {
+                const kx = Math.round(0.8 * Math.sin(i * 0.05 + f * 2.1 + n) + 0.3 * Math.sin(i * 0.13 + f * 4.7));
+                const ky = Math.round(0.8 * Math.sin(i * 0.045 + f * 3.3 + 1.7 + n) + 0.3 * Math.sin(i * 0.16 + f * 1.9));
+                ctx.fillRect(Math.round(pts[i].x) + kx - 1, Math.round(pts[i].y) + ky - 1, 2, 2);
+            }
+        });
+    };
+    draw();
+    const boil = setInterval(function() { f = (f + 1) % 3; draw(); }, 110);
+    // tighten or loosen in two held frames
+    const squeeze = function(sizes, endLoose, done) {
+        let n = 0;
+        const step = function() {
+            size = sizes[n];
+            loose = n < sizes.length - 1 ? loose : endLoose;
+            if (!endLoose && n === 1) loose = false;
+            if (endLoose && n === 0) loose = true;
+            pose();
+            draw();
+            n++;
+            if (n < sizes.length) setTimeout(step, 58);
+            else setTimeout(done, 58);
+        };
+        step();
+    };
+    return {
+        // just taken over from the crumpled sheet: press the loose wad into a tight ball
+        tighten: function(done) { squeeze([1.3, 1.14, 1], false, done); },
+        // about to be opened: the ball loosens first, so the sheet can take over from it
+        loosen: function(done) { squeeze([1.12, 1.3], true, done); },
+        // a short hop in held frames: up and across, then down onto the spot
+        hop: function(to, done) {
+            const lift = [0, -18, -26, -20, 0], steps = lift.length;
+            let n = 0;
+            const t = setInterval(function() {
+                n++;
+                const q = n / (steps - 1);
+                c.style.left = (at[0] + (to[0] - at[0]) * q) + 'px';
+                c.style.top = (at[1] + (to[1] - at[1]) * q + lift[Math.min(n, steps - 1)]) + 'px';
+                turn = n * 38;
+                pose();
+                if (n >= steps - 1) { clearInterval(t); setTimeout(done, 110); }
+            }, 70);
+        },
+        remove: function() { clearInterval(boil); c.remove(); }
+    };
+}
+
+// "thinking" in the bio is a link. To hint at that, its letters are rubbed out one by one from the
+// end and then written back from the start, every few seconds, in held steps. The word keeps its
+// width the whole time, so nothing around it moves.
+(function() {
+    const word = document.querySelector('.think-word');
+    if (!word || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const text = word.textContent;
+    word.setAttribute('aria-label', text);
+    word.textContent = '';
+    const letters = text.split('').map(function(ch) {
+        const sp = document.createElement('span');
+        sp.textContent = ch;
+        sp.setAttribute('aria-hidden', 'true');
+        word.appendChild(sp);
+        return sp;
+    });
+    let busy = false;
+    const run = function() {
+        // not while the intro is playing or the page is in the background
+        if (busy || document.hidden || document.documentElement.classList.contains('intro')) return;
+        busy = true;
+        let n = letters.length;
+        const erase = setInterval(function() {
+            n--;
+            letters[n].classList.add('is-out');
+            if (n > 0) return;
+            clearInterval(erase);
+            setTimeout(function() {
+                const write = setInterval(function() {
+                    letters[n].classList.remove('is-out');
+                    n++;
+                    if (n < letters.length) return;
+                    clearInterval(write);
+                    busy = false;
+                }, 85);
+            }, 520);
+        }, 60);
+    };
+    setTimeout(run, 2600);
+    setInterval(run, 5200);
+})();
 
 // Coming back through the browser's back/forward cache: restart the preview cleanly
 window.addEventListener('pageshow', function(event) {
@@ -2443,22 +2895,134 @@ window.addEventListener('pageshow', function(event) {
 (function() {
     const intro = document.getElementById('intro');
     if (!intro || !document.documentElement.classList.contains('intro')) return;
-    try { sessionStorage.setItem('intro-seen', '1'); } catch (e) {}
-    const done = function() { document.documentElement.classList.remove('intro'); };
-    const leave = function() {
-        if (intro.classList.contains('is-leaving')) return;
-        intro.classList.add('is-leaving');
-        setTimeout(done, 420);
+    const root = document.documentElement;
+    const greet = [
+        { lang: 'ko', hello: '안녕하세요,', pre: '저는 ', name: '저스틴', post: '입니다', at: 950 },
+        { lang: 'en', hello: 'Hello,', pre: "I'm ", name: 'Justin', post: '', at: 1800 }
+    ];
+    const parts = {
+        hello: document.getElementById('intro-hello'), pre: document.getElementById('intro-pre'),
+        name: document.getElementById('intro-name'), post: document.getElementById('intro-post')
     };
-    // "line boil": the drawing re-wobbles a few times a second, like frames of a hand-drawn loop
-    const ink = document.getElementById('intro-ink');
-    let frame = 0;
-    const boil = setInterval(function() {
-        if (!document.documentElement.classList.contains('intro')) return clearInterval(boil);
-        frame = (frame + 1) % 3;
-        ink.setAttribute('filter', 'url(#intro-boil-' + frame + ')');
-    }, 130);
-    setTimeout(leave, 2700);
+    const setGreeting = function(g) {
+        Object.keys(parts).forEach(function(k) {
+            parts[k].textContent = g[k];
+            parts[k].lang = g.lang;
+            parts[k].style.opacity = '';
+        });
+    };
+    const done = function() { root.classList.remove('intro', 'intro-landing'); };
+    let left = false;
+    const leave = function() {
+        if (left) return;
+        left = true;
+        setGreeting(greet[1]);   // always land from the English line, even when skipped early
+        // Where the two pieces land: the name in the sidebar, and the highlight under the current project
+        const nameEl = document.querySelector('.name-link');
+        const linkEl = document.querySelector('.project-list li.active a') || document.querySelector('.project-list li a');
+        const flyName = document.getElementById('intro-name');
+        const flyMark = document.getElementById('intro-canvas');
+        const inView = function(r) { return r.width > 0 && r.top >= 0 && r.bottom <= innerHeight && r.left >= 0 && r.right <= innerWidth; };
+        const n = nameEl && nameEl.getBoundingClientRect();
+        const l = linkEl && linkEl.getBoundingClientRect();
+        if (!n || !l || !inView(n) || !inView(l) || document.body.classList.contains('collapsed')) {
+            // no clear landing spot (small screens, grid view): plain fade
+            intro.classList.add('is-leaving');
+            return setTimeout(done, 420);
+        }
+        const from = flyName.getBoundingClientRect();
+        const stage = flyMark.getBoundingClientRect();
+        const mark = { x: 73, y: 120, w: 158, h: 61 };            // the green shape inside the 300px canvas
+        const target = { x: l.left, y: l.bottom + 1 - 8, w: l.width, h: 8 };
+        const sx = target.w / mark.w, sy = target.h / mark.h;
+        root.classList.add('intro-landing');
+        requestAnimationFrame(function() {
+            flyName.style.transform = 'translate(' + (n.left - from.left) + 'px,' + (n.top - from.top) + 'px)';
+            flyMark.style.transform = 'translate(' + (target.x - stage.left - mark.x * sx) + 'px,' + (target.y - stage.top - mark.y * sy) + 'px) scale(' + sx + ',' + sy + ')';
+        });
+        // set the transforms even if frames are not being painted (background tab)
+        setTimeout(function() {
+            if (!flyName.style.transform) {
+                flyName.style.transform = 'translate(' + (n.left - from.left) + 'px,' + (n.top - from.top) + 'px)';
+                flyMark.style.transform = 'translate(' + (target.x - stage.left - mark.x * sx) + 'px,' + (target.y - stage.top - mark.y * sy) + 'px) scale(' + sx + ',' + sy + ')';
+            }
+        }, 60);
+        setTimeout(done, 900);
+    };
+    // The box: a 2px black pixel line, the same weight and hard edge as the cursor's outline.
+    // It is stamped as small squares along the path, and re-stamped a few times a second with the
+    // squares nudged by a pixel, like the frames of a hand-drawn GIF.
+    const boxPath = document.getElementById('intro-path-box');
+    const bctx = document.getElementById('intro-box-canvas').getContext('2d');
+    const boxLen = boxPath.getTotalLength();
+    const boxPts = [];
+    for (let l = 0; l <= boxLen; l += 0.7) boxPts.push(boxPath.getPointAtLength(l));
+    const wob = function(i, f) {
+        return [Math.round(1.1 * Math.sin(i * 0.035 + f * 2.1) + 0.5 * Math.sin(i * 0.09 + f * 4.7)),
+                Math.round(1.1 * Math.sin(i * 0.03 + f * 3.3 + 1.7) + 0.5 * Math.sin(i * 0.12 + f * 1.9))];
+    };
+    const penEase = function(t) { return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2; };
+    const boxStart = performance.now();
+    let boxKey = '';
+    const boxTick = setInterval(function() {
+        if (!root.classList.contains('intro')) return clearInterval(boxTick);
+        const now = performance.now() - boxStart;
+        const upto = Math.round(penEase(Math.min(1, Math.max(0, (now - 300) / 1350))) * boxPts.length);
+        const f = Math.floor(now / 140) % 3;
+        if (f + '|' + upto === boxKey) return;
+        boxKey = f + '|' + upto;
+        bctx.clearRect(0, 0, 300, 300);
+        bctx.fillStyle = '#000';
+        for (let i = 0; i < upto; i++) {
+            const w = wob(i, f);
+            bctx.fillRect(Math.round(boxPts[i].x) + w[0] - 1, Math.round(boxPts[i].y) + w[1] - 1, 2, 2);
+        }
+    }, 16);
+    // Highlighter mark in the cursor's hand: one solid green shape with a rough, hard pixel edge,
+    // swiped in from left to right once the box is drawn.
+    const canvas = document.getElementById('intro-canvas');
+    const markPath = document.getElementById('intro-path-mark');
+    const art = document.createElement('canvas');
+    art.width = art.height = 300;
+    const actx = art.getContext('2d');
+    const d = markPath.getAttribute('d');
+    actx.fillStyle = '#00ff88';
+    actx.fill(new Path2D(d));
+    // no outline: the edge itself is rough. Stamp green squares of uneven size, nudged in and out
+    // along the outline, then harden every soft pixel so the whole mark is one hard-edged shape.
+    let seed = 7;
+    const rnd = function() { seed = (seed * 16807) % 2147483647; return seed / 2147483647; };
+    const len = markPath.getTotalLength();
+    for (let l = 0; l <= len; l += 1.4) {
+        const pt = markPath.getPointAtLength(l);
+        const size = 2 + Math.floor(rnd() * 3);
+        const dx = Math.round((rnd() - 0.5) * 4), dy = Math.round((rnd() - 0.5) * 4);
+        actx.fillRect(Math.round(pt.x) + dx - 1, Math.round(pt.y) + dy - 1, size, size);
+    }
+    const img = actx.getImageData(0, 0, 300, 300);
+    for (let i = 3; i < img.data.length; i += 4) img.data[i] = img.data[i] > 127 ? 255 : 0;
+    actx.putImageData(img, 0, 0);
+    const ctx = canvas.getContext('2d');
+    const x0 = 66, x1 = 236, from = 1700, dur = 420, t0 = performance.now();
+    const swipe = setInterval(function() {
+        const t = Math.min(1, Math.max(0, (performance.now() - t0 - from) / dur));
+        const w = Math.round((x1 - x0) * (1 - Math.pow(1 - t, 2)));
+        if (w > 0) {
+            ctx.clearRect(0, 0, 300, 300);
+            ctx.drawImage(art, x0, 0, w, 300, x0, 0, w, 300);
+        }
+        if (t >= 1 || !document.documentElement.classList.contains('intro')) clearInterval(swipe);
+    }, 16);
+    // Greeting: Chinese, then Korean, then English, each with the name written in that language.
+    // The English "Justin" is the piece that travels to the sidebar at the end.
+    greet.slice(0, 2).forEach(function(g) {
+        setTimeout(function() {
+            if (left) return;
+            Object.keys(parts).forEach(function(k) { parts[k].style.opacity = '0'; });
+            setTimeout(function() { if (!left) setGreeting(g); }, 120);
+        }, g.at);
+    });
+    setTimeout(leave, 3000);
     intro.addEventListener('click', leave);
 })();
 

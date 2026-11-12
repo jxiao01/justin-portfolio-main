@@ -28,3 +28,17 @@ input,
 textarea {
     cursor: text;
 }
+
+/* Feedback: the cursor shrinks a little while the mouse is down, and the hand "taps" once when it
+   arrives on something clickable. motion.js toggles the class. */
+html.cursor-press {
+    --cursor-dot: url(/cursor/arrow-press.png) 8 8, default;
+    --cursor-link: url(/cursor/hand-press.png) 7 7, pointer;
+}
+
+@supports (cursor: image-set(url(/cursor/arrow.png) 1x, url(/cursor/arrow@2x.png) 2x) 8 8, default) {
+    html.cursor-press {
+        --cursor-dot: image-set(url(/cursor/arrow-press.png) 1x, url(/cursor/arrow-press@2x.png) 2x) 8 8, default;
+        --cursor-link: image-set(url(/cursor/hand-press.png) 1x, url(/cursor/hand-press@2x.png) 2x) 7 7, pointer;
+    }
+}
