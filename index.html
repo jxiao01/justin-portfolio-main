@@ -848,7 +848,8 @@
             display: block; /* 确保作为容器显示 */
         }
 
-        .project-image-container img {
+        .project-image-container img,
+        .project-image-container video {
             position: absolute;
             top: 0;
             left: 0;
@@ -1640,7 +1641,7 @@
                 <div class="project-carousel">
                         <div class="project-image blinkko-cover-wrap" role="img" aria-label="Blinkko">
                         <div class="blinkko-cover">
-                            <img class="bc-photo" src="projects/blinkko/shoulder-opt.webp" alt="">
+                            <img fetchpriority="high" class="bc-photo" src="projects/blinkko/shoulder-opt.webp" alt="">
                             <div class="bc-phones">
                                 <img src="projects/blinkko/ui-home-v3.png" alt="">
                                 <img src="projects/blinkko/app-map-opt.webp" alt="">
@@ -1656,7 +1657,7 @@
                         </div>
                         <div class="project-image project-image-container greentopia-image">
                             <img src="greentopia-01-opt.webp" alt="Greentopia" class="static-img">
-                            <img data-src="greentopia-opt.webp" alt="Greentopia" class="hover-gif">
+                            <video data-src="greentopia-hover.mp4" aria-label="Greentopia" class="hover-gif" loop muted playsinline preload="none"></video>
                         </div>
                     <img src="13-opt.webp" alt="Lumimoria" class="project-image">
                         <img src="the little food book-01-opt.webp" alt="The Little Food Book" class="project-image">
@@ -1669,64 +1670,64 @@
             <div class="project-grid">
                 <a href="projects/blinkko/index.html" class="project-item">
                     <div class="blinkko-cover" role="img" aria-label="Blinkko">
-                            <img class="bc-photo" src="projects/blinkko/shoulder-opt.webp" alt="">
+                            <img loading="lazy" class="bc-photo" src="projects/blinkko/shoulder-opt.webp" alt="">
                             <div class="bc-phones">
-                                <img src="projects/blinkko/ui-home-v3.png" alt="">
-                                <img src="projects/blinkko/app-map-opt.webp" alt="">
+                                <img loading="lazy" src="projects/blinkko/ui-home-v3.png" alt="">
+                                <img loading="lazy" src="projects/blinkko/app-map-opt.webp" alt="">
                             </div>
                         </div>
                 </a>
                 
                 <a href="projects/toy-r-us/index.html" class="project-item">
-                    <img decoding="async" src="projects/toy-r-us/book-cover-opt.webp" alt="TOY R US">
+                    <img loading="lazy" decoding="async" src="projects/toy-r-us/book-cover-opt.webp" alt="TOY R US">
                 </a>
                 
                 <a href="projects/prototype/index.html" class="project-item">
-                    <img decoding="async" src="projects/prototype/prototype-01.svg" alt="Prototype Festival">
+                    <img loading="lazy" decoding="async" src="projects/prototype/prototype-01.svg" alt="Prototype Festival">
                 </a>
                 
                 <a href="projects/clostra-son-jon-mustair/index.html" class="project-item">
-                    <img decoding="async" src="mustair.png" alt="Clostra Son Jon Müstair">
+                    <img loading="lazy" decoding="async" src="mustair.png" alt="Clostra Son Jon Müstair">
                 </a>
                 
                 <a href="projects/symposium-2025/index.html" class="project-item">
-                    <img decoding="async" src="symposium-01.webp" alt="Symposium 2025">
+                    <img loading="lazy" decoding="async" src="symposium-01.webp" alt="Symposium 2025">
                 </a>
                 
                 <a href="projects/greentopia/index.html" class="project-item">
-                    <img decoding="async" src="greentopia-01-opt.webp" alt="Greentopia">
+                    <img loading="lazy" decoding="async" src="greentopia-01-opt.webp" alt="Greentopia">
                 </a>
                 
                 <a href="projects/lumimoria/index.html" class="project-item lumimoria-item">
-                    <img decoding="async" src="13-opt.webp" alt="Lumimoria">
+                    <img loading="lazy" decoding="async" src="13-opt.webp" alt="Lumimoria">
                 </a>
                 
                 <a href="projects/the-little-food-book/index.html" class="project-item">
-                    <img decoding="async" src="the little food book-01-opt.webp" alt="The Little Food Book">
+                    <img loading="lazy" decoding="async" src="the little food book-01-opt.webp" alt="The Little Food Book">
                 </a>
                 
                 <a href="projects/sewing-machine/index.html" class="project-item">
-                    <img decoding="async" src="sewing machine main.webp" alt="......sewing machine???">
+                    <img loading="lazy" decoding="async" src="sewing machine main.webp" alt="......sewing machine???">
                 </a>
                 
                 <a href="projects/wayfinding/index.html" class="project-item">
                     <div class="project9-carousel">
-                        <img src="wayfinding-01-opt.webp" alt="Wayfinding" class="carousel-image active">
-                        <img src="wayfinding-02.webp" alt="Wayfinding" class="carousel-image">
-                        <img src="wayfinding-03.webp" alt="Wayfinding" class="carousel-image">
-                        <img src="wayfinding-04.webp" alt="Wayfinding" class="carousel-image">
+                        <img loading="lazy" src="wayfinding-01-opt.webp" alt="Wayfinding" class="carousel-image active">
+                        <img loading="lazy" src="wayfinding-02.webp" alt="Wayfinding" class="carousel-image">
+                        <img loading="lazy" src="wayfinding-03.webp" alt="Wayfinding" class="carousel-image">
+                        <img loading="lazy" src="wayfinding-04.webp" alt="Wayfinding" class="carousel-image">
                     </div>
                 </a>
                 
                 <div class="project-item">
-                    <img src="xiaohongshu-opt.webp" alt="Intern">
+                    <img loading="lazy" src="xiaohongshu-opt.webp" alt="Intern">
                 </div>
                 <div class="project-item contain-item">
-                    <img decoding="async" src="interview-01-opt.webp" alt="Interview with Muon Studio">
+                    <img loading="lazy" decoding="async" src="interview-01-opt.webp" alt="Interview with Muon Studio">
                 </div>
                 
                 <div class="project-item railroad-item">
-                    <img src="country data-opt.webp" alt="Country Data">
+                    <img loading="lazy" src="country data-opt.webp" alt="Country Data">
                 </div>
             </div>
         </main>
@@ -2354,7 +2355,19 @@ document.addEventListener('DOMContentLoaded', function() {
             img.src = img.dataset.src;
             img.removeAttribute('data-src');
         });
+        wrapper.querySelectorAll('.project-image-container.active video.hover-gif').forEach(function(v) {
+            v.play().catch(function() {});
+        });
     });
+});
+
+// The grid is hidden at first: fetch its images only after the first view has finished loading
+window.addEventListener('load', function() {
+    setTimeout(function() {
+        document.querySelectorAll('.project-grid img[loading="lazy"]').forEach(function(img) {
+            img.loading = 'eager';
+        });
+    }, 300);
 });
 
 // Click-to-zoom (single-image) modal

@@ -405,8 +405,8 @@
                 <img width="1728" height="1117" loading="lazy" decoding="async" src="greentopia-03-opt.webp" alt="Greentopia" style="width: 100%; display: block;">
                 <img width="2400" height="1600" loading="lazy" decoding="async" src="greentopia-07-opt.webp" alt="Greentopia" style="width: 100%; display: block; margin: 0; padding: 0;">
                 <img width="1500" height="1000" loading="lazy" decoding="async" src="greentopia-04-opt.webp" alt="Greentopia" style="width: 100%; display: block; margin: -1px 0 0 0; padding: 0;">
-                <img width="1200" height="676" loading="lazy" decoding="async" src="1-opt.webp" alt="Greentopia" style="width: 100%; display: block; margin: 0; padding: 0;">
-                <video src="website-opt.mp4" alt="Greentopia Website" style="width: 100%; display: block; margin: 0; padding: 0;" autoplay loop muted playsinline></video>
+                <video src="1-web.mp4" poster="1-poster.jpg" width="1200" height="676" aria-label="Greentopia" style="width: 100%; height: auto; display: block; margin: 0; padding: 0;" data-lazy preload="none" loop muted playsinline></video>
+                <video src="website-opt.mp4" alt="Greentopia Website" style="width: 100%; display: block; margin: 0; padding: 0;" data-lazy preload="metadata" loop muted playsinline></video>
                 <div style="width: 100%; margin-top: 40px;">
                     <div style="display: flex; gap: 20px; width: 100%;">
                         <div style="flex: 1;">
@@ -559,6 +559,16 @@
                 nextBtn.classList.add('disabled');
                 nextBtn.href = '#';
             }
+        })();
+    </script>
+    <script>
+        // Load and play videos only when they are near the viewport
+        (() => {
+            const io = new IntersectionObserver(entries => entries.forEach(e => {
+                if (e.isIntersecting) e.target.play().catch(() => {});
+                else e.target.pause();
+            }), { rootMargin: '300px 0px' });
+            document.querySelectorAll('video[data-lazy]').forEach(v => io.observe(v));
         })();
     </script>
 </body>
