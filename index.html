@@ -11,6 +11,15 @@
     <link rel="icon" type="image/svg+xml" sizes="32x32" href="favicon-green-square.svg">
     <link rel="icon" type="image/svg+xml" sizes="16x16" href="favicon-green-square.svg">
     <link rel="stylesheet" href="fonts/fonts.css">
+    <link rel="stylesheet" href="cursor/cursor.css">
+    <script>
+        // Intro: plays once per browser tab, never for visitors who prefer reduced motion
+        try {
+            if (!sessionStorage.getItem('intro-seen') && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.documentElement.classList.add('intro');
+            }
+        } catch (e) {}
+    </script>
     <style>
         * {
             margin: 0;
@@ -24,6 +33,75 @@
             line-height: 1.4;
             color: #000;
             background-color: #fff;
+        }
+
+        /* Intro: a box doodled by hand around the name, then a highlighter scribble behind it */
+        .intro-screen {
+            display: none;
+        }
+
+        html.intro .intro-screen {
+            display: flex;
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            background: #fff;
+            transition: opacity 0.4s ease;
+        }
+
+        html.intro .intro-screen.is-leaving {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .intro-stage {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .intro-stage p {
+            position: relative;
+            font-size: 12.4px;
+            line-height: 1.35;
+            text-align: center;
+            opacity: 0;
+            animation: intro-text 0.35s ease 0.1s forwards;
+        }
+
+        .intro-stage svg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            overflow: visible;
+        }
+
+        .intro-line {
+            stroke-dasharray: 100 100;
+            stroke-dashoffset: 100;
+        }
+
+        /* uneven easing so the pen speeds up on the straights and slows into the corners */
+        .intro-box {
+            animation: intro-draw 1.35s cubic-bezier(0.45, 0.05, 0.3, 1) 0.3s forwards;
+        }
+
+        .intro-mark {
+            animation: intro-draw 0.42s cubic-bezier(0.3, 0, 0.6, 1) 1.7s forwards;
+        }
+
+        @keyframes intro-draw {
+            to { stroke-dashoffset: 0; }
+        }
+
+        @keyframes intro-text {
+            to { opacity: 1; }
         }
 
         body::-webkit-scrollbar {
@@ -48,7 +126,7 @@
         h1 a {
             color: #000;
             text-decoration: none;
-            cursor: pointer;
+            cursor: var(--cursor-link, pointer);
         }
 
         h1 a:hover {
@@ -183,7 +261,7 @@
         a {
             color: #000;
             text-decoration: none;
-            cursor: pointer;
+            cursor: var(--cursor-link, pointer);
         }
 
         a:hover {
@@ -289,7 +367,7 @@
             background: none;
             border: none;
             color: #000;
-            cursor: pointer;
+            cursor: var(--cursor-link, pointer);
             font-size: 10.4px;
             padding: 3px 0;
             font-style: italic;
@@ -480,7 +558,7 @@
 
         .project-item {
             display: block;
-            cursor: pointer;
+            cursor: var(--cursor-link, pointer);
             overflow: hidden;
             aspect-ratio: 3/2;
             position: relative;
@@ -493,7 +571,7 @@
         }
 
         .project-item:not(a) {
-            cursor: default;
+            cursor: var(--cursor-dot, default);
         }
 
         body.collapsed .project-item {
@@ -683,7 +761,7 @@
             border: 1px solid #000;
             padding: 8px 16px;
             font-size: 10.4px;
-            cursor: pointer;
+            cursor: var(--cursor-link, pointer);
             transition: all 0.3s ease;
             user-select: none;
             border-radius: 0;
@@ -759,7 +837,7 @@
         }
         
         .project-preview-wrapper[style*="pointer"] {
-            cursor: pointer;
+            cursor: var(--cursor-link, pointer);
         }
 
         .project-preview-wrapper.show {
@@ -1515,7 +1593,7 @@
             background: #fff;
             border: 1px solid #000;
             color: #000;
-            cursor: pointer;
+            cursor: var(--cursor-link, pointer);
             font-size: 20px;
             line-height: 40px;
             text-align: center;
@@ -1552,6 +1630,23 @@
     <script src="no-copy.js"></script>
 </head>
 <body>
+
+    <div class="intro-screen" id="intro" aria-hidden="true">
+        <div class="intro-stage">
+            <svg viewBox="0 0 300 300" fill="none">
+                <defs>
+                    <filter id="intro-boil-0" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="3"/><feDisplacementMap in="SourceGraphic" scale="2.6"/></filter>
+                    <filter id="intro-boil-1" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="8"/><feDisplacementMap in="SourceGraphic" scale="2.6"/></filter>
+                    <filter id="intro-boil-2" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="15"/><feDisplacementMap in="SourceGraphic" scale="2.6"/></filter>
+                </defs>
+                <g id="intro-ink" filter="url(#intro-boil-0)" stroke-linecap="round" stroke-linejoin="round">
+                    <path class="intro-line intro-mark" pathLength="100" d="M88.0 147.0 L91.8 137.9 L102.8 163.5 L110.3 140.0 L115.9 159.6 L124.1 136.9 L134.8 160.5 L143.4 138.4 L152.3 162.7 L155.8 137.5 L168.6 160.8 L177.3 138.5 L181.0 161.6 L192.8 137.8 L197.7 160.2 L210.3 140.3 L214.0 152.0" stroke="#00ff88" stroke-width="7.5"/>
+                    <path class="intro-line intro-box" pathLength="100" d="M77.7 104.2 C80.5 104.1 88.8 103.9 94.5 103.6 C100.1 103.4 105.8 103.1 111.5 102.8 C117.1 102.5 122.9 102.1 128.6 101.8 C134.4 101.6 140.1 101.3 145.9 101.0 C151.7 100.8 157.4 100.7 163.2 100.5 C169.0 100.4 174.9 100.4 180.8 100.3 C186.8 100.2 192.8 100.1 198.9 100.0 C204.9 99.9 211.1 99.7 217.1 99.7 C223.1 99.7 230.1 98.7 234.7 100.0 C239.4 101.3 242.3 104.4 244.8 107.6 C247.4 110.8 249.4 114.4 250.2 119.1 C251.0 123.8 249.7 130.2 249.5 135.7 C249.2 141.3 248.9 146.7 248.6 152.3 C248.3 157.8 248.2 163.5 247.9 169.0 C247.5 174.4 248.0 180.7 246.4 185.0 C244.8 189.2 241.8 191.9 238.4 194.3 C235.0 196.6 231.0 198.3 226.0 199.0 C221.0 199.7 214.4 198.7 208.6 198.6 C202.8 198.5 197.1 198.4 191.3 198.3 C185.5 198.2 179.7 198.1 173.9 198.1 C168.1 198.1 162.4 198.2 156.6 198.3 C150.9 198.5 145.2 198.8 139.5 199.1 C133.8 199.4 128.1 199.7 122.4 200.0 C116.7 200.3 111.1 200.6 105.4 200.8 C99.7 200.9 94.0 201.0 88.3 201.0 C82.5 201.0 75.6 201.9 70.9 200.6 C66.1 199.3 62.9 196.2 59.7 193.1 C56.6 189.9 53.5 186.6 52.2 181.7 C50.8 176.9 51.7 169.7 51.5 163.8 C51.3 157.8 51.2 152.0 51.2 146.2 C51.2 140.5 51.3 134.8 51.4 129.1 C51.5 123.5 50.6 116.7 52.1 112.3 C53.5 107.9 56.8 105.3 60.1 102.7 C63.4 100.1 67.0 97.8 71.8 96.8 C76.7 95.8 83.4 96.7 89.2 96.7 C95.0 96.7 100.8 96.6 106.6 96.5 C112.4 96.5 118.3 96.4 124.1 96.4 C130.0 96.4 135.9 96.3 141.8 96.3 C147.8 96.2 153.7 96.1 159.6 96.1 C165.6 96.0 171.5 95.9 177.4 95.8 C183.4 95.7 189.4 95.5 195.4 95.4 C201.5 95.2 207.6 94.9 213.7 94.7 C219.9 94.4 227.1 93.1 232.3 93.9 C237.4 94.8 241.2 97.0 244.4 99.7 C247.7 102.4 250.8 105.4 252.0 110.3 C253.2 115.1 252.0 122.4 251.8 128.6 C251.6 134.8 251.3 141.1 250.9 147.4 C250.6 153.8 250.1 160.2 249.8 166.6 C249.5 172.9 250.1 180.4 248.9 185.7 C247.6 190.9 245.1 194.7 242.2 198.0 C239.3 201.3 236.1 204.1 231.3 205.3 C226.5 206.6 219.4 205.4 213.4 205.5 C207.5 205.5 201.5 205.5 195.5 205.6 C189.5 205.6 183.5 205.6 177.4 205.6 C171.4 205.6 165.3 205.6 159.1 205.7 C153.0 205.8 146.8 205.9 140.5 206.0 C134.3 206.2 128.0 206.5 121.7 206.7 C115.4 207.0 109.0 207.3 102.8 207.5 C96.5 207.8 90.2 208.0 84.0 208.2 C77.7 208.3 70.5 209.4 65.4 208.4 C60.4 207.4 56.6 205.1 53.5 202.1 C50.5 199.2 47.9 196.0 47.1 190.9 C46.2 185.9 48.1 178.2 48.6 171.9 C49.1 165.5 49.6 159.2 49.9 153.0 C50.3 146.7 50.4 140.6 50.6 134.4 C50.7 128.3 49.7 121.4 50.6 116.3 C51.5 111.1 53.3 107.1 55.9 103.7 C58.4 100.2 61.2 97.1 65.8 95.8 C70.4 94.5 77.6 95.7 83.6 95.7 C89.5 95.7 95.8 95.9 101.7 95.9 C107.7 95.9 113.7 95.9 119.5 95.8 C125.3 95.8 131.0 95.7 136.6 95.6 C142.3 95.5 150.7 95.3 153.5 95.3" stroke="#000" stroke-width="1.25"/>
+                </g>
+            </svg>
+            <p>Xiao Jinhang,<br>portfolio 2026.</p>
+        </div>
+    </div>
     <div class="view-toggle-btn back-to-auto" id="back-to-auto">Back to Main</div>
     <div class="view-toggle-btn switch-to-grid" id="switch-to-grid">View All Projects</div>
     
@@ -1951,11 +2046,11 @@ function startAutoScroll() {
                 );
                 
                 if (isNonClickable) {
-                    previewWrapper.style.cursor = 'default';
+                    previewWrapper.style.cursor = '';
                     previewWrapper.onclick = null;
                     previewWrapper.style.pointerEvents = 'none';
                 } else {
-                    previewWrapper.style.cursor = 'pointer';
+                    previewWrapper.style.cursor = 'var(--cursor-link, pointer)';
                     previewWrapper.style.pointerEvents = 'auto';
                     previewWrapper.onclick = function(e) {
                         e.preventDefault();
@@ -2145,11 +2240,11 @@ function setupManualHover() {
                     );
                     
                     if (isNonClickable) {
-                        previewWrapper.style.cursor = 'default';
+                        previewWrapper.style.cursor = '';
                         previewWrapper.onclick = null;
                         previewWrapper.style.pointerEvents = 'none';
                     } else {
-                        previewWrapper.style.cursor = 'pointer';
+                        previewWrapper.style.cursor = 'var(--cursor-link, pointer)';
                         previewWrapper.style.pointerEvents = 'auto';
                         previewWrapper.onclick = function(e) {
                             e.preventDefault();
@@ -2343,6 +2438,29 @@ window.addEventListener('pageshow', function(event) {
         startAutoScroll();
     }
 });
+
+// Intro: timers (not animation events) end it, so it can never get stuck on screen
+(function() {
+    const intro = document.getElementById('intro');
+    if (!intro || !document.documentElement.classList.contains('intro')) return;
+    try { sessionStorage.setItem('intro-seen', '1'); } catch (e) {}
+    const done = function() { document.documentElement.classList.remove('intro'); };
+    const leave = function() {
+        if (intro.classList.contains('is-leaving')) return;
+        intro.classList.add('is-leaving');
+        setTimeout(done, 420);
+    };
+    // "line boil": the drawing re-wobbles a few times a second, like frames of a hand-drawn loop
+    const ink = document.getElementById('intro-ink');
+    let frame = 0;
+    const boil = setInterval(function() {
+        if (!document.documentElement.classList.contains('intro')) return clearInterval(boil);
+        frame = (frame + 1) % 3;
+        ink.setAttribute('filter', 'url(#intro-boil-' + frame + ')');
+    }, 130);
+    setTimeout(leave, 2700);
+    intro.addEventListener('click', leave);
+})();
 
 // Hover GIFs are heavy: fetch them the first time the preview is hovered
 document.addEventListener('DOMContentLoaded', function() {

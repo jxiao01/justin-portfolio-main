@@ -11,6 +11,7 @@
     <link rel="icon" type="image/svg+xml" sizes="32x32" href="../../favicon-green-square.svg">
     <link rel="icon" type="image/svg+xml" sizes="16x16" href="../../favicon-green-square.svg">
     <link rel="stylesheet" href="../../fonts/fonts.css">
+    <link rel="stylesheet" href="../../cursor/cursor.css">
     <style>
         * {
             margin: 0;
@@ -48,7 +49,7 @@
         h1 a {
             color: #000;
             text-decoration: none;
-            cursor: pointer;
+            cursor: var(--cursor-link, pointer);
         }
 
         h1 a:hover {
@@ -58,7 +59,7 @@
         a {
             color: #000;
             text-decoration: none;
-            cursor: pointer;
+            cursor: var(--cursor-link, pointer);
         }
 
         a:hover {
@@ -235,7 +236,7 @@
             text-decoration: none;
             color: #000;
             position: relative;
-            cursor: pointer;
+            cursor: var(--cursor-link, pointer);
             transition: all 0.3s ease;
         }
 

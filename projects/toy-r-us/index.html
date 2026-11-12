@@ -11,6 +11,7 @@
     <link rel="icon" type="image/svg+xml" sizes="32x32" href="../../favicon-green-square.svg">
     <link rel="icon" type="image/svg+xml" sizes="16x16" href="../../favicon-green-square.svg">
     <link rel="stylesheet" href="../../fonts/fonts.css">
+    <link rel="stylesheet" href="../../cursor/cursor.css">
     <style>
         * {
             margin: 0;
@@ -50,7 +51,7 @@
         h1 a {
             color: #000;
             text-decoration: none;
-            cursor: pointer;
+            cursor: var(--cursor-link, pointer);
         }
 
         h1 a:hover {
@@ -60,7 +61,7 @@
         a {
             color: #000;
             text-decoration: none;
-            cursor: pointer;
+            cursor: var(--cursor-link, pointer);
         }
 
         a:hover {
@@ -560,7 +561,7 @@
             text-decoration: none;
             color: #000;
             position: relative;
-            cursor: pointer;
+            cursor: var(--cursor-link, pointer);
             transition: all 0.3s ease;
         }
 
@@ -808,7 +809,7 @@
         }
         @media (max-width: 480px) { .spines { grid-template-columns: 1fr; } }
 
-        .content .project-images > .figma-magnification { opacity:1; transform:none; padding:0; margin:28px 0; cursor:pointer; }
+        .content .project-images > .figma-magnification { opacity:1; transform:none; padding:0; margin:28px 0; cursor:var(--cursor-link, pointer); }
         #lego-magnifier [data-node-id="361:1287"],
         #lego-magnifier [data-node-id="366:1287"] { display:none; }
         .lego-notes { display:none; }
@@ -830,7 +831,7 @@
         #lego-magnifier[data-medium="pentomino"] [data-scene="pentomino"],
         #lego-magnifier[data-medium="magna"] [data-scene="magna"] { display:block; }
         #lego-magnifier:not([data-medium="lego"]) .lego-only { display:none; }
-        .medium-hit { position:absolute; padding:0; border:0; background:none; cursor:pointer; }
+        .medium-hit { position:absolute; padding:0; border:0; background:none; cursor:var(--cursor-link, pointer); }
         .medium-hit:focus-visible { outline:1px solid #111; outline-offset:2px; }
         .medium-icon { position:absolute; inset:0; pointer-events:none; transition: transform .7s cubic-bezier(.65,0,.35,1); }
         .medium-label { position:absolute; inset:0; pointer-events:none; transition: opacity .3s; }
