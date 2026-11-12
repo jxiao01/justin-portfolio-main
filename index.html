@@ -185,7 +185,7 @@
         a {
             color: #000;
             text-decoration: none;
-            cursor: url('cursor-asset11-small.png') 13 13, pointer;
+            cursor: pointer;
         }
 
         a:hover {
@@ -224,7 +224,7 @@
             flex: 1;
             margin-left: 208px;
             padding: 16px;
-            transition: margin-left 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            transition: none;
             background: transparent;
         }
 
@@ -291,7 +291,7 @@
             background: none;
             border: none;
             color: #000;
-            cursor: url('cursor-asset11-small.png') 13 13, pointer;
+            cursor: pointer;
             font-size: 10.4px;
             padding: 3px 0;
             font-style: italic;
@@ -461,7 +461,7 @@
             flex: 1;
             margin-left: 208px;
             padding: 16px;
-            transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+            transition: none;
             background: transparent;
         }
 
@@ -482,7 +482,7 @@
 
         .project-item {
             display: block;
-            cursor: url('cursor-asset11-small.png') 13 13, pointer;
+            cursor: pointer;
             overflow: hidden;
             aspect-ratio: 3/2;
             position: relative;
@@ -515,6 +515,7 @@
         body.collapsed .project-item:nth-child(11) { animation-delay: 0.55s; }
         body.collapsed .project-item:nth-child(12) { animation-delay: 0.6s; }
         body.collapsed .project-item:nth-child(13) { animation-delay: 0.65s; }
+        body.collapsed .project-item:nth-child(14) { animation-delay: 0.7s; }
 
         @keyframes fadeInUp {
             from {
@@ -582,6 +583,12 @@
 
         .railroad-item {
             position: relative;
+        }
+
+        /* Cover-only tile: show the whole poster instead of cropping it */
+        .contain-item img {
+            object-fit: contain;
+            padding: 12px;
         }
 
         .lumimoria-item {
@@ -1388,6 +1395,79 @@
             background: #bbb;
         }
 
+
+        /* Blinkko cover: shoulder photo + the app on two phones */
+        .blinkko-cover-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .blinkko-cover {
+            position: relative;
+            display: block;
+            width: 100%;
+            aspect-ratio: 3 / 2;
+            background: #070707;
+            overflow: hidden;
+        }
+
+        .project-item .blinkko-cover {
+            height: 100%;
+            aspect-ratio: auto;
+        }
+
+        .blinkko-cover img {
+            opacity: 1 !important;
+            transform: none;
+        }
+
+        /* Full-bleed photo, nudged left so the pet's face sits clear of the phones */
+        .blinkko-cover .bc-photo {
+            position: absolute !important;
+            top: 0 !important;
+            left: -18% !important;
+            width: 118% !important;
+            max-width: none !important;
+            height: 100% !important;
+            object-fit: cover !important;
+            object-position: center 40%;
+        }
+
+        .blinkko-cover::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, rgba(0, 0, 0, 0) 45%, rgba(0, 0, 0, 0.45) 100%);
+            pointer-events: none;
+        }
+
+        .blinkko-cover .bc-phones {
+            position: absolute;
+            z-index: 1;
+            right: 5%;
+            top: 0;
+            bottom: 0;
+            width: 36%;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 6%;
+        }
+
+        .blinkko-cover .bc-phones img {
+            position: static !important;
+            width: 47% !important;
+            height: auto !important;
+            object-fit: contain !important;
+            border-radius: 9% / 4.2%;
+            box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.18), 0 14px 32px rgba(0, 0, 0, 0.45);
+        }
+
+        .blinkko-cover .bc-phones img:last-child {
+            transform: translateY(10%);
+        }
+
         /* Click-to-zoom modal for a single project tile image */
         .image-modal {
             position: fixed;
@@ -1512,10 +1592,10 @@
                     <button class="less-info-btn">(- less info)</button>
                     
                     <div class="more-info-content">
-                        <p>He is currently pursuing a BFA in Graphic Design @<a href="https://www.risd.edu" class="school-link" target="_blank">Rhode Island School of Design</a>. His work explores the intersection of digital media, interactive design, and experimental storytelling.</p>
+                        <p>He graduated in 2026 with a BFA in Graphic Design from <a href="https://www.risd.edu" class="school-link" target="_blank">Rhode Island School of Design</a>. His work explores the intersection of digital media, interactive design, and experimental storytelling.</p>
 
                         <div class="more-info-image">
-                            <img src="DSCF1607.JPG" alt="Jinhang Xiao">
+                            <img src="DSCF1607-opt.webp" alt="Jinhang Xiao">
                         </div>
                     </div>
                 </div>
@@ -1524,10 +1604,10 @@
             <nav class="project-list">
                 <ol>
                     <li>
-                        <span class="project-number">01</span> <a href="projects/new-project/index.html">TOY R US</a>
+                        <span class="project-number">01</span> <a href="projects/blinkko/index.html">Blinkko</a>
                     </li>
                     <li>
-                        <span class="project-number">02</span> <a href="projects/new-project-2/index.html">Blinkko</a>
+                        <span class="project-number">02</span> <a href="projects/toy-r-us/index.html">TOY R US</a>
                     </li>
                     <li>
                         <span class="project-number">03</span> <a href="projects/prototype/index.html">Prototype Festival</a>
@@ -1558,20 +1638,28 @@
             <div class="project-preview-wrapper" id="project-preview-wrapper">
             <div class="project-preview" id="project-preview">
                 <div class="project-carousel">
-                        <img src="projects/new-project/book.png" alt="TOY R US" class="project-image">
-                        <img src="projects/new-project-2/cover.jpg" alt="Blinkko" class="project-image">
+                        <div class="project-image blinkko-cover-wrap" role="img" aria-label="Blinkko">
+                        <div class="blinkko-cover">
+                            <img class="bc-photo" src="projects/blinkko/shoulder-opt.webp" alt="">
+                            <div class="bc-phones">
+                                <img src="projects/blinkko/ui-home-v3.png" alt="">
+                                <img src="projects/blinkko/app-map-opt.webp" alt="">
+                            </div>
+                        </div>
+                    </div>
+                        <img src="projects/toy-r-us/book-cover-opt.webp" alt="TOY R US" class="project-image">
                         <img src="projects/prototype/prototype-01.svg" alt="Prototype Festival" class="project-image">
                         <img src="mustair.png" alt="Clostra Son Jon Müstair" class="project-image">
                         <div class="project-image project-image-container symposium-image">
                             <img src="symposium-01.webp" alt="Symposium 2025" class="static-img">
-                            <img src="symposium logo animation.gif" alt="Symposium 2025" class="hover-gif">
+                            <img data-src="symposium logo animation.gif" alt="Symposium 2025" class="hover-gif">
                         </div>
                         <div class="project-image project-image-container greentopia-image">
-                            <img src="greentopia-01.png" alt="Greentopia" class="static-img">
-                            <img src="greentopia.gif" alt="Greentopia" class="hover-gif">
+                            <img src="greentopia-01-opt.webp" alt="Greentopia" class="static-img">
+                            <img data-src="greentopia-opt.webp" alt="Greentopia" class="hover-gif">
                         </div>
-                    <img src="13.png" alt="Lumimoria" class="project-image">
-                        <img src="the little food book-01.png" alt="The Little Food Book" class="project-image">
+                    <img src="13-opt.webp" alt="Lumimoria" class="project-image">
+                        <img src="the little food book-01-opt.webp" alt="The Little Food Book" class="project-image">
                         <img src="sewing machine main.webp" alt="......sewing machine???" class="project-image">
                 </div>
                 </div>
@@ -1579,45 +1667,51 @@
             </div>
             
             <div class="project-grid">
-                <a href="projects/new-project/index.html" class="project-item">
-                    <img src="projects/new-project/book.png" alt="TOY R US">
+                <a href="projects/blinkko/index.html" class="project-item">
+                    <div class="blinkko-cover" role="img" aria-label="Blinkko">
+                            <img class="bc-photo" src="projects/blinkko/shoulder-opt.webp" alt="">
+                            <div class="bc-phones">
+                                <img src="projects/blinkko/ui-home-v3.png" alt="">
+                                <img src="projects/blinkko/app-map-opt.webp" alt="">
+                            </div>
+                        </div>
                 </a>
                 
-                <a href="projects/new-project-2/index.html" class="project-item">
-                    <img src="projects/new-project-2/cover.jpg" alt="Blinkko">
+                <a href="projects/toy-r-us/index.html" class="project-item">
+                    <img decoding="async" src="projects/toy-r-us/book-cover-opt.webp" alt="TOY R US">
                 </a>
                 
                 <a href="projects/prototype/index.html" class="project-item">
-                    <img src="projects/prototype/prototype-01.svg" alt="Prototype Festival">
+                    <img decoding="async" src="projects/prototype/prototype-01.svg" alt="Prototype Festival">
                 </a>
                 
                 <a href="projects/clostra-son-jon-mustair/index.html" class="project-item">
-                    <img src="mustair.png" alt="Clostra Son Jon Müstair">
+                    <img decoding="async" src="mustair.png" alt="Clostra Son Jon Müstair">
                 </a>
                 
                 <a href="projects/symposium-2025/index.html" class="project-item">
-                    <img src="symposium-01.webp" alt="Symposium 2025">
+                    <img decoding="async" src="symposium-01.webp" alt="Symposium 2025">
                 </a>
                 
                 <a href="projects/greentopia/index.html" class="project-item">
-                    <img src="greentopia-01.png" alt="Greentopia">
+                    <img decoding="async" src="greentopia-01-opt.webp" alt="Greentopia">
                 </a>
                 
                 <a href="projects/lumimoria/index.html" class="project-item lumimoria-item">
-                    <img src="13.png" alt="Lumimoria">
+                    <img decoding="async" src="13-opt.webp" alt="Lumimoria">
                 </a>
                 
                 <a href="projects/the-little-food-book/index.html" class="project-item">
-                    <img src="the little food book-01.png" alt="The Little Food Book">
+                    <img decoding="async" src="the little food book-01-opt.webp" alt="The Little Food Book">
                 </a>
                 
                 <a href="projects/sewing-machine/index.html" class="project-item">
-                    <img src="sewing machine main.webp" alt="......sewing machine???">
+                    <img decoding="async" src="sewing machine main.webp" alt="......sewing machine???">
                 </a>
                 
                 <a href="projects/wayfinding/index.html" class="project-item">
                     <div class="project9-carousel">
-                        <img src="wayfinding-01.webp" alt="Wayfinding" class="carousel-image active">
+                        <img src="wayfinding-01-opt.webp" alt="Wayfinding" class="carousel-image active">
                         <img src="wayfinding-02.webp" alt="Wayfinding" class="carousel-image">
                         <img src="wayfinding-03.webp" alt="Wayfinding" class="carousel-image">
                         <img src="wayfinding-04.webp" alt="Wayfinding" class="carousel-image">
@@ -1625,18 +1719,14 @@
                 </a>
                 
                 <div class="project-item">
-                    <img src="xiaohongshu.gif" alt="Intern">
+                    <img src="xiaohongshu-opt.webp" alt="Intern">
+                </div>
+                <div class="project-item contain-item">
+                    <img decoding="async" src="interview-01-opt.webp" alt="Interview with Muon Studio">
                 </div>
                 
-                <a href="projects/poster-collection/index.html" class="project-item poster-collection-item">
-                    <div class="poster-collection-pattern" alt="Poster Collection"></div>
-                    <div class="prototype-overlay">
-                        <span id="poster-typewriter-text"></span><span class="typewriter-cursor">_</span>
-                    </div>
-                </a>
-                
                 <div class="project-item railroad-item">
-                    <img src="country data.png" alt="Country Data">
+                    <img src="country data-opt.webp" alt="Country Data">
                 </div>
             </div>
         </main>
@@ -1806,9 +1896,15 @@ let autoScrollStartTime = null;
 const AUTO_SCROLL_INTERVAL = 5000;
 let isHighlighting = false;
 
+let autoScrollListenersBound = false;
+
 function startAutoScroll() {
     if (document.body.classList.contains('collapsed') || isMobileView()) {
         return;
+    }
+    if (autoScrollInterval) {
+        clearInterval(autoScrollInterval);
+        autoScrollInterval = null;
     }
     
     const projectLinks = document.querySelectorAll('.project-list li');
@@ -1817,8 +1913,8 @@ function startAutoScroll() {
     const descriptionDiv = document.getElementById('project-description');
     
     const projectDescriptions = [
+        ['2026', 'UIUX, Product, Design Engineering', '—'],
         ['2026', 'Degree Project', 'Advise by Paul Soulellis'],
-        ['2026', 'UI, Product', '—'],
         ['2025', 'Personal Project', '—'],
         ['2025', 'for Grad Type III', 'Advise by Doug Scott'],
         ['2025', 'for Design Studio IV', 'Advise by Kathy Wu'],
@@ -1886,11 +1982,10 @@ function startAutoScroll() {
             });
         }
         
-        requestAnimationFrame(() => {
-            requestAnimationFrame(() => {
-                isHighlighting = false;
-            });
-        });
+        // Release the guard on a timer, not on animation frames, which browsers pause in background tabs
+        setTimeout(() => {
+            isHighlighting = false;
+        }, 50);
         
         return true;
     }
@@ -1953,6 +2048,8 @@ function nextProject() {
         }
     }
     
+    if (!autoScrollListenersBound) {
+    autoScrollListenersBound = true;
     // 监听页面可见性变化
     document.addEventListener('visibilitychange', function() {
         if (document.visibilityState === 'visible' && autoScrollInterval && !document.body.classList.contains('collapsed')) {
@@ -1973,6 +2070,7 @@ function nextProject() {
             syncAutoScrollOnVisible();
         }
     });
+    }
     
     // 如果是从其他页面加载，立即同步显示（延迟一点确保DOM已加载）
     setTimeout(() => {
@@ -2012,8 +2110,8 @@ function setupManualHover() {
         const descriptionDiv = document.getElementById('project-description');
         
     const projectDescriptions = [
+        ['2026', 'UIUX, Product, Design Engineering', '—'],
         ['2026', 'Degree Project', 'Advise by Paul Soulellis'],
-        ['2026', 'UI, Product', '—'],
         ['2025', 'Personal Project', '—'],
         ['2025', 'for Grad Type III', 'Advise by Doug Scott'],
         ['2025', 'for Design Studio IV', 'Advise by Kathy Wu'],
@@ -2095,16 +2193,14 @@ function setupAutoScrollControls() {
     });
     
     sidebar.addEventListener('mouseleave', function() {
-        if (!document.body.classList.contains('collapsed')) {
-            setTimeout(() => {
-                isManualHover = false;
-                const projectLinks = document.querySelectorAll('.project-list li');
-                const activeIndex = Array.from(projectLinks).findIndex(li => li.classList.contains('active'));
-                if (activeIndex !== -1) {
-                    currentProjectIndex = (activeIndex + 1) % projectLinks.length;
-                }
-            }, 500);
-        }
+        setTimeout(() => {
+            isManualHover = false;
+            const projectLinks = document.querySelectorAll('.project-list li');
+            const activeIndex = Array.from(projectLinks).findIndex(li => li.classList.contains('active'));
+            if (activeIndex !== -1) {
+                currentProjectIndex = (activeIndex + 1) % projectLinks.length;
+            }
+        }, 500);
     });
 }
 
@@ -2228,6 +2324,8 @@ document.addEventListener('DOMContentLoaded', function() {
         backToAutoBtn.addEventListener('click', function() {
             closeMoreInfo();
             document.body.classList.remove('collapsed');
+            isManualHover = false;
+            isHighlighting = false;
             
             setTimeout(() => {
                 currentProjectIndex = 0;
@@ -2237,47 +2335,26 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// ===== 在多个事件中调用重置函数 =====
+// Coming back through the browser's back/forward cache: restart the preview cleanly
 window.addEventListener('pageshow', function(event) {
-    // 从项目页返回时才移除show class并退出View All
-    const isFromProjectPage = document.referrer && document.referrer.includes('/projects/');
-    resetPreviewWrapper(isFromProjectPage, isFromProjectPage);
-    
-    // 如果不是从项目页返回，确保autoscroll正确显示
-    if (!isFromProjectPage && !document.body.classList.contains('collapsed') && !isMobileView()) {
-        setTimeout(() => {
-            // 先停止现有的autoscroll（如果存在）
-            if (autoScrollInterval) {
-                clearInterval(autoScrollInterval);
-                autoScrollInterval = null;
-            }
-            
-            const projectLinks = document.querySelectorAll('.project-list li');
-            const previewWrapper = document.getElementById('project-preview-wrapper');
-            
-            if (projectLinks.length > 0 && previewWrapper) {
-                // 确保 preview-wrapper 显示
-                previewWrapper.classList.add('show');
-                
-                // 重新启动autoscroll（这会确保显示第一个项目）
-                startAutoScroll();
-            }
-        }, 100);
+    if (event.persisted && !document.body.classList.contains('collapsed') && !isMobileView()) {
+        isManualHover = false;
+        isHighlighting = false;
+        currentProjectIndex = 0;
+        startAutoScroll();
     }
 });
 
-document.addEventListener('visibilitychange', function() {
-    if (document.visibilityState === 'visible') {
-        // 从项目页返回时才移除show class并退出View All
-        const isFromProjectPage = document.referrer && document.referrer.includes('/projects/');
-        resetPreviewWrapper(isFromProjectPage, isFromProjectPage);
-    }
-});
-
-window.addEventListener('focus', function() {
-    // 从项目页返回时才移除show class并退出View All
-    const isFromProjectPage = document.referrer && document.referrer.includes('/projects/');
-    resetPreviewWrapper(isFromProjectPage, isFromProjectPage);
+// Hover GIFs are heavy: fetch them the first time the preview is hovered
+document.addEventListener('DOMContentLoaded', function() {
+    const wrapper = document.getElementById('project-preview-wrapper');
+    if (!wrapper) return;
+    wrapper.addEventListener('mouseenter', function() {
+        wrapper.querySelectorAll('.project-image-container.active .hover-gif[data-src]').forEach(function(img) {
+            img.src = img.dataset.src;
+            img.removeAttribute('data-src');
+        });
+    });
 });
 
 // Click-to-zoom (single-image) modal

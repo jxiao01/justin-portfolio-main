@@ -62,7 +62,7 @@
         a {
             color: #000;
             text-decoration: none;
-            cursor: url('../../cursor-asset11-small.png') 13 13, pointer;
+            cursor: pointer;
         }
 
         a:hover {
@@ -356,31 +356,31 @@
         <main class="content">
             <!-- 项目内容区域 -->
             <div class="project-images" style="padding: 40px 0;">
-                <img src="13.png" alt="Lumimoria Project" style="width: 100%; display: block;">
-                <img src="lumimoria-1.webp" alt="Lumimoria Project" style="width: 100%; display: block;">
-                <img src="lumimoria-11.webp" alt="Lumimoria Project" style="width: 100%; display: block;">
-                <img src="lumimoria-2.webp" alt="Lumimoria Project" style="width: 100%; display: block;">
-                <img src="lumimoria-6.webp" alt="Lumimoria Project" style="width: 100%; display: block;">
-                <img src="lumimoria-3.webp" alt="Lumimoria Project" style="width: 100%; display: block;">
+                <img src="13-opt.webp" alt="Lumimoria Project" style="width: 100%; display: block;">
+                <img src="lumimoria-1-opt.webp" alt="Lumimoria Project" style="width: 100%; display: block;">
+                <img width="1350" height="900" loading="lazy" decoding="async" src="lumimoria-11-opt.webp" alt="Lumimoria Project" style="width: 100%; display: block;">
+                <img width="1801" height="1351" loading="lazy" decoding="async" src="lumimoria-2-opt.webp" alt="Lumimoria Project" style="width: 100%; display: block;">
+                <img width="2151" height="1521" loading="lazy" decoding="async" src="lumimoria-6-opt.webp" alt="Lumimoria Project" style="width: 100%; display: block;">
+                <img width="1154" height="652" loading="lazy" decoding="async" src="lumimoria-3-opt.webp" alt="Lumimoria Project" style="width: 100%; display: block;">
                 <div style="display: flex; width: 100%;">
-                    <img src="lumimoria-4.webp" alt="Lumimoria Project" style="width: 50%; display: block;">
-                    <img src="lumimoria-5.webp" alt="Lumimoria Project" style="width: 50%; display: block;">
+                    <img width="1119" height="901" loading="lazy" decoding="async" src="lumimoria-4-opt.webp" alt="Lumimoria Project" style="width: 50%; display: block;">
+                    <img width="769" height="545" loading="lazy" decoding="async" src="lumimoria-5.webp" alt="Lumimoria Project" style="width: 50%; display: block;">
                 </div>
-                <img src="lumimoria-10.png" alt="Lumimoria Project" style="width: 100%; display: block;">
-                <img src="lumimoria-12.webp" alt="Lumimoria Project" style="width: 100%; display: block;">
-                <img src="web.png" alt="Lumimoria Website" style="width: 100%; display: block; margin: 0; padding: 0;">
+                <img width="2400" height="1350" loading="lazy" decoding="async" src="lumimoria-10-opt.webp" alt="Lumimoria Project" style="width: 100%; display: block;">
+                <img width="1350" height="900" loading="lazy" decoding="async" src="lumimoria-12-opt.webp" alt="Lumimoria Project" style="width: 100%; display: block;">
+                <img width="2400" height="1728" loading="lazy" decoding="async" src="web-opt.webp" alt="Lumimoria Website" style="width: 100%; display: block; margin: 0; padding: 0;">
                 <div style="width: 100%; margin-top: 0;">
                     <div style="display: flex; gap: 20px; width: 100%;">
                         <div style="flex: 1;">
                             <div style="position: relative; aspect-ratio: 5/3; border: 1px solid #000; overflow: hidden; background: #fff;">
-                                <img src="lumimoria-site.webp" alt="Lumimoria Website" style="width: 100%; height: 100%; object-fit: cover; display: block; transform: scale(1.1);">
+                                <img width="1894" height="1201" loading="lazy" decoding="async" src="lumimoria-site.webp" alt="Lumimoria Website" style="width: 100%; height: 100%; object-fit: cover; display: block; transform: scale(1.1);">
                                 <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(255, 255, 255, 0.01); pointer-events: none;"></div>
                             </div>
                             <a href="https://lumimoria.com/" target="_blank" rel="noopener noreferrer" style="font-size: 12px; color: #000; margin-top: 8px; display: inline-block; text-decoration: underline;">Visit Site</a>
                         </div>
                         <div style="flex: 1;">
                             <div style="position: relative; aspect-ratio: 5/3; border: 1px solid #000; overflow: hidden; background: #fff;">
-                                <img src="lumimoria-story.webp" alt="Lumimoria Story" style="width: 100%; height: 100%; object-fit: cover; display: block; transform: scale(1.1);">
+                                <img width="1894" height="1210" loading="lazy" decoding="async" src="lumimoria-story-opt.webp" alt="Lumimoria Story" style="width: 100%; height: 100%; object-fit: cover; display: block; transform: scale(1.1);">
                                 <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(255, 255, 255, 0.01); pointer-events: none;"></div>
                             </div>
                             <a href="https://lumimoria.com/story/" target="_blank" rel="noopener noreferrer" style="font-size: 12px; color: #000; margin-top: 8px; display: inline-block; text-decoration: underline;">Visit Site</a>
@@ -409,7 +409,7 @@
                 imageElements.forEach((element, index) => {
                     setTimeout(() => {
                         element.classList.add('show');
-                    }, 200 + (index * 200));
+                    }, 120 + (Math.min(index, 5) * 90));
                 });
             }, 100);
         });
@@ -440,16 +440,19 @@
 
         // 项目导航功能
         (function() {
+            // Keep in the same order as the homepage list (index.html)
+            // Keep in the same order as the homepage list (index.html)
             const projects = [
-                '../new-project/index.html',
-                '../new-project-2/index.html',
-                '../prototype/index.html', // 01 Prototype Festival
-                '../clostra-son-jon-mustair/index.html', // 02 Clostra Son Jon Müstair
-                '../symposium-2025/index.html', // 03 Symposium
-                '../greentopia/index.html', // 04 Greentopia
-                '../lumimoria/index.html', // 05 Lumimoria
-                '../the-little-food-book/index.html', // 06 The Little Food Book
-                '../sewing-machine/index.html'   // 07 sewing machine
+                '../blinkko/index.html', // 01 Blinkko
+                '../toy-r-us/index.html', // 02 TOY R US
+                '../prototype/index.html', // 03 Prototype Festival
+                '../clostra-son-jon-mustair/index.html', // 04 Clostra Son Jon Müstair
+                '../symposium-2025/index.html', // 05 Symposium 2025
+                '../greentopia/index.html', // 06 Greentopia
+                '../lumimoria/index.html', // 07 Lumimoria
+                '../the-little-food-book/index.html', // 08 The Little Food Book
+                '../sewing-machine/index.html', // 09 ......sewing machine???
+                '../wayfinding/index.html' // 10 Wayfinding (grid only)
             ];
 
             // 从当前URL获取项目编号

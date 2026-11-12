@@ -62,7 +62,7 @@
         a {
             color: #000;
             text-decoration: none;
-            cursor: url('../../cursor-asset11-small.png') 13 13, pointer;
+            cursor: pointer;
         }
 
         a:hover {
@@ -393,20 +393,20 @@
         <main class="content">
             <!-- 项目内容区域 -->
             <div class="project-images" style="padding: 40px 0;">
-                <img src="greentopia-01.png" alt="Greentopia" style="width: 100%; display: block;">
+                <img src="greentopia-01-opt.webp" alt="Greentopia" style="width: 100%; display: block;">
                 <div style="display: flex; width: 100%;">
-                    <img src="greentopia-02.webp" alt="Greentopia" style="width: 50%; display: block; object-fit: contain; height: auto;">
-                    <img src="greentopia-06.webp" alt="Greentopia" style="width: 50%; display: block; object-fit: contain; height: auto;">
+                    <img src="greentopia-02-opt.webp" alt="Greentopia" style="width: 50%; display: block; object-fit: contain; height: auto;">
+                    <img width="865" height="895" loading="lazy" decoding="async" src="greentopia-06-opt.webp" alt="Greentopia" style="width: 50%; display: block; object-fit: contain; height: auto;">
                 </div>
                 <div style="display: flex; width: 100%;">
-                    <img src="greentopia-08.webp" alt="Greentopia" style="width: 50%; display: block; object-fit: contain; height: auto;">
-                    <img src="greentopia-04.webp" alt="Greentopia" style="width: 50%; display: block; object-fit: contain; height: auto; margin-left: -1px;">
+                    <img width="2400" height="3807" loading="lazy" decoding="async" src="greentopia-08-opt.webp" alt="Greentopia" style="width: 50%; display: block; object-fit: contain; height: auto;">
+                    <img width="1500" height="1000" loading="lazy" decoding="async" src="greentopia-04-opt.webp" alt="Greentopia" style="width: 50%; display: block; object-fit: contain; height: auto; margin-left: -1px;">
                 </div>
-                <img src="greentopia-03.png" alt="Greentopia" style="width: 100%; display: block;">
-                <img src="greentopia-07.png" alt="Greentopia" style="width: 100%; display: block; margin: 0; padding: 0;">
-                <img src="greentopia-04.png" alt="Greentopia" style="width: 100%; display: block; margin: -1px 0 0 0; padding: 0;">
-                <img src="1.gif" alt="Greentopia" style="width: 100%; display: block; margin: 0; padding: 0;">
-                <video src="website.mp4" alt="Greentopia Website" style="width: 100%; display: block; margin: 0; padding: 0;" autoplay loop muted playsinline></video>
+                <img width="1728" height="1117" loading="lazy" decoding="async" src="greentopia-03-opt.webp" alt="Greentopia" style="width: 100%; display: block;">
+                <img width="2400" height="1600" loading="lazy" decoding="async" src="greentopia-07-opt.webp" alt="Greentopia" style="width: 100%; display: block; margin: 0; padding: 0;">
+                <img width="1500" height="1000" loading="lazy" decoding="async" src="greentopia-04-opt.webp" alt="Greentopia" style="width: 100%; display: block; margin: -1px 0 0 0; padding: 0;">
+                <img width="1200" height="676" loading="lazy" decoding="async" src="1-opt.webp" alt="Greentopia" style="width: 100%; display: block; margin: 0; padding: 0;">
+                <video src="website-opt.mp4" alt="Greentopia Website" style="width: 100%; display: block; margin: 0; padding: 0;" autoplay loop muted playsinline></video>
                 <div style="width: 100%; margin-top: 40px;">
                     <div style="display: flex; gap: 20px; width: 100%;">
                         <div style="flex: 1;">
@@ -459,7 +459,7 @@
                 imageElements.forEach((element, index) => {
                     setTimeout(() => {
                         element.classList.add('show');
-                    }, 200 + (index * 200));
+                    }, 120 + (Math.min(index, 5) * 90));
                 });
             }, 100);
         });
@@ -490,16 +490,19 @@
 
         // 项目导航功能
         (function() {
+            // Keep in the same order as the homepage list (index.html)
+            // Keep in the same order as the homepage list (index.html)
             const projects = [
-                '../new-project/index.html',
-                '../new-project-2/index.html',
-                '../prototype/index.html', // 01 Prototype Festival
-                '../clostra-son-jon-mustair/index.html', // 02 Clostra Son Jon Müstair
-                '../symposium-2025/index.html', // 03 Symposium
-                '../greentopia/index.html', // 04 Greentopia
-                '../lumimoria/index.html', // 05 Lumimoria
-                '../the-little-food-book/index.html', // 06 The Little Food Book
-                '../sewing-machine/index.html'   // 07 sewing machine
+                '../blinkko/index.html', // 01 Blinkko
+                '../toy-r-us/index.html', // 02 TOY R US
+                '../prototype/index.html', // 03 Prototype Festival
+                '../clostra-son-jon-mustair/index.html', // 04 Clostra Son Jon Müstair
+                '../symposium-2025/index.html', // 05 Symposium 2025
+                '../greentopia/index.html', // 06 Greentopia
+                '../lumimoria/index.html', // 07 Lumimoria
+                '../the-little-food-book/index.html', // 08 The Little Food Book
+                '../sewing-machine/index.html', // 09 ......sewing machine???
+                '../wayfinding/index.html' // 10 Wayfinding (grid only)
             ];
 
             // 从当前URL获取项目编号

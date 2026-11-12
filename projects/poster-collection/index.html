@@ -62,7 +62,7 @@
         a {
             color: #000;
             text-decoration: none;
-            cursor: url('../../cursor-asset11-small.png') 13 13, pointer;
+            cursor: pointer;
         }
 
         a:hover {
@@ -395,30 +395,30 @@
                 <div class="poster-carousel">
                     <div style="display: flex; width: 100%; justify-content: center; gap: 20px; align-items: stretch;">
                         <div style="flex: 1; min-width: 0; display: flex; justify-content: center;">
-                            <img src="amusement park.png" alt="Amusement Park" style="width: 100%; height: 100%; object-fit: contain; display: block;">
+                            <img src="amusement park-opt.webp" alt="Amusement Park" style="width: 100%; height: 100%; object-fit: contain; display: block;">
                         </div>
                         <div style="flex: 1; min-width: 0; display: flex; justify-content: center;">
-                            <img src="600ppi/amusement park archive.webp" alt="Amusement Park Archive" style="width: 100%; height: 100%; object-fit: contain; display: block;">
-                        </div>
-                    </div>
-                    <div style="display: flex; width: 100%; justify-content: center; gap: 20px; align-items: stretch;">
-                        <div style="flex: 1; min-width: 0; display: flex; justify-content: center;">
-                            <img src="600ppi/breadtopia.webp" alt="Breadtopia" style="width: 100%; height: 100%; object-fit: contain; display: block;">
-                        </div>
-                        <div style="flex: 1; min-width: 0; display: flex; justify-content: center;">
-                            <img src="postcards.png" alt="Postcards" style="width: 100%; height: 100%; object-fit: contain; display: block;">
+                            <img src="600ppi/amusement park archive-opt.webp" alt="Amusement Park Archive" style="width: 100%; height: 100%; object-fit: contain; display: block;">
                         </div>
                     </div>
                     <div style="display: flex; width: 100%; justify-content: center; gap: 20px; align-items: stretch;">
                         <div style="flex: 1; min-width: 0; display: flex; justify-content: center;">
-                            <img src="../../interview-01.png" alt="Interview" style="width: 100%; height: 100%; object-fit: contain; display: block;">
+                            <img width="2400" height="3201" loading="lazy" decoding="async" src="600ppi/breadtopia-opt.webp" alt="Breadtopia" style="width: 100%; height: 100%; object-fit: contain; display: block;">
+                        </div>
+                        <div style="flex: 1; min-width: 0; display: flex; justify-content: center;">
+                            <img width="1590" height="2701" loading="lazy" decoding="async" src="postcards-opt.webp" alt="Postcards" style="width: 100%; height: 100%; object-fit: contain; display: block;">
+                        </div>
+                    </div>
+                    <div style="display: flex; width: 100%; justify-content: center; gap: 20px; align-items: stretch;">
+                        <div style="flex: 1; min-width: 0; display: flex; justify-content: center;">
+                            <img width="2400" height="3156" loading="lazy" decoding="async" src="../../interview-01-opt.webp" alt="Interview" style="width: 100%; height: 100%; object-fit: contain; display: block;">
                         </div>
                         <div style="flex: 1; min-width: 0; display: flex; justify-content: center; align-items: center;">
-                            <video src="exactitude.mp4" alt="Exactitude" style="width: 100%; display: block; object-fit: contain;" autoplay loop muted playsinline></video>
+                            <video src="exactitude-opt.mp4" alt="Exactitude" style="width: 100%; display: block; object-fit: contain;" autoplay loop muted playsinline></video>
                         </div>
                     </div>
-                    <img src="Railroad Street Poster.png" alt="Railroad Street Poster" style="width: 100%; display: block;">
-                    <img src="../../railroad-01.gif" alt="Railroad Hall of Fame" style="width: 100%; display: block;">
+                    <img width="2400" height="1602" loading="lazy" decoding="async" src="Railroad Street Poster-opt.webp" alt="Railroad Street Poster" style="width: 100%; display: block;">
+                    <img width="1920" height="1080" loading="lazy" decoding="async" src="../../railroad-01.gif" alt="Railroad Hall of Fame" style="width: 100%; display: block;">
                 </div>
                 <div class="project-navigation">
                     <a href="#" class="project-nav-btn" id="prev-project">← Previous</a>
@@ -442,7 +442,7 @@
                 imageElements.forEach((element, index) => {
                     setTimeout(() => {
                         element.classList.add('show');
-                    }, 200 + (index * 200));
+                    }, 120 + (Math.min(index, 5) * 90));
                 });
             }, 100);
         });
@@ -473,18 +473,19 @@
 
         // 项目导航功能
         (function() {
+            // Keep in the same order as the homepage list (index.html)
+            // Keep in the same order as the homepage list (index.html)
             const projects = [
-                '../new-project/index.html',
-                '../new-project-2/index.html',
-                '../prototype/index.html',
-                '../clostra-son-jon-mustair/index.html',
-                '../symposium-2025/index.html',
-                '../greentopia/index.html',
-                '../lumimoria/index.html',
-                '../poster-collection/index.html',
-                '../the-little-food-book/index.html',
-                '../sewing-machine/index.html',
-                '../wayfinding/index.html'
+                '../blinkko/index.html', // 01 Blinkko
+                '../toy-r-us/index.html', // 02 TOY R US
+                '../prototype/index.html', // 03 Prototype Festival
+                '../clostra-son-jon-mustair/index.html', // 04 Clostra Son Jon Müstair
+                '../symposium-2025/index.html', // 05 Symposium 2025
+                '../greentopia/index.html', // 06 Greentopia
+                '../lumimoria/index.html', // 07 Lumimoria
+                '../the-little-food-book/index.html', // 08 The Little Food Book
+                '../sewing-machine/index.html', // 09 ......sewing machine???
+                '../wayfinding/index.html' // 10 Wayfinding (grid only)
             ];
 
             // 从当前URL获取项目编号

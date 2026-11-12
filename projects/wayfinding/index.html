@@ -50,7 +50,7 @@
         a {
             color: #000;
             text-decoration: none;
-            cursor: url('../../cursor-asset11-small.png') 13 13, pointer;
+            cursor: pointer;
         }
 
         a:hover {
@@ -337,11 +337,11 @@
 
         <main class="content">
             <div class="project-images" style="padding: 40px 0;">
-                <img src="../../wayfinding.png" alt="Wayfinding overview" style="width: 100%; display: block;">
-                <img src="../../wayfinding-01.webp" alt="Wayfinding project" style="width: 100%; display: block;">
-                <img src="../../wayfinding-02.webp" alt="Wayfinding project" style="width: 100%; display: block;">
-                <img src="../../wayfinding-03.webp" alt="Wayfinding project" style="width: 100%; display: block;">
-                <img src="../../wayfinding-04.webp" alt="Wayfinding project" style="width: 100%; display: block;">
+                <img src="../../wayfinding-opt.webp" alt="Wayfinding overview" style="width: 100%; display: block;">
+                <img src="../../wayfinding-01-opt.webp" alt="Wayfinding project" style="width: 100%; display: block;">
+                <img width="2373" height="2373" loading="lazy" decoding="async" src="../../wayfinding-02.webp" alt="Wayfinding project" style="width: 100%; display: block;">
+                <img width="1109" height="1104" loading="lazy" decoding="async" src="../../wayfinding-03.webp" alt="Wayfinding project" style="width: 100%; display: block;">
+                <img width="1560" height="3741" loading="lazy" decoding="async" src="../../wayfinding-04.webp" alt="Wayfinding project" style="width: 100%; display: block;">
                 <div>
                     <a href="../../wayfinding.pdf" target="_blank" rel="noopener noreferrer" class="pdf-link">View Full PDF</a>
                 </div>
@@ -364,7 +364,7 @@
                 imageElements.forEach((element, index) => {
                     setTimeout(() => {
                         element.classList.add('show');
-                    }, 200 + (index * 200));
+                    }, 120 + (Math.min(index, 5) * 90));
                 });
             }, 100);
         });
@@ -390,18 +390,19 @@
         });
 
         (function() {
+            // Keep in the same order as the homepage list (index.html)
+            // Keep in the same order as the homepage list (index.html)
             const projects = [
-                '../new-project/index.html',
-                '../new-project-2/index.html',
-                '../prototype/index.html',
-                '../clostra-son-jon-mustair/index.html',
-                '../symposium-2025/index.html',
-                '../greentopia/index.html',
-                '../lumimoria/index.html',
-                '../poster-collection/index.html',
-                '../the-little-food-book/index.html',
-                '../sewing-machine/index.html',
-                '../wayfinding/index.html'
+                '../blinkko/index.html', // 01 Blinkko
+                '../toy-r-us/index.html', // 02 TOY R US
+                '../prototype/index.html', // 03 Prototype Festival
+                '../clostra-son-jon-mustair/index.html', // 04 Clostra Son Jon Müstair
+                '../symposium-2025/index.html', // 05 Symposium 2025
+                '../greentopia/index.html', // 06 Greentopia
+                '../lumimoria/index.html', // 07 Lumimoria
+                '../the-little-food-book/index.html', // 08 The Little Food Book
+                '../sewing-machine/index.html', // 09 ......sewing machine???
+                '../wayfinding/index.html' // 10 Wayfinding (grid only)
             ];
 
             const currentPath = window.location.pathname;

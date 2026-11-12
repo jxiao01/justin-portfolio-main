@@ -62,7 +62,7 @@
         a {
             color: #000;
             text-decoration: none;
-            cursor: url('../../cursor-asset11-small.png') 13 13, pointer;
+            cursor: pointer;
         }
 
         a:hover {
@@ -358,13 +358,13 @@
             <!-- 项目内容区域 -->
             <div class="project-images" style="padding: 40px 0;">
                 <video src="symposium_logo_animation.mp4" alt="Symposium logo animation" style="width: 100%; display: block; margin: 0; padding: 0;" autoplay loop muted playsinline></video>
-                <img src="symposium concept.jpg" alt="Symposium concept" style="width: 100%; display: block; margin: 0; padding: 0;">
-                <img src="logo breakdown.png" alt="Symposium logo breakdown" style="width: 100%; display: block; margin: 0; padding: 0;">
-                <img src="symposium logo.jpg" alt="Symposium 2025" style="width: 100%; display: block; margin: 0; padding: 0;">
-                <img src="symposium logo grid.png" alt="Symposium logo grid" style="width: 100%; display: block; margin: 0; padding: 0;">
-                <video src="symposium_logo_grid_animation.mp4" alt="Symposium logo grid animation" style="width: 100%; display: block; margin: 0; padding: 0;" autoplay loop muted playsinline></video>
-                <img src="symposium posters.jpg" alt="Symposium posters" style="width: 100%; display: block; margin: 0; padding: 0;">
-                <img src="puzzle.png" alt="Symposium puzzle" style="width: 100%; display: block; margin: 0; padding: 0;">
+                <img src="symposium concept-opt.webp" alt="Symposium concept" style="width: 100%; display: block; margin: 0; padding: 0;">
+                <img src="logo breakdown-opt.webp" alt="Symposium logo breakdown" style="width: 100%; display: block; margin: 0; padding: 0;">
+                <img width="2400" height="1350" loading="lazy" decoding="async" src="symposium logo-opt.webp" alt="Symposium 2025" style="width: 100%; display: block; margin: 0; padding: 0;">
+                <img width="2400" height="1600" loading="lazy" decoding="async" src="symposium logo grid-opt.webp" alt="Symposium logo grid" style="width: 100%; display: block; margin: 0; padding: 0;">
+                <video src="symposium_logo_grid_animation.mp4" alt="Symposium logo grid animation" style="width: 100%; display: block; margin: 0; padding: 0;" data-lazy preload="metadata" loop muted playsinline></video>
+                <img width="2400" height="1350" loading="lazy" decoding="async" src="symposium posters-opt.webp" alt="Symposium posters" style="width: 100%; display: block; margin: 0; padding: 0;">
+                <img width="2400" height="1685" loading="lazy" decoding="async" src="puzzle-opt.webp" alt="Symposium puzzle" style="width: 100%; display: block; margin: 0; padding: 0;">
                 <div class="project-navigation">
                     <a href="#" class="project-nav-btn" id="prev-project">← Previous</a>
                     <a href="#" class="project-nav-btn" id="next-project">Next →</a>
@@ -387,7 +387,7 @@
                 imageElements.forEach((element, index) => {
                     setTimeout(() => {
                         element.classList.add('show');
-                    }, 200 + (index * 200));
+                    }, 120 + (Math.min(index, 5) * 90));
                 });
             }, 100);
         });
@@ -418,16 +418,19 @@
 
         // 项目导航功能
         (function() {
+            // Keep in the same order as the homepage list (index.html)
+            // Keep in the same order as the homepage list (index.html)
             const projects = [
-                '../new-project/index.html',
-                '../new-project-2/index.html',
-                '../prototype/index.html', // 01 Prototype Festival
-                '../clostra-son-jon-mustair/index.html', // 02 Clostra Son Jon Müstair
-                '../symposium-2025/index.html', // 03 Symposium
-                '../greentopia/index.html', // 04 Greentopia
-                '../lumimoria/index.html', // 05 Lumimoria
-                '../the-little-food-book/index.html', // 06 The Little Food Book
-                '../sewing-machine/index.html'   // 07 sewing machine
+                '../blinkko/index.html', // 01 Blinkko
+                '../toy-r-us/index.html', // 02 TOY R US
+                '../prototype/index.html', // 03 Prototype Festival
+                '../clostra-son-jon-mustair/index.html', // 04 Clostra Son Jon Müstair
+                '../symposium-2025/index.html', // 05 Symposium 2025
+                '../greentopia/index.html', // 06 Greentopia
+                '../lumimoria/index.html', // 07 Lumimoria
+                '../the-little-food-book/index.html', // 08 The Little Food Book
+                '../sewing-machine/index.html', // 09 ......sewing machine???
+                '../wayfinding/index.html' // 10 Wayfinding (grid only)
             ];
 
             // 从当前URL获取项目编号
@@ -484,6 +487,16 @@
                 nextBtn.classList.add('disabled');
                 nextBtn.href = '#';
             }
+        })();
+    </script>
+    <script>
+        // Play below-the-fold videos only when they are near the viewport
+        (() => {
+            const io = new IntersectionObserver(entries => entries.forEach(e => {
+                if (e.isIntersecting) e.target.play().catch(() => {});
+                else e.target.pause();
+            }), { rootMargin: '300px 0px' });
+            document.querySelectorAll('video[data-lazy]').forEach(v => io.observe(v));
         })();
     </script>
 </body>

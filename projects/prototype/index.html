@@ -60,7 +60,7 @@
         a {
             color: #000;
             text-decoration: none;
-            cursor: url('../../cursor-asset11-small.png') 13 13, pointer;
+            cursor: pointer;
         }
 
         a:hover {
@@ -352,29 +352,29 @@
 
         <main class="content">
             <div class="project-images" style="padding: 40px 0; line-height: 0;">
-                <img src="billboard.png" alt="Prototype Festival" style="width: 100%; display: block; margin: 0; padding: 0;">
+                <img src="billboard-opt.webp" alt="Prototype Festival" style="width: 100%; display: block; margin: 0; padding: 0;">
                 <div style="width: 100%; overflow: hidden;">
                     <video src="PROTOTYPE_logo.webm" alt="Prototype Festival" style="width: 100%; display: block; margin: 0; padding: 0; transform: scale(1.3); transform-origin: center center;" autoplay loop muted playsinline></video>
                 </div>
                 <div style="width: 100%; overflow: hidden;">
-                    <video src="PROTOTYPE_colors.webm" alt="Prototype Festival Colors" style="width: 100%; display: block; margin: 0; padding: 0; transform: scale(1); transform-origin: center center;" autoplay loop muted playsinline></video>
+                    <video src="PROTOTYPE_colors.webm" alt="Prototype Festival Colors" style="width: 100%; display: block; margin: 0; padding: 0; transform: scale(1); transform-origin: center center;" data-lazy preload="metadata" loop muted playsinline></video>
                 </div>
-                <img src="prototype.jpg" alt="Prototype Festival" style="width: 100%; display: block; margin: 0; padding: 0;">
-                <img src="stationary.jpg" alt="Prototype Festival" style="width: 100%; display: block; margin: 0; padding: 0;">
-                <img src="prototype hat.jpg" alt="Prototype Festival" style="width: 100%; display: block; margin: 0; padding: 0;">
-                <img src="badge.jpg" alt="Prototype Festival" style="width: 100%; display: block; margin: 0; padding: 0;">
-                <img src="card.jpg" alt="Prototype Festival" style="width: 100%; display: block; margin: 0; padding: 0;">
-                <img src="prototype social.jpg" alt="Prototype Festival" style="width: 100%; display: block; margin: 0; padding: 0;">
-                <img src="prototype web.png" alt="Prototype Festival" style="width: 100%; display: block; margin: 0; padding: 0;">
-                <video src="web mock.mp4" alt="Web mock" style="width: 100%; display: block; margin: 0; padding: 0;" autoplay loop muted playsinline></video>
+                <img src="prototype-opt.webp" alt="Prototype Festival" style="width: 100%; display: block; margin: 0; padding: 0;">
+                <img width="2400" height="1350" loading="lazy" decoding="async" src="stationary-opt.webp" alt="Prototype Festival" style="width: 100%; display: block; margin: 0; padding: 0;">
+                <img width="2400" height="1350" loading="lazy" decoding="async" src="prototype hat-opt.webp" alt="Prototype Festival" style="width: 100%; display: block; margin: 0; padding: 0;">
+                <img width="2400" height="1350" loading="lazy" decoding="async" src="badge-opt.webp" alt="Prototype Festival" style="width: 100%; display: block; margin: 0; padding: 0;">
+                <img width="2400" height="1350" loading="lazy" decoding="async" src="card-opt.webp" alt="Prototype Festival" style="width: 100%; display: block; margin: 0; padding: 0;">
+                <img width="2400" height="1350" loading="lazy" decoding="async" src="prototype social-opt.webp" alt="Prototype Festival" style="width: 100%; display: block; margin: 0; padding: 0;">
+                <img width="2400" height="2169" loading="lazy" decoding="async" src="prototype web-opt.webp" alt="Prototype Festival" style="width: 100%; display: block; margin: 0; padding: 0;">
+                <video src="web mock-opt.mp4" alt="Web mock" style="width: 100%; display: block; margin: 0; padding: 0;" data-lazy preload="metadata" loop muted playsinline></video>
                 <div style="display: flex; flex-direction: column; width: 100%; gap: 0; border-top: 1px solid #000; padding-top: 28px; margin-top: 28px;">
                     <p style="font-size: 12px; margin: 0 0 8px 0; padding: 0; line-height: 1.4;">Generative Design Tool</p>
                     <p style="font-size: 12px; margin: 0 0 12px 0; padding: 0; line-height: 1.5;">Using Processing, I built a generative tool that deconstructs the PROTOTYPE Festival logotype into individual letterforms, distributing them across canvas edges with variable scale, stretch, and density, producing infinite unique compositions from a single identity system.</p>
-                    <video src="1.mp4" alt="Prototype Festival" style="width: 100%; display: block; margin: 0; padding: 0; object-fit: cover;" autoplay loop muted playsinline></video>
+                    <video src="1-opt.mp4" alt="Prototype Festival" style="width: 100%; display: block; margin: 0; padding: 0; object-fit: cover;" data-lazy preload="metadata" loop muted playsinline></video>
                     <p style="font-size: 12px; margin: 16px 0 12px 0; padding: 0; line-height: 1.5;">Using Processing, I developed a multi-style typographic rendering engine that transforms the PROTOTYPE Festival logo into 15 distinct visual treatments, allowing multiple stylized instances to coexist on a single canvas with real-time parameter control.</p>
-                    <video src="2.mp4" alt="Prototype Festival" style="width: 100%; display: block; margin: 0; padding: 0; object-fit: cover;" autoplay loop muted playsinline></video>
+                    <video src="2-opt.mp4" alt="Prototype Festival" style="width: 100%; display: block; margin: 0; padding: 0; object-fit: cover;" data-lazy preload="metadata" loop muted playsinline></video>
                 </div>
-                <img src="street ads.jpg" alt="Prototype Festival" style="width: 100%; display: block; margin: 0; padding: 0;">
+                <img width="2400" height="1350" loading="lazy" decoding="async" src="street ads-opt.webp" alt="Prototype Festival" style="width: 100%; display: block; margin: 0; padding: 0;">
                 <div class="project-navigation">
                     <a href="#" class="project-nav-btn" id="prev-project">← Previous</a>
                     <a href="#" class="project-nav-btn" id="next-project">Next →</a>
@@ -400,7 +400,7 @@
                 imageElements.forEach((element, index) => {
                     setTimeout(() => {
                         element.classList.add('show');
-                    }, 200 + (index * 200));
+                    }, 120 + (Math.min(index, 5) * 90));
                 });
             }, 100);
         });
@@ -426,16 +426,19 @@
         });
 
         (function() {
+            // Keep in the same order as the homepage list (index.html)
+            // Keep in the same order as the homepage list (index.html)
             const projects = [
-                '../new-project/index.html',
-                '../new-project-2/index.html',
-                '../prototype/index.html',
-                '../clostra-son-jon-mustair/index.html',
-                '../symposium-2025/index.html',
-                '../greentopia/index.html',
-                '../lumimoria/index.html',
-                '../the-little-food-book/index.html',
-                '../sewing-machine/index.html'
+                '../blinkko/index.html', // 01 Blinkko
+                '../toy-r-us/index.html', // 02 TOY R US
+                '../prototype/index.html', // 03 Prototype Festival
+                '../clostra-son-jon-mustair/index.html', // 04 Clostra Son Jon Müstair
+                '../symposium-2025/index.html', // 05 Symposium 2025
+                '../greentopia/index.html', // 06 Greentopia
+                '../lumimoria/index.html', // 07 Lumimoria
+                '../the-little-food-book/index.html', // 08 The Little Food Book
+                '../sewing-machine/index.html', // 09 ......sewing machine???
+                '../wayfinding/index.html' // 10 Wayfinding (grid only)
             ];
 
             const currentPath = window.location.pathname;
@@ -489,6 +492,16 @@
                 nextBtn.classList.add('disabled');
                 nextBtn.href = '#';
             }
+        })();
+    </script>
+    <script>
+        // Play below-the-fold videos only when they are near the viewport
+        (() => {
+            const io = new IntersectionObserver(entries => entries.forEach(e => {
+                if (e.isIntersecting) e.target.play().catch(() => {});
+                else e.target.pause();
+            }), { rootMargin: '300px 0px' });
+            document.querySelectorAll('video[data-lazy]').forEach(v => io.observe(v));
         })();
     </script>
 </body>

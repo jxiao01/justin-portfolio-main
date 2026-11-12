@@ -62,7 +62,7 @@
         a {
             color: #000;
             text-decoration: none;
-            cursor: url('../../cursor-asset11-small.png') 13 13, pointer;
+            cursor: pointer;
         }
 
         a:hover {
@@ -355,23 +355,23 @@
         <main class="content">
             <!-- 项目内容区域 -->
             <div class="project-images" style="padding: 40px 0;">
-                <img src="main.jpg" alt="Main" style="width: 100%; display: block; margin: 0; padding: 0;">
-                <img src="system.jpg" alt="System" style="width: 100%; display: block; margin: 0; padding: 0;">
-                <img src="sanctum.jpg" alt="Sanctum" style="width: 100%; display: block; margin: 0; padding: 0;">
-                <img src="clostra color.png" alt="Clostra Son Jon Müstair" style="width: 100%; display: block; margin: 0 0 50px 0; padding: 0;">
-                <img src="site sign 1.png" alt="Site Sign 1" style="width: 70%; display: block; margin: 50px auto; padding: 0;">
-                <img src="site sign.png" alt="Site Sign" style="width: 100%; display: block; margin: 0; padding: 0;">
-                <img src="business card.png" alt="Business Card" style="width: 100%; display: block; margin: 0; padding: 0;">
-                <img src="ads.jpg" alt="Ads" style="width: 100%; display: block; margin: 0; padding: 0;">
-                <img src="digital.jpg" alt="Digital" style="width: 100%; display: block; margin: 0; padding: 0;">
-                <img src="book 1.png" alt="Book 1" style="width: 100%; display: block; margin: 0; padding: 0;">
-                <img src="book 2.jpg" alt="Book 2" style="width: 100%; display: block; margin: 0; padding: 0;">
+                <img src="main-opt.webp" alt="Main" style="width: 100%; display: block; margin: 0; padding: 0;">
+                <img src="system-opt.webp" alt="System" style="width: 100%; display: block; margin: 0; padding: 0;">
+                <img width="2400" height="1350" loading="lazy" decoding="async" src="sanctum-opt.webp" alt="Sanctum" style="width: 100%; display: block; margin: 0; padding: 0;">
+                <img width="2400" height="945" loading="lazy" decoding="async" src="clostra color-opt.webp" alt="Clostra Son Jon Müstair" style="width: 100%; display: block; margin: 0 0 50px 0; padding: 0;">
+                <img width="2400" height="900" loading="lazy" decoding="async" src="site sign 1-opt.webp" alt="Site Sign 1" style="width: 70%; display: block; margin: 50px auto; padding: 0;">
+                <img width="2160" height="1446" loading="lazy" decoding="async" src="site sign-opt.webp" alt="Site Sign" style="width: 100%; display: block; margin: 0; padding: 0;">
+                <img width="2400" height="1700" loading="lazy" decoding="async" src="business card-opt.webp" alt="Business Card" style="width: 100%; display: block; margin: 0; padding: 0;">
+                <img width="2400" height="1350" loading="lazy" decoding="async" src="ads-opt.webp" alt="Ads" style="width: 100%; display: block; margin: 0; padding: 0;">
+                <img width="2400" height="1350" loading="lazy" decoding="async" src="digital-opt.webp" alt="Digital" style="width: 100%; display: block; margin: 0; padding: 0;">
+                <img width="2400" height="1701" loading="lazy" decoding="async" src="book 1-opt.webp" alt="Book 1" style="width: 100%; display: block; margin: 0; padding: 0;">
+                <img width="2400" height="1350" loading="lazy" decoding="async" src="book 2-opt.webp" alt="Book 2" style="width: 100%; display: block; margin: 0; padding: 0;">
                 <div style="display: flex; width: 100%; justify-content: center; gap: 20px; align-items: stretch; margin-top: 100px;">
                     <div style="flex: 1; max-width: 50%; min-width: 0; display: flex; justify-content: center;">
-                        <img src="val 02.png" alt="Val 02" style="width: 100%; height: 100%; object-fit: contain; display: block;">
+                        <img width="2400" height="3600" loading="lazy" decoding="async" src="val 02-opt.webp" alt="Val 02" style="width: 100%; height: 100%; object-fit: contain; display: block;">
                     </div>
                     <div style="flex: 1; max-width: 50%; min-width: 0; display: flex; justify-content: center;">
-                        <img src="val 01.png" alt="Val 01" style="width: 100%; height: 100%; object-fit: contain; display: block;">
+                        <img width="2400" height="1600" loading="lazy" decoding="async" src="val 01-opt.webp" alt="Val 01" style="width: 100%; height: 100%; object-fit: contain; display: block;">
                     </div>
                 </div>
                 <div class="project-navigation">
@@ -396,7 +396,7 @@
                 imageElements.forEach((element, index) => {
                     setTimeout(() => {
                         element.classList.add('show');
-                    }, 200 + (index * 200));
+                    }, 120 + (Math.min(index, 5) * 90));
                 });
             }, 100);
         });
@@ -427,16 +427,19 @@
 
         // 项目导航功能
         (function() {
+            // Keep in the same order as the homepage list (index.html)
+            // Keep in the same order as the homepage list (index.html)
             const projects = [
-                '../new-project/index.html',
-                '../new-project-2/index.html',
-                '../prototype/index.html', // 01 Prototype Festival
-                '../clostra-son-jon-mustair/index.html', // 02 Clostra Son Jon Müstair
-                '../symposium-2025/index.html', // 03 Symposium
-                '../greentopia/index.html', // 04 Greentopia
-                '../lumimoria/index.html', // 05 Lumimoria
-                '../the-little-food-book/index.html', // 06 The Little Food Book
-                '../sewing-machine/index.html'   // 07 sewing machine
+                '../blinkko/index.html', // 01 Blinkko
+                '../toy-r-us/index.html', // 02 TOY R US
+                '../prototype/index.html', // 03 Prototype Festival
+                '../clostra-son-jon-mustair/index.html', // 04 Clostra Son Jon Müstair
+                '../symposium-2025/index.html', // 05 Symposium 2025
+                '../greentopia/index.html', // 06 Greentopia
+                '../lumimoria/index.html', // 07 Lumimoria
+                '../the-little-food-book/index.html', // 08 The Little Food Book
+                '../sewing-machine/index.html', // 09 ......sewing machine???
+                '../wayfinding/index.html' // 10 Wayfinding (grid only)
             ];
 
             // 从当前URL获取项目编号
