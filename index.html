@@ -69,7 +69,7 @@
 
         html.intro.intro-landing .container {
             opacity: 1;
-            transition: opacity 0.5s ease 0.3s;
+            transition: opacity 0.6s ease 0.6s;
         }
 
         html.intro.intro-landing .name-link,
@@ -85,7 +85,9 @@
 
         .intro-landing #intro-name,
         .intro-landing #intro-canvas {
-            transition: transform 0.55s steps(6, end);   /* frame by frame, like a flipbook */
+            /* a glide, in step with the box's edges: it waits while the box is pulled straight, then
+               travels with the same slow-fast-slow easing */
+            transition: transform 0.52s cubic-bezier(0.65, 0, 0.35, 1) 0.26s;   /* same length and timing as the box opening */
         }
 
         #intro-name {
@@ -113,9 +115,27 @@
             transition: opacity 0.2s ease;
         }
 
+        /* on landing the doodled box is handed over to a full-window canvas (see straightenBox) */
         .intro-landing #intro-box-canvas {
             opacity: 0;
-            transition: opacity 0.3s steps(3, end);
+        }
+
+        /* while the doodle line is still being drawn, the page's own two rules wait */
+        html.lines-drawing .top-line {
+            opacity: 0 !important;
+        }
+
+        html.lines-drawing .sidebar {
+            border-right-color: transparent;
+        }
+
+        .intro-lines {
+            position: fixed;
+            left: 0;
+            top: 0;
+            z-index: 10000;
+            pointer-events: none;
+            image-rendering: pixelated;
         }
 
         .intro-stage {
@@ -1595,7 +1615,7 @@
         }
 
 
-        /* Blinkko cover: shoulder photo + the app on two phones */
+        /* Blinkko cover: three screens from the current build on plain black */
         .blinkko-cover-wrap {
             display: flex;
             align-items: center;
@@ -1607,7 +1627,7 @@
             display: block;
             width: 100%;
             aspect-ratio: 3 / 2;
-            background: #070707;
+            background: #0a0a0a;
             overflow: hidden;
         }
 
@@ -1621,50 +1641,116 @@
             transform: none;
         }
 
-        /* Full-bleed photo, nudged left so the pet's face sits clear of the phones */
-        .blinkko-cover .bc-photo {
-            position: absolute !important;
-            top: 0 !important;
-            left: -18% !important;
-            width: 118% !important;
-            max-width: none !important;
-            height: 100% !important;
-            object-fit: cover !important;
-            object-position: center 40%;
-        }
-
+        /* Horizontal logo in the top-left corner */
         .blinkko-cover::after {
             content: '';
             position: absolute;
-            inset: 0;
-            background: linear-gradient(90deg, rgba(0, 0, 0, 0) 45%, rgba(0, 0, 0, 0.45) 100%);
-            pointer-events: none;
+            top: 6%;
+            left: 5%;
+            width: 24%;
+            aspect-ratio: 900 / 162;
+            background: url('projects/blinkko/logo-horizontal.webp') left top / contain no-repeat;
+        }
+
+        .blinkko-cover-wrap .blinkko-cover::after {
+            top: 5%;
+            width: 30%;
         }
 
         .blinkko-cover .bc-phones {
             position: absolute;
-            z-index: 1;
-            right: 5%;
-            top: 0;
-            bottom: 0;
-            width: 36%;
+            inset: 0;
             display: flex;
             align-items: center;
-            justify-content: flex-end;
-            gap: 6%;
+            justify-content: center;
+            gap: 4.5%;
         }
 
-        .blinkko-cover .bc-phones img {
-            position: static !important;
-            width: 47% !important;
-            height: auto !important;
-            object-fit: contain !important;
-            border-radius: 9% / 4.2%;
-            box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.18), 0 14px 32px rgba(0, 0, 0, 0.45);
+        /* A drawn iPhone: titanium band, black bezel, side buttons, Dynamic Island.
+           Proportions follow a 402 x 874 screen with a 12pt bezel. */
+        .blinkko-cover .bc-phone {
+            position: relative;
+            flex: none;
+            height: 70%;
+            aspect-ratio: 426 / 898;
+            border: 1.5px solid transparent;
+            border-radius: 16.5% / 7.8%;
+            background:
+                linear-gradient(#060606, #060606) padding-box,
+                linear-gradient(120deg, #e4e1db 0%, #8f8b85 22%, #cfccc6 45%, #6f6c67 70%, #d6d3cd 100%) border-box;
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+            isolation: isolate;
         }
 
-        .blinkko-cover .bc-phones img:last-child {
-            transform: translateY(10%);
+        /* Side buttons: action, volume up, volume down on the left; power on the right */
+        .blinkko-cover .bc-phone::before {
+            content: '';
+            position: absolute;
+            z-index: -1;
+            top: 0;
+            bottom: 0;
+            left: -2.6%;
+            right: -2.6%;
+            background:
+                linear-gradient(90deg, #77746f, #c9c6c0) 0 19% / 2% 3.6% no-repeat,
+                linear-gradient(90deg, #77746f, #c9c6c0) 0 28% / 2% 6.6% no-repeat,
+                linear-gradient(90deg, #77746f, #c9c6c0) 0 38.5% / 2% 6.6% no-repeat,
+                linear-gradient(270deg, #77746f, #c9c6c0) 100% 33% / 2% 10.5% no-repeat;
+            border-radius: 2px;
+        }
+
+        .blinkko-cover .bc-phone::after {
+            content: '';
+            position: absolute;
+            top: 2.9%;
+            left: 50%;
+            width: 29.6%;
+            height: 4.1%;
+            border-radius: 999px;
+            background: #000;
+            transform: translateX(-50%);
+        }
+
+        .blinkko-cover .bc-phone img {
+            position: absolute !important;
+            top: 1.34% !important;
+            left: 2.82% !important;
+            display: block;
+            width: 94.36% !important;
+            max-width: none !important;
+            height: 97.32% !important;
+            object-fit: cover !important;
+            border-radius: 13.7% / 6.3%;
+        }
+
+        .blinkko-cover .bc-phone:nth-child(2) {
+            height: 84%;
+        }
+
+        /* In the square preview frame the cover fills the frame, so the phones are sized down to fit its width */
+        .blinkko-cover-wrap .blinkko-cover {
+            height: 100%;
+            aspect-ratio: auto;
+        }
+
+        .blinkko-cover-wrap .bc-phones {
+            gap: 3.5%;
+        }
+
+        .blinkko-cover-wrap .bc-phone {
+            height: 54%;
+        }
+
+        .blinkko-cover-wrap .bc-phone:nth-child(2) {
+            height: 66%;
+        }
+
+        .blinkko-cover .bc-phone:nth-child(1) {
+            transform: translateY(9%);
+        }
+
+        .blinkko-cover .bc-phone:nth-child(3) {
+            transform: translateY(-9%);
         }
 
         /* Click-to-zoom modal for a single project tile image */
@@ -1757,7 +1843,6 @@
         <div class="intro-stage">
             <svg class="intro-geometry" viewBox="0 0 300 300" aria-hidden="true">
                 <path id="intro-path-box" d="M77.7 104.2 C80.5 104.1 88.8 103.9 94.5 103.6 C100.1 103.4 105.8 103.1 111.5 102.8 C117.1 102.5 122.9 102.1 128.6 101.8 C134.4 101.6 140.1 101.3 145.9 101.0 C151.7 100.8 157.4 100.7 163.2 100.5 C169.0 100.4 174.9 100.4 180.8 100.3 C186.8 100.2 192.8 100.1 198.9 100.0 C204.9 99.9 211.1 99.7 217.1 99.7 C223.1 99.7 230.1 98.7 234.7 100.0 C239.4 101.3 242.3 104.4 244.8 107.6 C247.4 110.8 249.4 114.4 250.2 119.1 C251.0 123.8 249.7 130.2 249.5 135.7 C249.2 141.3 248.9 146.7 248.6 152.3 C248.3 157.8 248.2 163.5 247.9 169.0 C247.5 174.4 248.0 180.7 246.4 185.0 C244.8 189.2 241.8 191.9 238.4 194.3 C235.0 196.6 231.0 198.3 226.0 199.0 C221.0 199.7 214.4 198.7 208.6 198.6 C202.8 198.5 197.1 198.4 191.3 198.3 C185.5 198.2 179.7 198.1 173.9 198.1 C168.1 198.1 162.4 198.2 156.6 198.3 C150.9 198.5 145.2 198.8 139.5 199.1 C133.8 199.4 128.1 199.7 122.4 200.0 C116.7 200.3 111.1 200.6 105.4 200.8 C99.7 200.9 94.0 201.0 88.3 201.0 C82.5 201.0 75.6 201.9 70.9 200.6 C66.1 199.3 62.9 196.2 59.7 193.1 C56.6 189.9 53.5 186.6 52.2 181.7 C50.8 176.9 51.7 169.7 51.5 163.8 C51.3 157.8 51.2 152.0 51.2 146.2 C51.2 140.5 51.3 134.8 51.4 129.1 C51.5 123.5 50.6 116.7 52.1 112.3 C53.5 107.9 56.8 105.3 60.1 102.7 C63.4 100.1 67.0 97.8 71.8 96.8 C76.7 95.8 83.4 96.7 89.2 96.7 C95.0 96.7 100.8 96.6 106.6 96.5 C112.4 96.5 118.3 96.4 124.1 96.4 C130.0 96.4 135.9 96.3 141.8 96.3 C147.8 96.2 153.7 96.1 159.6 96.1 C165.6 96.0 171.5 95.9 177.4 95.8 C183.4 95.7 189.4 95.5 195.4 95.4 C201.5 95.2 207.6 94.9 213.7 94.7 C219.9 94.4 227.1 93.1 232.3 93.9 C237.4 94.8 241.2 97.0 244.4 99.7 C247.7 102.4 250.8 105.4 252.0 110.3 C253.2 115.1 252.0 122.4 251.8 128.6 C251.6 134.8 251.3 141.1 250.9 147.4 C250.6 153.8 250.1 160.2 249.8 166.6 C249.5 172.9 250.1 180.4 248.9 185.7 C247.6 190.9 245.1 194.7 242.2 198.0 C239.3 201.3 236.1 204.1 231.3 205.3 C226.5 206.6 219.4 205.4 213.4 205.5 C207.5 205.5 201.5 205.5 195.5 205.6 C189.5 205.6 183.5 205.6 177.4 205.6 C171.4 205.6 165.3 205.6 159.1 205.7 C153.0 205.8 146.8 205.9 140.5 206.0 C134.3 206.2 128.0 206.5 121.7 206.7 C115.4 207.0 109.0 207.3 102.8 207.5 C96.5 207.8 90.2 208.0 84.0 208.2 C77.7 208.3 70.5 209.4 65.4 208.4 C60.4 207.4 56.6 205.1 53.5 202.1 C50.5 199.2 47.9 196.0 47.1 190.9 C46.2 185.9 48.1 178.2 48.6 171.9 C49.1 165.5 49.6 159.2 49.9 153.0 C50.3 146.7 50.4 140.6 50.6 134.4 C50.7 128.3 49.7 121.4 50.6 116.3 C51.5 111.1 53.3 107.1 55.9 103.7 C58.4 100.2 61.2 97.1 65.8 95.8 C70.4 94.5 77.6 95.7 83.6 95.7 C89.5 95.7 95.8 95.9 101.7 95.9 C107.7 95.9 113.7 95.9 119.5 95.8 C125.3 95.8 131.0 95.7 136.6 95.6 C142.3 95.5 150.7 95.3 153.5 95.3"/>
-                <path id="intro-path-mark" d="M82.7 131.1 C101.3 120.8 124.5 129.4 150.0 125.9 C170.9 122.5 189.4 127.6 206.8 122.5 C217.3 120.8 223.1 127.6 226.6 136.2 C230.0 148.3 227.7 162.0 220.8 170.6 C208.0 179.2 189.4 170.6 168.6 174.1 C147.7 177.5 129.1 170.6 110.6 175.8 C96.6 179.2 82.7 175.8 76.9 165.5 C72.3 153.4 74.6 138.0 82.7 131.1 Z"/>
             </svg>
             <canvas id="intro-canvas" width="300" height="300"></canvas>
             <canvas id="intro-box-canvas" width="300" height="300"></canvas>
@@ -1819,7 +1904,7 @@
                 <p class="list-label">Selected</p>
                 <ol>
                     <li>
-                        <span class="project-number">01</span> <a href="projects/blinkko/index.html">Blinkko</a>
+                        <span class="project-number">01</span> <a href="projects/blinkko/index.html">Blinkko Labs</a>
                     </li>
                     <li>
                         <span class="project-number">02</span> <a href="projects/toy-r-us/index.html">TOY R US</a>
@@ -1856,12 +1941,12 @@
             <div class="project-preview-wrapper" id="project-preview-wrapper">
             <div class="project-preview" id="project-preview">
                 <div class="project-carousel">
-                        <div class="project-image blinkko-cover-wrap" role="img" aria-label="Blinkko">
+                        <div class="project-image blinkko-cover-wrap" role="img" aria-label="Blinkko Labs">
                         <div class="blinkko-cover">
-                            <img fetchpriority="high" class="bc-photo" src="projects/blinkko/shoulder-opt.webp" alt="">
                             <div class="bc-phones">
-                                <img src="projects/blinkko/ui-home-v3.png" alt="">
-                                <img src="projects/blinkko/app-map-opt.webp" alt="">
+                                <span class="bc-phone"><img src="projects/blinkko/app-map-opt.webp" alt=""></span>
+                                <span class="bc-phone"><img fetchpriority="high" src="projects/blinkko/ui-home-v3.png" alt=""></span>
+                                <span class="bc-phone"><img src="projects/blinkko/onboarding/recognize.webp" alt=""></span>
                             </div>
                         </div>
                     </div>
@@ -1886,13 +1971,25 @@
             
             <div class="project-grid">
                 <a href="projects/blinkko/index.html" class="project-item">
-                    <div class="blinkko-cover" role="img" aria-label="Blinkko">
-                            <img loading="lazy" class="bc-photo" src="projects/blinkko/shoulder-opt.webp" alt="">
+                    <div class="blinkko-cover" role="img" aria-label="Blinkko Labs">
                             <div class="bc-phones">
-                                <img loading="lazy" src="projects/blinkko/ui-home-v3.png" alt="">
-                                <img loading="lazy" src="projects/blinkko/app-map-opt.webp" alt="">
+                                <span class="bc-phone"><img loading="lazy" src="projects/blinkko/app-map-opt.webp" alt=""></span>
+                                <span class="bc-phone"><img loading="lazy" src="projects/blinkko/ui-home-v3.png" alt=""></span>
+                                <span class="bc-phone"><img loading="lazy" src="projects/blinkko/onboarding/recognize.webp" alt=""></span>
                             </div>
                         </div>
+                </a>
+                
+                <a href="projects/clostra-son-jon-mustair/index.html" class="project-item">
+                    <img loading="lazy" decoding="async" src="mustair.png" alt="Clostra Son Jon Müstair">
+                </a>
+                
+                <a href="projects/greentopia/index.html" class="project-item">
+                    <img loading="lazy" decoding="async" src="greentopia-01-opt.webp" alt="Greentopia">
+                </a>
+                
+                <a href="projects/lumimoria/index.html" class="project-item lumimoria-item">
+                    <img loading="lazy" decoding="async" src="13-opt.webp" alt="Lumimoria">
                 </a>
                 
                 <a href="projects/toy-r-us/index.html" class="project-item">
@@ -1903,20 +2000,8 @@
                     <img loading="lazy" decoding="async" src="projects/prototype/prototype-01.svg" alt="Prototype Festival">
                 </a>
                 
-                <a href="projects/clostra-son-jon-mustair/index.html" class="project-item">
-                    <img loading="lazy" decoding="async" src="mustair.png" alt="Clostra Son Jon Müstair">
-                </a>
-                
                 <a href="projects/symposium-2025/index.html" class="project-item">
                     <img loading="lazy" decoding="async" src="symposium-01.webp" alt="Symposium 2025">
-                </a>
-                
-                <a href="projects/greentopia/index.html" class="project-item">
-                    <img loading="lazy" decoding="async" src="greentopia-01-opt.webp" alt="Greentopia">
-                </a>
-                
-                <a href="projects/lumimoria/index.html" class="project-item lumimoria-item">
-                    <img loading="lazy" decoding="async" src="13-opt.webp" alt="Lumimoria">
                 </a>
                 
                 <a href="projects/the-little-food-book/index.html" class="project-item">
@@ -1936,15 +2021,15 @@
                     </div>
                 </a>
                 
-                <div class="project-item">
-                    <img loading="lazy" src="xiaohongshu-opt.webp" alt="Intern">
-                </div>
                 <div class="project-item contain-item">
                     <img loading="lazy" decoding="async" src="interview-01-opt.webp" alt="Interview with Muon Studio">
                 </div>
                 
                 <div class="project-item railroad-item">
                     <img loading="lazy" src="country data-opt.webp" alt="Country Data">
+                </div>
+                <div class="project-item">
+                    <img loading="lazy" src="xiaohongshu-opt.webp" alt="Intern">
                 </div>
             </div>
         </main>
@@ -2133,7 +2218,7 @@ function startAutoScroll() {
     const projectDescriptions = [
         ['2026', 'UIUX, Product, Design Engineering', '—'],
         ['2026', 'HCI, Creative Coding, Physical Computing · Degree Project', 'Advise by Paul Soulellis'],
-        ['2025', 'Identity, Creative Coding · Personal Project', '—'],
+        ['2025', 'Identity, Creative Coding', 'Personal Project'],
         ['2025', 'Identity, Editorial · for Grad Type III', 'Advise by Doug Scott'],
         ['2025', 'Branding · for Design Studio IV', 'Advise by Kathy Wu'],
         ['2024', 'Mapping, Web, Exhibition · for Design Studio III', 'with Sarah Feng, Marie You and Nor Wu'],
@@ -2330,7 +2415,7 @@ function setupManualHover() {
     const projectDescriptions = [
         ['2026', 'UIUX, Product, Design Engineering', '—'],
         ['2026', 'HCI, Creative Coding, Physical Computing · Degree Project', 'Advise by Paul Soulellis'],
-        ['2025', 'Identity, Creative Coding · Personal Project', '—'],
+        ['2025', 'Identity, Creative Coding', 'Personal Project'],
         ['2025', 'Identity, Editorial · for Grad Type III', 'Advise by Doug Scott'],
         ['2025', 'Branding · for Design Studio IV', 'Advise by Kathy Wu'],
         ['2024', 'Mapping, Web, Exhibition · for Design Studio III', 'with Sarah Feng, Marie You and Nor Wu'],
@@ -2731,7 +2816,7 @@ function scrunch(el, at, shut, done, midway) {
             show(order[n]);
             if (!shut && n === 1 && midway) midway();
             // opening lingers on the last, nearly flat stages, where the paper is being smoothed
-            const hold = shut ? 46 : (order[n] <= 2 ? 120 : 72);
+            const hold = shut ? 32 : (order[n] <= 2 ? 82 : 46);
             n++;
             return setTimeout(next, hold);
         }
@@ -2811,8 +2896,8 @@ function paperBall(at) {
             pose();
             draw();
             n++;
-            if (n < sizes.length) setTimeout(step, 58);
-            else setTimeout(done, 58);
+            if (n < sizes.length) setTimeout(step, 40);
+            else setTimeout(done, 40);
         };
         step();
     };
@@ -2832,8 +2917,8 @@ function paperBall(at) {
                 c.style.top = (at[1] + (to[1] - at[1]) * q + lift[Math.min(n, steps - 1)]) + 'px';
                 turn = n * 38;
                 pose();
-                if (n >= steps - 1) { clearInterval(t); setTimeout(done, 110); }
-            }, 70);
+                if (n >= steps - 1) { clearInterval(t); setTimeout(done, 60); }
+            }, 48);
         },
         remove: function() { clearInterval(boil); c.remove(); }
     };
@@ -2936,6 +3021,7 @@ window.addEventListener('pageshow', function(event) {
         const target = { x: l.left, y: l.bottom + 1 - 8, w: l.width, h: 8 };
         const sx = target.w / mark.w, sy = target.h / mark.h;
         root.classList.add('intro-landing');
+        straightenBox(stage);
         requestAnimationFrame(function() {
             flyName.style.transform = 'translate(' + (n.left - from.left) + 'px,' + (n.top - from.top) + 'px)';
             flyMark.style.transform = 'translate(' + (target.x - stage.left - mark.x * sx) + 'px,' + (target.y - stage.top - mark.y * sy) + 'px) scale(' + sx + ',' + sy + ')';
@@ -2947,8 +3033,103 @@ window.addEventListener('pageshow', function(event) {
                 flyMark.style.transform = 'translate(' + (target.x - stage.left - mark.x * sx) + 'px,' + (target.y - stage.top - mark.y * sy) + 'px) scale(' + sx + ',' + sy + ')';
             }
         }, 60);
-        setTimeout(done, 900);
+        setTimeout(done, 1250);
     };
+    // Landing, for the box: its line turns into the lines the page is built from, the rule across
+    // the top and the rule down the side of the sidebar, without ever being swapped for them.
+    const straightenBox = function(stage) {
+        const side = document.querySelector('.sidebar');
+        const rule = document.getElementById('top-line');
+        if (!side) return;
+        const W = innerWidth, H = innerHeight;
+        const cv = document.createElement('canvas');
+        cv.className = 'intro-lines';
+        cv.width = W; cv.height = H;
+        cv.style.width = W + 'px'; cv.style.height = H + 'px';
+        document.body.appendChild(cv);
+        const c = cv.getContext('2d');
+        c.fillStyle = '#000';
+        // the box as drawn, and the tidy rectangle it settles into (stage coordinates -> window)
+        const pts = boxPts.map(function(q) { return [stage.left + q.x, stage.top + q.y]; });
+        const a = { x: stage.left + 52, y: stage.top + 98, w: 196, h: 104 };
+        const sideX = Math.round(side.getBoundingClientRect().right) - 1;
+        const ruleY = rule ? Math.round(rule.getBoundingClientRect().top) : 10;
+        const onRect = function(pt) {                      // the nearest point on the tidy rectangle's edge
+            const x = Math.max(a.x, Math.min(a.x + a.w, pt[0])), y = Math.max(a.y, Math.min(a.y + a.h, pt[1]));
+            const d = [x - a.x, a.x + a.w - x, y - a.y, a.y + a.h - y], m = Math.min.apply(null, d);
+            return m === d[0] ? [a.x, y] : m === d[1] ? [a.x + a.w, y] : m === d[2] ? [x, a.y] : [x, a.y + a.h];
+        };
+        const goal = pts.map(onRect);
+
+        // Four parts, run smoothly (every frame, eased) but always drawn as a wobbly doodle line
+        // that is re-drawn a few times a second:
+        //   settle  the two loose laps close up into one outline;
+        //   open    the box opens: its right and bottom edges are drawn back in, while the top and
+        //           left edges, still joined at their corner, glide up to where the page's two
+        //           rules cross, growing a little as they go;
+        //   draw    from there the pen carries on: both lines are drawn outwards from their ends,
+        //           to the edges of the window;
+        //   calm    only now, with the lines complete, does the wobble die away until they are
+        //           straight, and the canvas fades into the page's own 1px rules underneath.
+        // The page's real rules stay hidden until that last moment, so two lines are never seen.
+        const SETTLE = 260, OPEN = 520, DRAW = 620, CALM = 420, FADE = 220;
+        const t0 = performance.now();
+        const inOut = function(t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; };
+        const sway = function(d, f, phase) { return 1.5 * Math.sin(d * 0.043 + f * 2.1 + phase) + 0.8 * Math.sin(d * 0.117 + f * 4.3 + phase * 2); };
+        const hLine = function(x0, x1, y, amp, f, phase) {
+            for (let x = x0; x <= x1; x++) c.fillRect(x, Math.round(y + sway(x, f, phase) * amp), 2, 2);
+        };
+        const vLine = function(x, y0, y1, amp, f, phase) {
+            for (let y = y0; y <= y1; y++) c.fillRect(Math.round(x + sway(y, f, phase) * amp), y, 2, 2);
+        };
+        // where the open L's ends are when it arrives at the crossing: a bit longer than the box's edges
+        const armR = sideX + Math.round(a.w * 1.5), armL = Math.max(0, sideX - Math.round(a.w * 0.12));
+        const armB = ruleY + Math.round(a.h * 1.5), armT = Math.max(0, ruleY - Math.round(a.h * 0.08));
+        root.classList.add('lines-drawing');
+        const tick = setInterval(function() {
+            const now = performance.now() - t0, f = Math.floor(now / 100);
+            c.clearRect(0, 0, W, H);
+            if (now < SETTLE) {
+                const q = 1 - Math.pow(1 - now / SETTLE, 3);
+                for (let i = 0; i < pts.length; i++) {
+                    const k = wob(i, f);
+                    c.fillRect(Math.round(pts[i][0] + (goal[i][0] - pts[i][0]) * q + k[0]) - 1, Math.round(pts[i][1] + (goal[i][1] - pts[i][1]) * q + k[1]) - 1, 2, 2);
+                }
+                return;
+            }
+            const mixTo = function(from, to, q) { return Math.round(from + (to - from) * q); };
+            let cx, cy, topL, topR, leftT, leftB, amp = 1;
+            if (now < SETTLE + OPEN) {
+                // open: the L leaves the box and travels to the crossing
+                const t = (now - SETTLE) / OPEN, q = inOut(t);
+                cx = mixTo(a.x, sideX, q); cy = mixTo(a.y, ruleY, q);
+                topL = mixTo(a.x, armL, q); topR = mixTo(a.x + a.w, armR, q);
+                leftT = mixTo(a.y, armT, q); leftB = mixTo(a.y + a.h, armB, q);
+                const keep = 1 - inOut(Math.min(1, t * 1.35));
+                if (keep > 0.01) {
+                    vLine(topR - 2, cy, cy + Math.round(a.h * keep), 1, f, 3.1);
+                    hLine(cx, cx + Math.round(a.w * keep), leftB - 2, 1, f, 5.2);
+                }
+            } else {
+                // draw: the pen runs on from the ends of the L to the edges of the window
+                const t = Math.min(1, (now - SETTLE - OPEN) / DRAW), q = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+                cx = sideX; cy = ruleY;
+                topL = mixTo(armL, 0, q); topR = mixTo(armR, W, q);
+                leftT = mixTo(armT, 0, q); leftB = mixTo(armB, H, q);
+                // calm: the finished lines settle into straight ones
+                const over = now - SETTLE - OPEN - DRAW;
+                if (over > 0) amp = Math.pow(Math.max(0, 1 - over / CALM), 1.3);
+                if (over > CALM) {
+                    root.classList.remove('lines-drawing');           // the page's own rules take over
+                    cv.style.opacity = String(Math.max(0, 1 - (over - CALM) / FADE));
+                    if (over > CALM + FADE) { clearInterval(tick); cv.remove(); return; }
+                }
+            }
+            hLine(topL, topR, cy, amp, f, 0.4);
+            vLine(cx, leftT, leftB, amp, f, 1.9);
+        }, 16);
+    };
+
     // The box: a 2px black pixel line, the same weight and hard edge as the cursor's outline.
     // It is stamped as small squares along the path, and re-stamped a few times a second with the
     // squares nudged by a pixel, like the frames of a hand-drawn GIF.
@@ -2978,40 +3159,45 @@ window.addEventListener('pageshow', function(event) {
             bctx.fillRect(Math.round(boxPts[i].x) + w[0] - 1, Math.round(boxPts[i].y) + w[1] - 1, 2, 2);
         }
     }, 16);
-    // Highlighter mark in the cursor's hand: one solid green shape with a rough, hard pixel edge,
-    // swiped in from left to right once the box is drawn.
+    // Highlighter mark: what a marker actually leaves when you colour something in. Four broad
+    // horizontal strokes, one under the other and slightly overlapping. Along its length a stroke
+    // is almost straight (it only steps up or down by a pixel every few dozen pixels); the
+    // irregularity is at the two ends, where each stroke starts and stops at a different place.
+    // Hard pixel edges, no outline. The strokes are laid down one after another, back and forth.
     const canvas = document.getElementById('intro-canvas');
-    const markPath = document.getElementById('intro-path-mark');
-    const art = document.createElement('canvas');
-    art.width = art.height = 300;
-    const actx = art.getContext('2d');
-    const d = markPath.getAttribute('d');
-    actx.fillStyle = '#00ff88';
-    actx.fill(new Path2D(d));
-    // no outline: the edge itself is rough. Stamp green squares of uneven size, nudged in and out
-    // along the outline, then harden every soft pixel so the whole mark is one hard-edged shape.
+    const ctx = canvas.getContext('2d');
     let seed = 7;
     const rnd = function() { seed = (seed * 16807) % 2147483647; return seed / 2147483647; };
-    const len = markPath.getTotalLength();
-    for (let l = 0; l <= len; l += 1.4) {
-        const pt = markPath.getPointAtLength(l);
-        const size = 2 + Math.floor(rnd() * 3);
-        const dx = Math.round((rnd() - 0.5) * 4), dy = Math.round((rnd() - 0.5) * 4);
-        actx.fillRect(Math.round(pt.x) + dx - 1, Math.round(pt.y) + dy - 1, size, size);
-    }
-    const img = actx.getImageData(0, 0, 300, 300);
-    for (let i = 3; i < img.data.length; i += 4) img.data[i] = img.data[i] > 127 ? 255 : 0;
-    actx.putImageData(img, 0, 0);
-    const ctx = canvas.getContext('2d');
-    const x0 = 66, x1 = 236, from = 1700, dur = 420, t0 = performance.now();
-    const swipe = setInterval(function() {
-        const t = Math.min(1, Math.max(0, (performance.now() - t0 - from) / dur));
-        const w = Math.round((x1 - x0) * (1 - Math.pow(1 - t, 2)));
-        if (w > 0) {
-            ctx.clearRect(0, 0, 300, 300);
-            ctx.drawImage(art, x0, 0, w, 300, x0, 0, w, 300);
+    const strokes = [];
+    for (let i = 0; i < 4; i++) {
+        const left = 76 + Math.round((rnd() - 0.4) * 9), right = 229 + Math.round((rnd() - 0.6) * 9);
+        const top = 121 + i * 14, pieces = [];
+        let y = Math.round((rnd() - 0.5) * 2);
+        for (let x = left; x < right;) {                  // long, nearly level pieces
+            const run = Math.min(right - x, 30 + Math.floor(rnd() * 26));
+            pieces.push([x, top + y, run]);
+            x += run;
+            y = Math.max(-1, Math.min(1, y + [-1, 0, 1][Math.floor(rnd() * 3)]));
         }
-        if (t >= 1 || !document.documentElement.classList.contains('intro')) clearInterval(swipe);
+        strokes.push({ left: left, right: right, pieces: pieces, backwards: i % 2 === 1 });
+    }
+    const strokeH = 18, from = 1700, gap = 95, dur = 210, t0 = performance.now();
+    const swipe = setInterval(function() {
+        const now = performance.now() - t0 - from;
+        ctx.clearRect(0, 0, 300, 300);
+        ctx.fillStyle = '#00ff88';
+        strokes.forEach(function(st, i) {
+            const t = Math.min(1, Math.max(0, (now - i * gap) / dur));
+            if (t <= 0) return;
+            const reach = Math.round((st.right - st.left) * (1 - Math.pow(1 - t, 2)));
+            // how far the marker has got: from the left on one stroke, from the right on the next
+            const a = st.backwards ? st.right - reach : st.left, b = st.backwards ? st.right : st.left + reach;
+            st.pieces.forEach(function(pc) {
+                const x0 = Math.max(pc[0], a), x1 = Math.min(pc[0] + pc[2], b);
+                if (x1 > x0) ctx.fillRect(x0, pc[1], x1 - x0, strokeH);
+            });
+        });
+        if (now > gap * 3 + dur || !document.documentElement.classList.contains('intro')) clearInterval(swipe);
     }, 16);
     // Greeting: Chinese, then Korean, then English, each with the name written in that language.
     // The English "Justin" is the piece that travels to the sidebar at the end.

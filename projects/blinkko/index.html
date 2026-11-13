@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blinkko</title>
-    <meta name="description" content="Blinkko project by Jinhang Xiao">
+    <title>Blinkko Labs</title>
+    <meta name="description" content="Blinkko Labs project by Jinhang Xiao">
     <link rel="icon" type="image/svg+xml" href="../../favicon-green-square.svg">
     <link rel="shortcut icon" type="image/svg+xml" href="../../favicon-green-square.svg">
     <link rel="apple-touch-icon" sizes="180x180" href="../../favicon-green-square.svg">
@@ -193,7 +193,7 @@
             margin: 20px 0 0;
             padding: 0;
             display: grid;
-            grid-template-columns: repeat(5, 1fr);
+            grid-template-columns: repeat(4, 1fr);
             gap: 28px;
         }
 
@@ -428,6 +428,60 @@
         /* Readable line length for running text; images stay full width */
         .note > p:not(.kicker) {
             max-width: 720px;
+        }
+
+        /* Running text is set larger than labels so long passages stay readable */
+        .note > p:not([class]),
+        .app-copy p:not(.kicker) {
+            font-size: 14px;
+            line-height: 1.55;
+        }
+
+        .note-grid span {
+            font-size: 13px;
+            opacity: 0.62;
+        }
+
+        /* Component library: seven boards as a compact two-column overview; each opens at full size */
+        .ds-grid {
+            column-count: 2;
+            column-gap: 28px;
+            margin-top: 20px;
+        }
+
+        .ds-board {
+            display: block;
+            break-inside: avoid;
+            margin-bottom: 24px;
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .content .project-images .ds-board img {
+            display: block;
+            width: 100%;
+            height: auto;
+            margin: 0;
+            padding: 0;
+        }
+
+        .ds-cap {
+            display: block;
+            margin-top: 8px;
+            font-size: 12px;
+            line-height: 1.5;
+            opacity: 0.62;
+        }
+
+        .ds-cap b {
+            font-weight: 500;
+            margin-right: 8px;
+        }
+
+        @media (max-width: 700px) {
+            .ds-grid {
+                column-count: 1;
+            }
         }
 
         /* Workflow steps */
@@ -722,6 +776,169 @@
 
             .dd-phases {
                 flex-direction: column;
+            }
+        }
+
+        /* Onboarding test: three numbers, then the quiz screens */
+        .note-grid.stats.dd-test {
+            grid-template-columns: repeat(3, 1fr);
+            margin-top: 20px;
+        }
+
+        /* quiz screens: five to a row, large enough to read, with room between the two rows */
+        .dd-row {
+            display: grid;
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            gap: 20px;
+            margin-top: 24px;
+        }
+
+        .dd-row figure {
+            margin: 0;
+        }
+
+        .content .project-images .dd-row img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border: 1px solid #dcdcd8;
+            border-radius: 12px;
+        }
+
+        .dd-row figcaption {
+            margin-top: 8px;
+            font-size: 11.5px;
+            line-height: 1.4;
+            color: #8a8a84;
+        }
+
+        .content .project-images .note .dd-row-head {
+            margin: 48px 0 0;
+            font-size: 14px;
+            font-weight: 600;
+            max-width: none;
+        }
+
+        @media (max-width: 900px) {
+            .note-grid.stats.dd-test {
+                grid-template-columns: 1fr;
+            }
+
+            /* phones: the three paths and each row of quiz screens become a strip you swipe sideways,
+               with the next card peeking in, so the section is not several screens of scrolling */
+            .dd-row,
+            .app-deep .dd-paths {
+                display: flex;
+                gap: 14px;
+                overflow-x: auto;
+                scroll-snap-type: x proximity;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+                margin-right: -20px;
+                padding-right: 20px;
+            }
+
+            .dd-row::-webkit-scrollbar,
+            .app-deep .dd-paths::-webkit-scrollbar {
+                display: none;
+            }
+
+            .dd-row figure {
+                flex: 0 0 46%;
+                scroll-snap-align: start;
+            }
+
+            .app-deep .dd-path {
+                flex: 0 0 82%;
+                scroll-snap-align: start;
+            }
+        }
+
+        /* The onboarding deep dive sits inside the dark stage, right under the Onboarding loop it
+           explains, and takes the stage's colours: white type, quiet greys, hairline rules. */
+        .app-stage .app-deep {
+            color: #fff;
+            margin: 40px 20px 20px;
+        }
+
+        .app-deep .note {
+            border-top-color: rgba(255, 255, 255, 0.18);
+        }
+
+        .app-deep .note p {
+            color: inherit;
+        }
+
+        .app-deep .kicker {
+            opacity: 0.45;
+        }
+
+        .app-deep .note > p:not(.kicker) {
+            opacity: 0.88;
+        }
+
+        .app-deep .dd-path-head b,
+        .app-deep .dd-phase-head b,
+        .app-deep .dd-path-who,
+        .app-deep .dd-phase-job,
+        .app-deep .dd-row figcaption {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .app-deep .dd-path li {
+            border-color: rgba(255, 255, 255, 0.24);
+        }
+
+        .app-deep .dd-path li::before {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .app-deep .dd-path li:last-child {
+            background: #fff;
+            border-color: #fff;
+            color: #000;
+        }
+
+        .app-deep .dd-path li:last-child::before {
+            color: rgba(0, 0, 0, 0.5);
+        }
+
+        .content .project-images .app-deep .dd-frames img,
+        .content .project-images .app-deep .dd-row img {
+            border-color: rgba(255, 255, 255, 0.18);
+        }
+
+        .content .project-images .app-deep .note .dd-after {
+            margin-top: 36px;
+        }
+
+        /* Design-system boards are wide. On a phone they are shown at half size and can be swiped
+           sideways, instead of being squeezed to a quarter size where nothing can be read. */
+        .ds-scroll {
+            width: 100%;
+            line-height: 0;
+        }
+
+        @media (max-width: 700px) {
+            .ds-scroll {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+            }
+
+            .ds-scroll::-webkit-scrollbar {
+                display: none;
+            }
+
+            .content .project-images .ds-scroll img {
+                width: 720px !important;
+                max-width: none;
+                height: auto;
+            }
+
+            /* iOS zooms the page when a field with text under 16px is focused */
+            .gate input {
+                font-size: 16px;
             }
         }
 
@@ -1871,7 +2088,7 @@
 
     <div class="gate" id="gate">
         <form id="gate-form" autocomplete="off">
-            <h2>Blinkko</h2>
+            <h2>Blinkko Labs</h2>
             <p>This case study is password-protected. Enter the password to view it.</p>
             <div class="gate-row">
                 <input type="password" id="gate-input" aria-label="Password" placeholder="Password" required>
@@ -1884,8 +2101,8 @@
     <div class="container">
         <aside class="sidebar">
             <div class="bio">
-                <h1>Blinkko</h1>
-                <p>Founding product designer for Blinkko, a shoulder-worn social AI companion (hardware + App). Led the App information architecture and UI system that shipped: four tabs (Explore, Home, Friends, Profile), free-app onboarding, City Explore, remote Glow, and hardware overlays for light, volume, bump, and wardrobe.</p>
+                <h1>Blinkko Labs</h1>
+                <p>Founding product designer at Blinkko Labs, building Blinkko, a shoulder-worn social AI companion (hardware + App). Led the App information architecture and UI system that shipped: four tabs (Explore, Home, Friends, Profile), free-app onboarding, City Explore, remote Glow, and hardware overlays for light, volume, bump, and wardrobe.</p>
                 <br>
                 <p class="project-meta">UIUX, Product, Design Engineering / 2026</p>
             </div>
@@ -1899,7 +2116,7 @@
                 <div class="note">
                     <p class="kicker">Opportunity</p>
                     <p>Blinkko is a shoulder-worn social AI companion — hardware plus App — for urban young people. The product should turn going out into exploring the city, making a connection, and showing who you are.</p>
-                    <p>I joined as founding product designer in June 2026, owning software design with the software team: user research, product strategy, information architecture, the UI system, interaction, and getting the App onto the hardware for the September launch.</p>
+                    <p>I joined as founding product designer in June 2026, owning software design with the software team: user research, product strategy, information architecture, the UI system, interaction, and shipping the App alongside the hardware for the September launch.</p>
                     <div class="note-grid">
                         <div>
                             <strong>The problem</strong>
@@ -1907,7 +2124,29 @@
                         </div>
                         <div>
                             <strong>The job</strong>
-                            <span>Rebuild the App around real use: home as the hub, five daily spines, 96 touchpoints, software and hardware in one loop.</span>
+                            <span>Rebuild the App around real use: home as the hub, five spines, software and hardware in one loop.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="note">
+                    <p class="kicker">Early traction</p>
+                    <div class="note-grid stats">
+                        <div>
+                            <strong>1,900+</strong>
+                            <span>Waitlist signups</span>
+                        </div>
+                        <div>
+                            <strong>658</strong>
+                            <span>San Francisco launch RSVPs</span>
+                        </div>
+                        <div>
+                            <strong>7.6%</strong>
+                            <span>Meta ad CTR</span>
+                        </div>
+                        <div>
+                            <strong>$0.30</strong>
+                            <span>Cost per click · as of 2026.09.05</span>
                         </div>
                     </div>
                 </div>
@@ -1921,8 +2160,8 @@
 
                 <div class="note">
                     <p class="kicker">Insight</p>
-                    <p>If other people can read the glow and the touch, the opening stays low-risk — so you keep wearing it, and it keeps sensing. Wear, sense, understand, respond: a visible companion on the shoulder; light, proximity, and motion; place, people, and events; then light, haptics, and the tail.</p>
-                    <p>Research with Gen Z pushed the interface toward large, bold, spoken type — “sup, kai” instead of settings-speak. The first session should introduce a companion, not configure a device. Dark UI keeps color, light, and Glow as the focus, echoing the physical body.</p>
+                    <p>If other people can read the glow and the touch, the opening stays low-risk — so you keep wearing it, and it keeps sensing. Wear, sense, understand, respond: that loop is what the whole product is built on.</p>
+                    <p>Research with Gen Z pushed the interface away from settings-speak, toward the way they actually talk. The first session should introduce a companion, not configure a device.</p>
                 </div>
 
                 <div class="note">
@@ -1932,28 +2171,24 @@
 
                 <div class="note note-sub" id="ia-workflow">
                     <p class="kicker">Workflow</p>
-                    <p>Design shipped along this path. Skill generated UI on the design system; I took over for flow, then pixels.</p>
+                    <p>First drafts come from a skill the team already had, which builds a PRD out of design-system components. My time goes where judgment matters: the flow first, then the pixels.</p>
                     <div class="flow-well">
                         <ol class="flow">
                             <li>
                                 <strong>PRD lands</strong>
-                                <span>From product, marketing, or engineering.</span>
+                                <span>Written by the founder.</span>
+                            </li>
+                            <li>
+                                <strong>Skill drafts the UI</strong>
+                                <span>A first pass, built from design-system components.</span>
                             </li>
                             <li class="is-on">
-                                <strong>Skill ships UI</strong>
-                                <span>PRD → frontend, built on the design system.</span>
-                            </li>
-                            <li>
-                                <strong>Spec-aligned layout</strong>
-                                <span>Generate as needed; anyone can produce it.</span>
-                            </li>
-                            <li>
-                                <strong>Designer takes over</strong>
-                                <span>Flow first, then pixels.</span>
+                                <strong>I take over</strong>
+                                <span>I rework the flow first, then the pixels.</span>
                             </li>
                             <li>
                                 <strong>Launch</strong>
-                                <span>Missing screens filled on the launch cadence.</span>
+                                <span>Gaps filled screen by screen, on the launch schedule.</span>
                             </li>
                         </ol>
                         <div class="flow-tools">
@@ -1987,7 +2222,7 @@
 
                 <div class="note note-sub" id="ia-map">
                     <p class="kicker">Information architecture</p>
-                    <p>Home as the hub for five spines. Start → Onboarding → Home hub, then Homepage, Friend loop, City Explore, Pet growth, and Settings.</p>
+                    <p>Home as the hub for five spines. Onboarding leads into the Home hub; from there Homepage, Friend loop, City Explore, and Pet growth are the four you return to every day. Settings sits beside them as a utility, not a spine. Mapped in full, the five spines come to 96 touchpoints; the diagram shows the top level.</p>
                 </div>
                 <div class="ia-tree" role="img" aria-label="Information architecture: Start, then Onboarding, then the Home hub, which links five spines: Homepage, Friend loop, City Explore, Pet growth and Settings, each with its features.">
                     <div class="ia-chain">
@@ -2048,46 +2283,31 @@
                     </div>
                 </div>
 
-                <div class="note" id="ds-lib">
-                    <p class="kicker">UI component library</p>
-                    <p>The shared library in the file is four groups — foundations &amp; Glow, controls &amp; navigation, cards &amp; feedback, social &amp; companion. Shown here in the order the system is built: Type → Character → Core UI → Cards → Home → Place → Friends. Used across onboarding, Home, Friends, Explore, and Glow.</p>
+                <div class="note">
+                    <p class="kicker">Five loops</p>
+                    <p>Onboarding, Homepage, Friend loop, City Explore, Pet growth — in that order. Screens below are the landed UI, autoplaying; tap to step.</p>
                 </div>
-                <div class="note note-sub">
-                    <p class="kicker">Type</p>
-                    <p>DM Sans for UI copy. Host Grotesk for spoken headlines.</p>
-                </div>
-                <img width="1440" height="942" loading="lazy" decoding="async" src="ds-type.png" alt="Blinkko type: DM Sans and Host Grotesk" style="width: 100%; display: block; margin: 0; padding: 0;">
-                <div class="note note-sub">
-                    <p class="kicker">Character</p>
-                    <p>Pet states on Home, plus intimacy from friend profiles.</p>
-                </div>
-                <img width="1440" height="480" loading="lazy" decoding="async" src="ds-character.png" alt="Blinkko character states and intimacy" style="width: 100%; display: block; margin: 0; padding: 0;">
-                <div class="note note-sub">
-                    <p class="kicker">Core UI</p>
-                    <p>Buttons, hardware controls, tabs, and Glow marks from the live variant set.</p>
-                </div>
-                <img width="1440" height="448" loading="lazy" decoding="async" src="ds-core.png" alt="Blinkko core UI variants: buttons, hardware, tabs, glow marks" style="width: 100%; display: block; margin: 0; padding: 0;">
-                <div class="note note-sub">
-                    <p class="kicker">Cards</p>
-                    <p>Event cards and namecards — default, waiting, accept.</p>
-                </div>
-                <img width="1440" height="345" loading="lazy" decoding="async" src="ds-cards.png?v=2" alt="Blinkko event cards and namecards" style="width: 100%; display: block; margin: 0; padding: 0;">
-                <div class="note note-sub">
-                    <p class="kicker">Home</p>
-                    <p>Daily tasks, Glow list, search, and settings rows.</p>
-                </div>
-                <img width="1440" height="678" loading="lazy" decoding="async" src="ds-home.png" alt="Blinkko home modules: daily tasks, glow list, settings" style="width: 100%; display: block; margin: 0; padding: 0;">
-                <div class="note note-sub">
-                    <p class="kicker">Place</p>
-                    <p>Location, Glow edit, and map sheets.</p>
-                </div>
-                <img width="1440" height="855" loading="lazy" decoding="async" src="ds-place.png" alt="Blinkko place and map sheets" style="width: 100%; display: block; margin: 0; padding: 0;">
-                <div class="note note-sub">
-                    <p class="kicker">Friends</p>
-                    <p>Bump sheet, invite, friend cards, and popovers.</p>
-                </div>
-                <img width="1440" height="771" loading="lazy" decoding="async" src="ds-social-opt.webp" alt="Blinkko friend, bump, and invite modules" style="width: 100%; display: block; margin: 0; padding: 0;">
 
+                <div class="app-stage" id="app-ui">
+                    <div class="app-copy">
+                        <p class="kicker">Onboarding</p>
+                        <p>Welcome: “a light born from what you feel…” then let’s go. Sign-in is Apple / Google first; avatar and username finish the free-app path. Once you are signed in, the vibe quiz lets Blinkko get to know you. The permission stack is no longer required up front.</p>
+                    </div>
+                    <div class="proto" data-first="move-in">
+                        <button class="proto-phone" type="button" aria-label="Step onboarding prototype">
+                            <span class="proto-stage">
+                                <img loading="lazy" decoding="async" class="is-on" src="app-welcome-opt.webp" alt="Blinkko welcome">
+                                <img loading="lazy" decoding="async" src="app-signin-opt.webp" alt="Blinkko sign in">
+                            </span>
+                        </button>
+                        <p class="proto-hint">Welcome → sign in</p>
+                        <div class="phone-row proto-strip">
+                            <div class="phone-stage is-current"><div class="phone-frame"><img loading="lazy" decoding="async" src="app-welcome-opt.webp" alt=""></div></div>
+                            <div class="phone-stage"><div class="phone-frame"><img loading="lazy" decoding="async" src="app-signin-opt.webp" alt=""></div></div>
+                        </div>
+                    </div>
+
+                    <div class="app-deep">
                 <div class="note" id="deep-dive">
                     <p class="kicker">Deep dive · Onboarding</p>
                     <p>Onboarding had to work for three kinds of people who arrive with very different levels of commitment: someone who has just unboxed the hardware, someone who came in from a quiz on social media, and someone who found the App in the store.</p>
@@ -2198,33 +2418,45 @@
                     </div>
                 </div>
 
-                <div class="note note-sub">
-                    <p class="kicker">What shipped</p>
-                    <p>One short path for everyone: a welcome screen that keeps the line “a light born from what you feel…”, sign-in with Apple or Google, then avatar and username. Hardware became optional, so pairing moved out of onboarding and the map and social features work before anyone owns a device. The quiz and the permission stack are no longer required up front.</p>
-                </div>
-
-                <div class="note">
-                    <p class="kicker">Five loops</p>
-                    <p>Onboarding, Homepage, Friend loop, City Explore, Pet growth — in that order. Screens below are the landed UI, autoplaying; tap to step.</p>
-                </div>
-
-                <div class="app-stage" id="app-ui">
-                    <div class="app-copy">
-                        <p class="kicker">Onboarding</p>
-                        <p>Welcome: “a light born from what you feel…” then let’s go. Sign-in is Apple / Google first; avatar and username finish the free-app path. Quiz and permission stacks are no longer required.</p>
-                    </div>
-                    <div class="proto" data-first="move-in">
-                        <button class="proto-phone" type="button" aria-label="Step onboarding prototype">
-                            <span class="proto-stage">
-                                <img loading="lazy" decoding="async" class="is-on" src="app-welcome-opt.webp" alt="Blinkko welcome">
-                                <img loading="lazy" decoding="async" src="app-signin-opt.webp" alt="Blinkko sign in">
-                            </span>
-                        </button>
-                        <p class="proto-hint">Welcome → sign in</p>
-                        <div class="phone-row proto-strip">
-                            <div class="phone-stage is-current"><div class="phone-frame"><img loading="lazy" decoding="async" src="app-welcome-opt.webp" alt=""></div></div>
-                            <div class="phone-stage"><div class="phone-frame"><img loading="lazy" decoding="async" src="app-signin-opt.webp" alt=""></div></div>
+                <div class="note note-sub" id="onboarding-test">
+                    <p class="kicker">Testing three ways in</p>
+                    <p>The review left an open question: what should a new person be asked to do first? I took three answers to that question to 30+ target users as three onboarding schemes: one led by the purchase, one led by a free look around before owning anything, and one led by a personality quiz.</p>
+                    <div class="note-grid stats dd-test">
+                        <div>
+                            <strong>30+</strong>
+                            <span>Target users in the sessions</span>
                         </div>
+                        <div>
+                            <strong>3</strong>
+                            <span>Schemes: purchase-led, free-experience-led, quiz-led</span>
+                        </div>
+                        <div>
+                            <strong>+30%</strong>
+                            <span>Participation conversion of the quiz-led scheme over the other two, in testing</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="note note-sub">
+                    <p class="kicker">The quiz-led scheme</p>
+                    <p>In testing, the quiz was the first thing a new person did. In the shipped build it sits one step later: sign-in is a single tap with Apple or Google, not a form, and the quiz follows straight after, so the result belongs to an account from the start. It is the moment Blinkko gets to know you, and the first place the App becomes personal: two details about you, six questions written the way the audience talks, and a result with a card made to be shared.</p>
+                    <div class="dd-row">
+                            <figure><img src="quiz/intro.webp" width="402" height="874" loading="lazy" decoding="async" alt="Quiz: blinkko wants to know about you"><figcaption>About you</figcaption></figure>
+                            <figure><img src="quiz/q1.webp" width="402" height="874" loading="lazy" decoding="async" alt="Quiz question: it’s friday 6pm, what’s the move"><figcaption>Question 1 of 6</figcaption></figure>
+                            <figure><img src="quiz/q3.webp" width="402" height="874" loading="lazy" decoding="async" alt="Quiz question: your camera roll is mostly"><figcaption>Question 3 of 6</figcaption></figure>
+                            <figure><img src="quiz/q6.webp" width="402" height="874" loading="lazy" decoding="async" alt="Quiz question: which one actually hits"><figcaption>Question 6 of 6</figcaption></figure>
+                            <figure><img src="quiz/share-nightowl.webp" width="402" height="874" loading="lazy" decoding="async" alt="Shareable result card: night owl"><figcaption>A card to share</figcaption></figure>
+                    </div>
+                    <p class="dd-row-head">The result: one of five vibe types</p>
+                    <div class="dd-row">
+                            <figure><img src="quiz/result-homebase.webp" width="402" height="874" loading="lazy" decoding="async" alt="Vibe type: homebase"><figcaption>homebase</figcaption></figure>
+                            <figure><img src="quiz/result-nightowl.webp" width="402" height="874" loading="lazy" decoding="async" alt="Vibe type: night owl"><figcaption>night owl</figcaption></figure>
+                            <figure><img src="quiz/result-sidequest.webp" width="402" height="874" loading="lazy" decoding="async" alt="Vibe type: side quest"><figcaption>side quest</figcaption></figure>
+                            <figure><img src="quiz/result-hiddengem.webp" width="402" height="874" loading="lazy" decoding="async" alt="Vibe type: hidden gem"><figcaption>hidden gem</figcaption></figure>
+                            <figure><img src="quiz/result-spotlight.webp" width="402" height="874" loading="lazy" decoding="async" alt="Vibe type: spotlight"><figcaption>spotlight</figcaption></figure>
+                    </div>
+                    <p class="dd-after">Hardware stayed optional throughout: pairing moved out of onboarding, so the map and the social features work before anyone owns a device.</p>
+                </div>
                     </div>
 
                     <div class="app-copy">
@@ -2235,15 +2467,15 @@
                         <button class="proto-phone" type="button" aria-label="Step home prototype">
                             <span class="proto-stage">
                                 <img loading="lazy" decoding="async" class="is-on" src="ui-home-v3.png" alt="Blinkko home">
-                                <img loading="lazy" decoding="async" src="ui-lights-opt.webp" alt="Blinkko lights">
-                                <img loading="lazy" decoding="async" src="ui-volume.png" alt="Blinkko volume">
+                                <img loading="lazy" decoding="async" src="ui-lights-opt.webp?v=3" alt="Blinkko lights">
+                                <img loading="lazy" decoding="async" src="ui-volume.png?v=3" alt="Blinkko volume">
                             </span>
                         </button>
                         <p class="proto-hint">Home → light overlay → volume overlay</p>
                         <div class="phone-row proto-strip">
                             <div class="phone-stage is-current"><div class="phone-frame"><img loading="lazy" decoding="async" src="ui-home-v3.png" alt=""></div></div>
-                            <div class="phone-stage"><div class="phone-frame"><img loading="lazy" decoding="async" src="ui-lights-opt.webp" alt=""></div></div>
-                            <div class="phone-stage"><div class="phone-frame"><img loading="lazy" decoding="async" src="ui-volume.png" alt=""></div></div>
+                            <div class="phone-stage"><div class="phone-frame"><img loading="lazy" decoding="async" src="ui-lights-opt.webp?v=3" alt=""></div></div>
+                            <div class="phone-stage"><div class="phone-frame"><img loading="lazy" decoding="async" src="ui-volume.png?v=3" alt=""></div></div>
                         </div>
                     </div>
 
@@ -2266,8 +2498,8 @@
                                 <div class="encounter-sheet">
                                     <span class="encounter-sheet-grab"></span>
                                     <img loading="lazy" decoding="async" class="encounter-sheet-pet" src="app-bump-sheet-pet-opt.webp" alt="">
-                                    <p class="encounter-sheet-name">taco</p>
-                                    <p class="encounter-sheet-user">kai ›</p>
+                                    <p class="encounter-sheet-name">mochi</p>
+                                    <p class="encounter-sheet-user">bailey ›</p>
                                     <p class="encounter-sheet-cta">chat now !</p>
                                     <p class="encounter-sheet-later">maybe later</p>
                                 </div>
@@ -2284,27 +2516,27 @@
 
                     <div class="app-copy">
                         <p class="kicker">City Explore</p>
-                        <p>The map tab: discovery, events in town, Glow create, posts, and phone check-in. Field adventure and fog sit on the same map, not a second app.</p>
+                        <p>The map tab: discovery, events in town, Glow create, posts, and phone check-in. Everything sits on one map, not a second app.</p>
                     </div>
                     <div class="proto">
                         <button class="proto-phone" type="button" aria-label="Step city prototype">
                             <span class="proto-stage">
                                 <img loading="lazy" decoding="async" class="is-on" src="app-map-opt.webp" alt="Blinkko city map">
-                                <img loading="lazy" decoding="async" src="app-events-opt.webp" alt="Blinkko events in town">
+                                <img loading="lazy" decoding="async" src="app-events-opt.webp?v=2" alt="Blinkko events in town">
                                 <img loading="lazy" decoding="async" src="app-glow-create-opt.webp" alt="Blinkko create glow">
                             </span>
                         </button>
                         <p class="proto-hint">Map → events → create Glow</p>
                         <div class="phone-row proto-strip">
                             <div class="phone-stage is-current"><div class="phone-frame"><img loading="lazy" decoding="async" src="app-map-opt.webp" alt=""></div></div>
-                            <div class="phone-stage"><div class="phone-frame"><img loading="lazy" decoding="async" src="app-events-opt.webp" alt=""></div></div>
+                            <div class="phone-stage"><div class="phone-frame"><img loading="lazy" decoding="async" src="app-events-opt.webp?v=2" alt=""></div></div>
                             <div class="phone-stage"><div class="phone-frame"><img loading="lazy" decoding="async" src="app-glow-create-opt.webp" alt=""></div></div>
                         </div>
                     </div>
 
                     <div class="app-copy">
                         <p class="kicker">Pet growth</p>
-                        <p>The companion grows in the App: Lumi shop for outfits, then the monthly recap. Preview, spend, confirm, owned — then tags drop onto the city.</p>
+                        <p>The companion grows in the App in two places. The Lumi shop for outfits: preview, spend, confirm, owned. And the monthly recap, where the tags from your month drop onto the city.</p>
                     </div>
                     <div class="proto">
                         <button class="proto-phone" type="button" aria-label="Step closet prototype">
@@ -2353,9 +2585,44 @@
                     </div>
                 </div>
 
+                <div class="note" id="ds-lib">
+                    <p class="kicker">UI component library</p>
+                    <p>The shared library in the file is four groups — foundations &amp; Glow, controls &amp; navigation, cards &amp; feedback, social &amp; companion. Shown here in the order the system is built: Type → Character → Core UI → Cards → Home → Place → Friends. Used across onboarding, Home, Friends, Explore, and Glow. Open a board to see it at full size.</p>
+                    <div class="ds-grid">
+                        <a class="ds-board" href="ds-type.png" target="_blank" rel="noopener">
+                            <img width="1440" height="942" loading="lazy" decoding="async" src="ds-type.png" alt="Blinkko type: DM Sans and Host Grotesk">
+                            <span class="ds-cap"><b>Type</b>DM Sans for UI copy. Host Grotesk for spoken headlines.</span>
+                        </a>
+                        <a class="ds-board" href="ds-character.png" target="_blank" rel="noopener">
+                            <img width="1440" height="480" loading="lazy" decoding="async" src="ds-character.png" alt="Blinkko character states and intimacy">
+                            <span class="ds-cap"><b>Character</b>Pet states on Home, plus intimacy from friend profiles.</span>
+                        </a>
+                        <a class="ds-board" href="ds-core.png" target="_blank" rel="noopener">
+                            <img width="1440" height="448" loading="lazy" decoding="async" src="ds-core.png" alt="Blinkko core UI variants: buttons, hardware, tabs, glow marks">
+                            <span class="ds-cap"><b>Core UI</b>Buttons, hardware controls, tabs, and Glow marks from the live variant set.</span>
+                        </a>
+                        <a class="ds-board" href="ds-cards.png?v=2" target="_blank" rel="noopener">
+                            <img width="1440" height="345" loading="lazy" decoding="async" src="ds-cards.png?v=2" alt="Blinkko event cards and namecards">
+                            <span class="ds-cap"><b>Cards</b>Event cards and namecards — default, waiting, accept.</span>
+                        </a>
+                        <a class="ds-board" href="ds-home.png" target="_blank" rel="noopener">
+                            <img width="1440" height="678" loading="lazy" decoding="async" src="ds-home.png" alt="Blinkko home modules: daily tasks, glow list, settings">
+                            <span class="ds-cap"><b>Home</b>Daily tasks, Glow list, search, and settings rows.</span>
+                        </a>
+                        <a class="ds-board" href="ds-place.png" target="_blank" rel="noopener">
+                            <img width="1440" height="855" loading="lazy" decoding="async" src="ds-place.png" alt="Blinkko place and map sheets">
+                            <span class="ds-cap"><b>Place</b>Location, Glow edit, and map sheets.</span>
+                        </a>
+                        <a class="ds-board" href="ds-social-opt.webp" target="_blank" rel="noopener">
+                            <img width="1440" height="771" loading="lazy" decoding="async" src="ds-social-opt.webp" alt="Blinkko friend, bump, and invite modules">
+                            <span class="ds-cap"><b>Friends</b>Bump sheet, invite, friend cards, and popovers.</span>
+                        </a>
+                    </div>
+                </div>
+
                 <div class="note">
                     <p class="kicker">Hardware–software loop</p>
-                    <p>The launch tested the loop the product is built on. Because other people can read the light and the touch, opening a conversation feels low-risk — so you keep wearing it, and it keeps sensing.</p>
+                    <p>The launch tested that loop end to end: what the shoulder shows, what the device senses, what the App understands, and how both respond.</p>
                     <svg class="loop-fig" viewBox="0 0 1200 520" role="img" aria-label="The loop: hardware on the shoulder is worn and senses touch; signals go down to the App, which understands the place and responds; feedback goes back up to the shoulder as light, haptics and the tail.">
                         <defs>
                             <clipPath id="loop-c1"><circle cx="480" cy="150" r="60"/></clipPath>
@@ -2397,7 +2664,7 @@
                         <text class="loop-title" x="800" y="458" text-anchor="middle"><tspan class="loop-no">03</tspan>  Understand</text>
                         <text class="loop-sub" x="800" y="477" text-anchor="middle">Place, people and events</text>
 
-                        <image href="ui-lights-opt.webp" x="420" y="310" width="120" height="120" preserveAspectRatio="xMidYMid slice" clip-path="url(#loop-c4)"/>
+                        <image href="ui-lights-opt.webp?v=3" x="420" y="310" width="120" height="120" preserveAspectRatio="xMidYMid slice" clip-path="url(#loop-c4)"/>
                         <circle class="loop-ring" cx="480" cy="370" r="60"/>
                         <text class="loop-title" x="480" y="458" text-anchor="middle"><tspan class="loop-no">04</tspan>  Respond</text>
                         <text class="loop-sub" x="480" y="477" text-anchor="middle">The App sets light, haptics and the tail</text>
@@ -2454,28 +2721,6 @@
                         <div>
                             <strong>Engineering</strong>
                             <span>Connection, latency and device-state sync — so bump, battery and light state are the same thing on both ends.</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="note">
-                    <p class="kicker">Early traction</p>
-                    <div class="note-grid stats">
-                        <div>
-                            <strong>1,900+</strong>
-                            <span>Waitlist signups</span>
-                        </div>
-                        <div>
-                            <strong>658</strong>
-                            <span>San Francisco launch RSVPs</span>
-                        </div>
-                        <div>
-                            <strong>7.6%</strong>
-                            <span>Meta ad CTR</span>
-                        </div>
-                        <div>
-                            <strong>$0.30</strong>
-                            <span>Cost per click · as of 2026.09.05</span>
                         </div>
                     </div>
                 </div>
@@ -2741,7 +2986,7 @@
             const track = flow.parentElement.querySelector('.flow-track');
             const fill = track && track.querySelector('.flow-fill');
             const runner = track && track.querySelector('.flow-runner');
-            const labels = ['PRD', 'UI', 'Layout', 'Pixels', 'Live'];
+            const labels = ['PRD', 'Draft', 'Pixels', 'Live'];
             const light = (i) => {
                 steps.forEach((step, k) => {
                     step.classList.toggle('is-on', k === i);
@@ -2763,11 +3008,11 @@
                 }
             };
             if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                light(1);
+                light(2);
                 if (runner) {
-                    runner.textContent = labels[1];
+                    runner.textContent = labels[2];
                     runner.classList.add('is-live');
-                    moveTo(1, false);
+                    moveTo(2, false);
                 }
                 return;
             }
