@@ -641,11 +641,10 @@
             background: #fff;
             color: #000;
             outline: none;
-        }
-
-        .gate input:focus-visible {
-            outline: 2px solid #00ff88;
-            outline-offset: 1px;
+            /* focus is shown by the caret alone: green, and a block where the browser can draw one
+               (elsewhere it is a green line) */
+            caret-color: #00ff88;
+            caret-shape: block;
         }
 
         .gate button {
