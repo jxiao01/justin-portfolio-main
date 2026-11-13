@@ -745,15 +745,6 @@
     <script>
         const THOUGHTS = ["conditions", "type", "pacing", "sync", "introduce", "loop"];
 
-        // Leaving: the dust rushes past once, then the page changes
-        document.querySelector('.back-link').addEventListener('click', function(e) {
-            e.preventDefault();
-            const href = this.href;
-            document.getElementById('stage').style.transition = 'opacity 0.3s steps(3, end)';
-            document.getElementById('stage').style.opacity = '0';
-            setTimeout(function() { window.location.href = href; }, 450);
-        });
-
         // The flight. One screen of scrolling moves the camera one stop forward. Each thing in the
         // space is drawn at scale F / distance, from a vanishing point at the centre of the window,
         // so it grows as it approaches, is exactly life-size when you stop at it, and slides out
@@ -841,6 +832,155 @@
                 window.scrollTo(0, LAST * stopH());
                 if (reduce) frame(performance.now());
             });
+            // Leaving: you fall backwards out of the space, into the real page. The camera is pulled
+            // back so the notes and the dust rush away from you; the main page is loaded behind the
+            // scenes, and the whole space shrinks until its outline is the frame around the project on
+            // that page. What is left around it is the real page, already there.
+            const backLink = document.querySelector('.back-link');
+            let leaving = false;
+            backLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                if (leaving) return;
+                leaving = true;
+                const href = this.href;
+                const go = function() { window.location.href = href + '#from-thinking'; };
+                // ask the browser to hold the last picture of this page until the main page is drawn (no
+                // blank frame between the two); browsers that cannot do it simply change page. Asked
+                // now, not at the moment of leaving, because the browser has to have seen it by then.
+                const hold = document.createElement('style');
+                hold.textContent = '@view-transition { navigation: auto; }';
+                document.head.appendChild(hold);
+                // tells the main page (both the one shown behind this space and the one that takes over) to
+                // simply be there: no intro, no entrance
+                const hand = go;
+                try { sessionStorage.setItem('from-thinking', '1'); } catch (err) {}
+                if (reduce) {
+                    stage.style.transition = 'opacity 0.3s steps(3, end)';
+                    stage.style.opacity = '0';
+                    setTimeout(go, 450);
+                    return;
+                }
+                const t0 = performance.now();
+                warp = { from: cam, to: cam - GAP * 3, t0: t0, dur: 1300 };
+                document.documentElement.style.overflow = 'hidden';
+                [backLink, document.querySelector('.page-title'), hint, skip, stopsNav].forEach(function(el) {
+                    el.style.transition = 'opacity 0.24s steps(3, end)';
+                    el.style.opacity = '0';
+                    el.style.pointerEvents = 'none';
+                });
+
+                const real = document.createElement('iframe');     // the real page, waiting behind the space
+                real.setAttribute('aria-hidden', 'true');
+                real.tabIndex = -1;
+                real.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;border:0;z-index:2000;pointer-events:none;background:#fff;visibility:hidden';
+                const edge = document.createElement('div');        // the outline of the space as it shrinks
+                edge.style.cssText = 'position:fixed;left:0;top:0;z-index:2001;box-sizing:border-box;border:1px solid #000;pointer-events:none;display:none';
+                // the real page says where its frames are (a message, so it also works between two files
+                // opened straight from a folder, which may not look inside each other)
+                let sent = null;
+                window.addEventListener('message', function(ev) {
+                    if (ev.source === real.contentWindow && ev.data && ev.data.jxFrames) sent = ev.data.jxFrames;
+                });
+                const giveUp = setTimeout(go, 2200);                // a slow connection: just go
+
+                const fall = function() {
+                    clearTimeout(giveUp);
+                    // Where the space lands on the real page: on the frame that holds the project (the
+                    // preview, or the first card where there is no preview), so its outline becomes that
+                    // frame's outline. Failing that, on the word "thinking"; failing that, the middle.
+                    // The real page is still settling while this runs (its caption arrives a moment after
+                    // its frame, and pushes the frame up), so the target is measured again on every
+                    // frame of the fall, and the outline always ends exactly on the frame.
+                    let r = null, onFrame = false, radius = '0px';
+                    const seen = function(b) {
+                        return b && b.width > 4 && b.height > 4 && b.left >= 0 && b.top >= 0 && b.left + b.width <= W + 1 && b.top + b.height <= H + 1 ? b : null;
+                    };
+                    const look = function() {                          // straight from the real page when allowed, else from its messages
+                        try {
+                            const doc = real.contentDocument, win = real.contentWindow;
+                            const box = function(sel) {
+                                const el = doc.querySelector(sel);
+                                if (!el) return null;
+                                const q = el.getBoundingClientRect();
+                                return { left: q.left, top: q.top, width: q.width, height: q.height, radius: win.getComputedStyle(el).borderRadius };
+                            };
+                            return { frames: [box('.project-preview'), box('.project-item')], word: box('.think-word') };
+                        } catch (err) { return sent; }
+                    };
+                    let kind = -2;                                     // which thing it is landing on; never changes once chosen
+                    const aim = function() {
+                        const at = look();
+                        if (!at) return;
+                        if (kind === -2) {
+                            kind = -1;
+                            for (let i = 0; i < at.frames.length && kind < 0; i++) if (seen(at.frames[i])) kind = i;
+                            if (kind < 0 && seen(at.word)) kind = 9;
+                        }
+                        if (kind >= 0 && kind < 9 && at.frames[kind]) { r = at.frames[kind]; onFrame = true; radius = r.radius || '0px'; }
+                        else if (kind === 9 && at.word) {
+                            const b = at.word, k = Math.min(b.width / W, b.height * 2.2 / H);
+                            r = { left: b.left + b.width / 2 - W * k / 2, top: b.top + b.height / 2 - H * k / 2, width: W * k, height: H * k, word: b };
+                        }
+                    };
+                    aim();
+                    if (!r) r = { left: W * 0.485, top: H * 0.485, width: W * 0.03, height: H * 0.03 };
+                    real.style.visibility = 'visible';
+                    edge.style.display = 'block';
+                    edge.style.borderRadius = radius;
+                    canvas.style.transformOrigin = stage.style.transformOrigin = '0 0';
+                    const f0 = performance.now(), DUR = 780;
+                    setTimeout(hand, DUR + 1100);                      // never left hanging if the window stops drawing
+                    const step = function(now) {
+                        const p = Math.min(1, (now - f0) / DUR);
+                        const e = p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
+                        aim();
+                        // the outline goes from the window to the frame: an even zoom, not an even shrink
+                        const w = W * Math.pow(r.width / W, e), h = H * Math.pow(r.height / H, e);
+                        const mx = W === r.width ? 0 : (w - r.width) / (W - r.width), my = H === r.height ? 0 : (h - r.height) / (H - r.height);
+                        const x = r.left * (1 - mx), y = r.top * (1 - my);
+                        // the space keeps its proportions and fills the outline; what does not fit is cut off
+                        const s = Math.max(w / W, h / H);
+                        const wx = x + w / 2 - W * s / 2, wy = y + h / 2 - H * s / 2;
+                        canvas.style.transform = stage.style.transform = 'translate(' + wx.toFixed(2) + 'px,' + wy.toFixed(2) + 'px) scale(' + s.toFixed(5) + ')';
+                        edge.style.transform = 'translate(' + x.toFixed(2) + 'px,' + y.toFixed(2) + 'px)';
+                        edge.style.width = w.toFixed(2) + 'px';
+                        edge.style.height = h.toFixed(2) + 'px';
+                        // the real page shows everywhere except through the shrinking space
+                        const x2 = (x + w).toFixed(2), y2 = (y + h).toFixed(2), x1 = x.toFixed(2), y1 = y.toFixed(2);
+                        real.style.clipPath = 'polygon(evenodd, 0 0, 100% 0, 100% 100%, 0 100%, 0 0, ' +
+                            x1 + 'px ' + y1 + 'px, ' + x2 + 'px ' + y1 + 'px, ' + x2 + 'px ' + y2 + 'px, ' + x1 + 'px ' + y2 + 'px, ' + x1 + 'px ' + y1 + 'px)';
+                        if (p < 1) { requestAnimationFrame(step); return; }
+                        canvas.style.visibility = stage.style.visibility = 'hidden';
+                        real.style.clipPath = 'none';
+                        if (onFrame) {
+                            // the outline is now the project's frame: the blank space inside it clears
+                            // in a few held steps, and the project is there
+                            edge.style.background = '#fff';
+                            edge.style.transition = 'opacity 0.36s steps(4, end)';
+                            requestAnimationFrame(function() { edge.style.opacity = '0'; });
+                            setTimeout(hand, 420);
+                            return;
+                        }
+                        // on the word: the last of it is a green mark, then nothing
+                        edge.style.borderColor = edge.style.background = '#00ff88';
+                        if (r.word) {
+                            edge.style.transform = 'translate(' + r.word.left.toFixed(2) + 'px,' + r.word.top.toFixed(2) + 'px)';
+                            edge.style.width = r.word.width.toFixed(2) + 'px';
+                            edge.style.height = r.word.height.toFixed(2) + 'px';
+                        }
+                        setTimeout(function() { edge.remove(); setTimeout(hand, 90); }, 150);
+                    };
+                    requestAnimationFrame(step);
+                };
+                // let the pull back be felt before the space starts to fall away
+                real.addEventListener('load', function() { setTimeout(fall, Math.max(80, 420 - (performance.now() - t0))); });
+                real.src = href;
+                document.body.appendChild(real);
+                document.body.appendChild(edge);
+            });
+            // back here through the browser's back button: start the space afresh
+            window.addEventListener('pageshow', function(e) { if (e.persisted && leaving) location.reload(); });
+
             const goTo = function(n) { window.scrollTo({ top: n * stopH(), behavior: reduce ? 'auto' : 'smooth' }); };
             window.addEventListener('keydown', function(e) {
                 const here = Math.round(window.scrollY / stopH());

@@ -13,19 +13,76 @@
     <link rel="stylesheet" href="fonts/fonts.css">
     <link rel="stylesheet" href="cursor/cursor.css">
     <link rel="stylesheet" href="motion.css">
+    <!-- nothing is drawn until the whole page has been read, so the first frame is a complete one -->
+    <link rel="expect" href="#page-end" blocking="render">
     <script src="motion.js" defer></script>
     <script>
         // Intro: plays on every load and refresh of the homepage. It is skipped when coming back from
         // one of the project pages, and for visitors who prefer reduced motion.
-        try {
-            const nav = performance.getEntriesByType('navigation')[0];
-            const fromProject = (!nav || nav.type !== 'reload') && /^\/(projects|thinking)\//.test(document.referrer.slice(location.origin.length)) && document.referrer.indexOf(location.origin) === 0;
-            if (!fromProject && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                document.documentElement.classList.add('intro');
+        // Coming back from Thinking is a special case: that page shows this one behind itself (in a
+        // frame) as it shrinks away, then hands over to it. Both times this page must simply be
+        // there: no intro, nothing fading or sliding in, so the handover cannot be seen.
+        (function() {
+            let framed = false, handed = false, fromProject = false;
+            try { framed = window.self !== window.top; } catch (e) { framed = true; }
+            try {
+                handed = sessionStorage.getItem('from-thinking') === '1';
+                if (!framed) sessionStorage.removeItem('from-thinking');
+            } catch (e) {}
+            // the same message in the address, for when the page is opened straight from a folder
+            // and the two pages cannot share anything else
+            if (location.hash === '#from-thinking') {
+                handed = true;
+                try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {}
             }
-        } catch (e) {}
+            // shown behind Thinking: tell it where the project's frame is, so its space can shrink onto it
+            if (framed) window.addEventListener('load', function() {
+                const box = function(sel) {
+                    const el = document.querySelector(sel);
+                    if (!el) return null;
+                    const b = el.getBoundingClientRect();
+                    return { left: b.left, top: b.top, width: b.width, height: b.height, radius: getComputedStyle(el).borderRadius };
+                };
+                // more than once: the caption under the frame arrives a moment later and moves it
+                let n = 0;
+                const tell = function() {
+                    try { parent.postMessage({ jxFrames: { frames: [box('.project-preview'), box('.project-item')], word: box('.think-word') } }, '*'); } catch (e) {}
+                    if (++n < 50) setTimeout(tell, 60);
+                };
+                tell();
+            });
+            try {
+                const nav = performance.getEntriesByType('navigation')[0];
+                fromProject = (!nav || nav.type !== 'reload') && /^\/(projects|thinking)\//.test(document.referrer.slice(location.origin.length)) && document.referrer.indexOf(location.origin) === 0;
+            } catch (e) {}
+            const root = document.documentElement;
+            if (framed || handed) {
+                root.classList.add('arrived');
+                if (!framed) {
+                    // Taking over from Thinking: the browser keeps the last picture of that page (which
+                    // is this page, shown behind it) on screen until this one is drawn, so there is no
+                    // blank frame in between. Asked for only on this one arrival, and withdrawn after.
+                    const hold = document.createElement('style');
+                    hold.textContent = '@view-transition { navigation: auto; }';
+                    document.head.appendChild(hold);
+                    window.addEventListener('load', function() {
+                        setTimeout(function() { root.classList.remove('arrived'); hold.remove(); }, 600);
+                    });
+                }
+            } else if (!fromProject && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                root.classList.add('intro');
+            }
+        })();
     </script>
     <style>
+        html.arrived *,
+        html.arrived *::before,
+        html.arrived *::after {
+            transition: none !important;
+            animation-duration: 0s !important;
+            animation-delay: 0s !important;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -1005,6 +1062,9 @@
 
         .project-description {
             width: 360px;
+            /* room for its three lines from the start: the frame above is centred together with this
+               caption, and must not move when the caption's text arrives a moment after the page */
+            min-height: 48px;
             padding: 16px 0 0 0;
             text-align: center;
             color: #000;
@@ -1657,6 +1717,15 @@
             width: 30%;
         }
 
+        /* Phone-width tiles are a shallow banner: keep the logo clear of the first phone */
+        @media (max-width: 768px) {
+            .project-item .blinkko-cover::after {
+                top: 5%;
+                left: 4.5%;
+                width: 19%;
+            }
+        }
+
         .blinkko-cover .bc-phones {
             position: absolute;
             inset: 0;
@@ -1944,9 +2013,9 @@
                         <div class="project-image blinkko-cover-wrap" role="img" aria-label="Blinkko Labs">
                         <div class="blinkko-cover">
                             <div class="bc-phones">
-                                <span class="bc-phone"><img src="projects/blinkko/app-map-opt.webp" alt=""></span>
-                                <span class="bc-phone"><img fetchpriority="high" src="projects/blinkko/ui-home-v3.png" alt=""></span>
-                                <span class="bc-phone"><img src="projects/blinkko/onboarding/recognize.webp" alt=""></span>
+                                <span class="bc-phone"><img decoding="sync" src="projects/blinkko/app-map-opt.webp" alt=""></span>
+                                <span class="bc-phone"><img decoding="sync" fetchpriority="high" src="projects/blinkko/ui-home-v3.png" alt=""></span>
+                                <span class="bc-phone"><img decoding="sync" src="projects/blinkko/onboarding/recognize.webp" alt=""></span>
                             </div>
                         </div>
                     </div>
@@ -3308,5 +3377,23 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
     </script>
+    <script>
+        // Taking over from Thinking: the first frame this page draws must already hold the project in
+        // its frame, exactly as it was shown behind Thinking. (Normally the preview is switched on a
+        // moment after the page loads, which would show as a blink of an empty page here.)
+        (function() {
+            if (!document.documentElement.classList.contains('arrived')) return;
+            const wrapper = document.getElementById('project-preview-wrapper');
+            const first = document.querySelector('.project-list li');
+            const image = document.querySelector('.project-image');
+            const caption = document.getElementById('project-description');
+            if (!wrapper || !first || !image) return;
+            wrapper.classList.add('show');
+            first.classList.add('active');
+            image.classList.add('active');
+            if (caption && !caption.innerHTML) caption.innerHTML = '<p>2026</p><p>UIUX, Product, Design Engineering</p><p>\u2014</p>';
+        })();
+    </script>
+    <span id="page-end" hidden></span>
 </body>
 </html>
