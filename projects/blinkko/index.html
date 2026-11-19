@@ -437,6 +437,10 @@
             line-height: 1.55;
         }
 
+        .app-copy p:not(.kicker) + p {
+            margin-top: 12px;
+        }
+
         .note-grid span {
             font-size: 13px;
             opacity: 0.62;
@@ -2292,7 +2296,7 @@
 
                 <div class="note">
                     <p class="kicker">Five loops</p>
-                    <p>Onboarding, Homepage, Friend loop, City Explore, Pet growth — in that order. Screens below are the landed UI, autoplaying; tap to step.</p>
+                    <p>Onboarding, Homepage (where Pet growth lives), Friend loop, City Explore — in that order. Screens below are the landed UI, autoplaying; tap to step.</p>
                 </div>
 
                 <div class="app-stage" id="app-ui">
@@ -2506,82 +2510,23 @@
 
                     <div class="app-copy">
                         <p class="kicker">Homepage</p>
-                        <p>Hallway greetings from the App — “sup, kai”, “yo, kai”. Light and volume open as overlays on that same character, not separate settings pages.</p>
+                        <p>Home is where the companion lives. Hallway greetings from the App — “sup, kai”, “yo, kai”. Light and volume open as overlays on that same character, not separate settings pages.</p>
+                        <p>It also grows here, in two places: the Lumi shop for outfits (preview, spend, confirm, owned), and the monthly recap, where the tags from your month drop onto the city.</p>
                     </div>
                     <div class="proto">
                         <button class="proto-phone" type="button" aria-label="Step home prototype">
                             <span class="proto-stage">
                                 <img loading="lazy" decoding="async" class="is-on" src="ui-home-v3.png" alt="Blinkko home">
-                                <img loading="lazy" decoding="async" src="ui-lights-opt.webp?v=3" alt="Blinkko lights">
-                                <img loading="lazy" decoding="async" src="ui-volume.png?v=3" alt="Blinkko volume">
+                                <img loading="lazy" decoding="async" src="ui-lights-opt.webp?v=4" alt="Blinkko lights">
+                                <img loading="lazy" decoding="async" src="ui-volume.png?v=4" alt="Blinkko volume">
                             </span>
                         </button>
                         <p class="proto-hint">Home → light overlay → volume overlay</p>
                         <div class="phone-row proto-strip">
                             <div class="phone-stage is-current"><div class="phone-frame"><img loading="lazy" decoding="async" src="ui-home-v3.png" alt=""></div></div>
-                            <div class="phone-stage"><div class="phone-frame"><img loading="lazy" decoding="async" src="ui-lights-opt.webp?v=3" alt=""></div></div>
-                            <div class="phone-stage"><div class="phone-frame"><img loading="lazy" decoding="async" src="ui-volume.png?v=3" alt=""></div></div>
+                            <div class="phone-stage"><div class="phone-frame"><img loading="lazy" decoding="async" src="ui-lights-opt.webp?v=4" alt=""></div></div>
+                            <div class="phone-stage"><div class="phone-frame"><img loading="lazy" decoding="async" src="ui-volume.png?v=4" alt=""></div></div>
                         </div>
-                    </div>
-
-                    <div class="app-copy">
-                        <p class="kicker">Friend loop</p>
-                        <p>Chats, Send Glow, then hardware Bump: two devices meet, “a new encounter,” then the contact sheet.</p>
-                    </div>
-                    <div class="proto">
-                        <button class="proto-phone" type="button" aria-label="Step friends prototype">
-                            <span class="proto-stage">
-                                <img loading="lazy" decoding="async" class="is-on" src="app-friends-opt.webp" alt="Blinkko chats">
-                                <img loading="lazy" decoding="async" src="ui-glow.png" alt="Blinkko send glow">
-                                <div class="encounter proto-scene" data-dwell="5200" aria-label="Bump to connect, a new encounter">
-                                <img loading="lazy" decoding="async" class="encounter-home" src="ui-home.png" alt="">
-                                <div class="encounter-backdrop"></div>
-                                <img loading="lazy" decoding="async" class="encounter-glow" src="app-bump-glow.png" alt="">
-                                <img loading="lazy" decoding="async" class="encounter-head" src="app-bump-head.png" alt="">
-                                <div class="encounter-pet"><img loading="lazy" decoding="async" src="app-bump-pet-opt.webp" alt=""></div>
-                                <p class="encounter-copy">a new encounter.</p>
-                                <div class="encounter-sheet">
-                                    <span class="encounter-sheet-grab"></span>
-                                    <img loading="lazy" decoding="async" class="encounter-sheet-pet" src="app-bump-sheet-pet-opt.webp" alt="">
-                                    <p class="encounter-sheet-name">mochi</p>
-                                    <p class="encounter-sheet-user">bailey ›</p>
-                                    <p class="encounter-sheet-cta">chat now !</p>
-                                    <p class="encounter-sheet-later">maybe later</p>
-                                </div>
-                                </div>
-                            </span>
-                        </button>
-                        <p class="proto-hint">Chats → Send Glow → Bump</p>
-                        <div class="phone-row proto-strip">
-                            <div class="phone-stage is-current"><div class="phone-frame"><img loading="lazy" decoding="async" src="app-friends-opt.webp" alt=""></div></div>
-                            <div class="phone-stage"><div class="phone-frame"><img loading="lazy" decoding="async" src="ui-glow.png" alt=""></div></div>
-                            <div class="phone-stage"><div class="phone-frame"><img loading="lazy" decoding="async" src="ui-bump-opt.webp" alt=""></div></div>
-                        </div>
-                    </div>
-
-                    <div class="app-copy">
-                        <p class="kicker">City Explore</p>
-                        <p>The map tab: discovery, events in town, Glow create, posts, and phone check-in. Everything sits on one map, not a second app.</p>
-                    </div>
-                    <div class="proto">
-                        <button class="proto-phone" type="button" aria-label="Step city prototype">
-                            <span class="proto-stage">
-                                <img loading="lazy" decoding="async" class="is-on" src="app-map-opt.webp" alt="Blinkko city map">
-                                <img loading="lazy" decoding="async" src="app-events-opt.webp?v=2" alt="Blinkko events in town">
-                                <img loading="lazy" decoding="async" src="app-glow-create-opt.webp" alt="Blinkko create glow">
-                            </span>
-                        </button>
-                        <p class="proto-hint">Map → events → create Glow</p>
-                        <div class="phone-row proto-strip">
-                            <div class="phone-stage is-current"><div class="phone-frame"><img loading="lazy" decoding="async" src="app-map-opt.webp" alt=""></div></div>
-                            <div class="phone-stage"><div class="phone-frame"><img loading="lazy" decoding="async" src="app-events-opt.webp?v=2" alt=""></div></div>
-                            <div class="phone-stage"><div class="phone-frame"><img loading="lazy" decoding="async" src="app-glow-create-opt.webp" alt=""></div></div>
-                        </div>
-                    </div>
-
-                    <div class="app-copy">
-                        <p class="kicker">Pet growth</p>
-                        <p>The companion grows in the App in two places. The Lumi shop for outfits: preview, spend, confirm, owned. And the monthly recap, where the tags from your month drop onto the city.</p>
                     </div>
                     <div class="proto">
                         <button class="proto-phone" type="button" aria-label="Step closet prototype">
@@ -2626,6 +2571,92 @@
                         <div class="phone-row proto-strip">
                             <div class="phone-stage is-current"><div class="phone-frame"><img loading="lazy" decoding="async" src="app-report-intro.png?v=3" alt=""></div></div>
                             <div class="phone-stage"><div class="phone-frame"><img loading="lazy" decoding="async" src="ui-monthly-opt.webp" alt=""></div></div>
+                        </div>
+                    </div>
+
+                    <div class="app-copy">
+                        <p class="kicker">Friend loop</p>
+                        <p>With the hardware, a Bump is how you become friends. When two devices meet, it is “a new encounter” and you are friends at once, with no request to send or accept; “chat now” opens the chat straight away. In the chat, plans get made: anything from the map can be dropped in (a place, a Glow, an event), an event arrives as an invite you accept or decline in place, and a long-press replies to a message or reacts with a Blinkko sticker. From a friend’s page, Send Glow lights up the tail on their device.</p>
+                        <p>Without a device, friends are added the usual way: search a user ID and send a request. The invitation list shows where each request came from (search, an event, a Glow).</p>
+                    </div>
+                    <div class="proto">
+                        <button class="proto-phone" type="button" aria-label="Step friends prototype">
+                            <span class="proto-stage">
+                                <div class="encounter proto-scene is-on is-live" data-dwell="5200" aria-label="Bump to connect, a new encounter">
+                                <img loading="lazy" decoding="async" class="encounter-home" src="ui-home.png" alt="">
+                                <div class="encounter-backdrop"></div>
+                                <img loading="lazy" decoding="async" class="encounter-glow" src="app-bump-glow.png" alt="">
+                                <img loading="lazy" decoding="async" class="encounter-head" src="app-bump-head.png" alt="">
+                                <div class="encounter-pet"><img loading="lazy" decoding="async" src="app-bump-pet-opt.webp" alt=""></div>
+                                <p class="encounter-copy">a new encounter.</p>
+                                <div class="encounter-sheet">
+                                    <span class="encounter-sheet-grab"></span>
+                                    <img loading="lazy" decoding="async" class="encounter-sheet-pet" src="app-bump-sheet-pet-opt.webp" alt="">
+                                    <p class="encounter-sheet-name">mochi</p>
+                                    <p class="encounter-sheet-user">bailey ›</p>
+                                    <p class="encounter-sheet-cta">chat now !</p>
+                                    <p class="encounter-sheet-later">maybe later</p>
+                                </div>
+                                </div>
+                                <img loading="lazy" decoding="async" src="chat/share-place.webp" alt="Chat: a shared place card">
+                                <img loading="lazy" decoding="async" src="chat/share-glow.webp" alt="Chat: a shared Glow">
+                                <img loading="lazy" decoding="async" src="chat/invite.webp" alt="Chat: an event invite with accept or decline">
+                                <img loading="lazy" decoding="async" src="chat/invite-accepted.webp" alt="Chat: invite accepted">
+                                <img loading="lazy" decoding="async" src="chat/react.webp" alt="Chat: long-press a message to reply or react">
+                                <img loading="lazy" decoding="async" src="ui-glow.png" alt="Blinkko send glow">
+                            </span>
+                        </button>
+                        <p class="proto-hint">Bump: you are friends → chat now → share a place → share a Glow → event invite → accepted → react → Send Glow</p>
+                        <div class="phone-row proto-strip">
+                            <div class="phone-stage is-current"><div class="phone-frame"><img loading="lazy" decoding="async" src="ui-bump-opt.webp" alt=""></div></div>
+                            <div class="phone-stage"><div class="phone-frame"><img loading="lazy" decoding="async" src="chat/share-place.webp" alt=""></div></div>
+                            <div class="phone-stage"><div class="phone-frame"><img loading="lazy" decoding="async" src="chat/share-glow.webp" alt=""></div></div>
+                            <div class="phone-stage"><div class="phone-frame"><img loading="lazy" decoding="async" src="chat/invite.webp" alt=""></div></div>
+                            <div class="phone-stage"><div class="phone-frame"><img loading="lazy" decoding="async" src="chat/invite-accepted.webp" alt=""></div></div>
+                            <div class="phone-stage"><div class="phone-frame"><img loading="lazy" decoding="async" src="chat/react.webp" alt=""></div></div>
+                            <div class="phone-stage"><div class="phone-frame"><img loading="lazy" decoding="async" src="ui-glow.png" alt=""></div></div>
+                        </div>
+                    </div>
+
+                    <div class="proto">
+                        <button class="proto-phone" type="button" aria-label="Step add-friend prototype">
+                            <span class="proto-stage">
+                                <img loading="lazy" decoding="async" class="is-on" src="chat/add-search.webp" alt="Add friends: search a user ID">
+                                <img loading="lazy" decoding="async" src="chat/add-sent.webp" alt="Request sent">
+                                <img loading="lazy" decoding="async" src="chat/add-invites.webp" alt="Invitations, each showing where the request came from">
+                            </span>
+                        </button>
+                        <p class="proto-hint">Without a device: search a user ID → request sent → they accept from Invitations</p>
+                        <div class="phone-row proto-strip">
+                            <div class="phone-stage is-current"><div class="phone-frame"><img loading="lazy" decoding="async" src="chat/add-search.webp" alt=""></div></div>
+                            <div class="phone-stage"><div class="phone-frame"><img loading="lazy" decoding="async" src="chat/add-sent.webp" alt=""></div></div>
+                            <div class="phone-stage"><div class="phone-frame"><img loading="lazy" decoding="async" src="chat/add-invites.webp" alt=""></div></div>
+                        </div>
+                    </div>
+
+                    <div class="app-copy">
+                        <p class="kicker">City Explore</p>
+                        <p>The map tab. Glows (short posts left at a place), places, friends and events are all pins on one map, and every action starts by tapping one. Tap + to leave a Glow at the place you are, or tap a place to see the Glows and events left there, walk over and check in. Events are reached the same way, from the events card or a place’s Events tab.</p>
+                    </div>
+                    <div class="proto">
+                        <button class="proto-phone" type="button" aria-label="Step city prototype">
+                            <span class="proto-stage">
+                                <img loading="lazy" decoding="async" class="is-on" src="city/map.webp" alt="City map with Glows, friends and places">
+                                <img loading="lazy" decoding="async" src="city/glow-filled.webp" alt="Create Glow: photos, tag, public or private">
+                                <img loading="lazy" decoding="async" src="city/glow-posted.webp" alt="Glow posted">
+                                <img loading="lazy" decoding="async" src="city/place.webp" alt="The place sheet over the map">
+                                <img loading="lazy" decoding="async" src="city/on-my-way.webp" alt="On my way: route to the place">
+                                <img loading="lazy" decoding="async" src="city/check-in.webp" alt="Check-in on arrival">
+                            </span>
+                        </button>
+                        <p class="proto-hint">Map → tap + → post a Glow → tap a place → go → check in</p>
+                        <div class="phone-row proto-strip">
+                            <div class="phone-stage is-current"><div class="phone-frame"><img loading="lazy" decoding="async" src="city/map.webp" alt=""></div></div>
+                            <div class="phone-stage"><div class="phone-frame"><img loading="lazy" decoding="async" src="city/glow-filled.webp" alt=""></div></div>
+                            <div class="phone-stage"><div class="phone-frame"><img loading="lazy" decoding="async" src="city/glow-posted.webp" alt=""></div></div>
+                            <div class="phone-stage"><div class="phone-frame"><img loading="lazy" decoding="async" src="city/place.webp" alt=""></div></div>
+                            <div class="phone-stage"><div class="phone-frame"><img loading="lazy" decoding="async" src="city/on-my-way.webp" alt=""></div></div>
+                            <div class="phone-stage"><div class="phone-frame"><img loading="lazy" decoding="async" src="city/check-in.webp" alt=""></div></div>
                         </div>
                     </div>
                 </div>
@@ -2709,7 +2740,7 @@
                         <text class="loop-title" x="800" y="458" text-anchor="middle"><tspan class="loop-no">03</tspan>  Understand</text>
                         <text class="loop-sub" x="800" y="477" text-anchor="middle">Place, people and events</text>
 
-                        <image href="ui-lights-opt.webp?v=3" x="420" y="310" width="120" height="120" preserveAspectRatio="xMidYMid slice" clip-path="url(#loop-c4)"/>
+                        <image href="ui-lights-opt.webp?v=4" x="420" y="310" width="120" height="120" preserveAspectRatio="xMidYMid slice" clip-path="url(#loop-c4)"/>
                         <circle class="loop-ring" cx="480" cy="370" r="60"/>
                         <text class="loop-title" x="480" y="458" text-anchor="middle"><tspan class="loop-no">04</tspan>  Respond</text>
                         <text class="loop-sub" x="480" y="477" text-anchor="middle">The App sets light, haptics and the tail</text>
