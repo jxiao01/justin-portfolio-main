@@ -1369,6 +1369,11 @@
             transition: opacity 0.15s linear;
         }
 
+        /* a long flow (onboarding has eight steps) gets smaller thumbnails so the strip stays on one line */
+        .proto-strip:has(.phone-stage:nth-child(6)) .phone-stage {
+            width: min(9.5%, 64px);
+        }
+
         .proto-strip .phone-stage.is-current,
         .proto-strip .phone-stage:hover {
             opacity: 1;
@@ -2293,19 +2298,31 @@
                 <div class="app-stage" id="app-ui">
                     <div class="app-copy">
                         <p class="kicker">Onboarding</p>
-                        <p>Welcome: “a light born from what you feel…” then let’s go. Sign-in is Apple / Google first; avatar and username finish the free-app path. Once you are signed in, the vibe quiz lets Blinkko get to know you. The permission stack is no longer required up front.</p>
+                        <p>Welcome: “a light born from what you feel…” then let’s go. Sign-in is Apple / Google first; email is the fallback, confirmed with a six-digit code. Once you are signed in, the vibe quiz lets Blinkko get to know you and ends on your vibe type. The permission stack is no longer required up front.</p>
                     </div>
                     <div class="proto" data-first="move-in">
                         <button class="proto-phone" type="button" aria-label="Step onboarding prototype">
                             <span class="proto-stage">
                                 <img loading="lazy" decoding="async" class="is-on" src="app-welcome-opt.webp" alt="Blinkko welcome">
-                                <img loading="lazy" decoding="async" src="app-signin-opt.webp" alt="Blinkko sign in">
+                                <img loading="lazy" decoding="async" src="app-signin-opt.webp" alt="Blinkko sign up">
+                                <img loading="lazy" decoding="async" src="onboarding/verify-code.webp" alt="Verify your identity with a six-digit code">
+                                <img loading="lazy" decoding="async" src="onboarding/confirmed.webp" alt="Confirmed">
+                                <img loading="lazy" decoding="async" src="quiz/intro.webp" alt="Quiz: blinkko wants to know about you">
+                                <img loading="lazy" decoding="async" src="quiz/q1.webp" alt="Quiz question: it’s friday 6pm, what’s the move">
+                                <img loading="lazy" decoding="async" src="onboarding/quiz-loading.webp" alt="Loading your vibe type">
+                                <img loading="lazy" decoding="async" src="quiz/result-hiddengem.webp?v=2" alt="Vibe type result: hidden gem">
                             </span>
                         </button>
-                        <p class="proto-hint">Welcome → sign in</p>
+                        <p class="proto-hint">Welcome → sign up → verify → about you → quiz → your vibe type</p>
                         <div class="phone-row proto-strip">
                             <div class="phone-stage is-current"><div class="phone-frame"><img loading="lazy" decoding="async" src="app-welcome-opt.webp" alt=""></div></div>
                             <div class="phone-stage"><div class="phone-frame"><img loading="lazy" decoding="async" src="app-signin-opt.webp" alt=""></div></div>
+                            <div class="phone-stage"><div class="phone-frame"><img loading="lazy" decoding="async" src="onboarding/verify-code.webp" alt=""></div></div>
+                            <div class="phone-stage"><div class="phone-frame"><img loading="lazy" decoding="async" src="onboarding/confirmed.webp" alt=""></div></div>
+                            <div class="phone-stage"><div class="phone-frame"><img loading="lazy" decoding="async" src="quiz/intro.webp" alt=""></div></div>
+                            <div class="phone-stage"><div class="phone-frame"><img loading="lazy" decoding="async" src="quiz/q1.webp" alt=""></div></div>
+                            <div class="phone-stage"><div class="phone-frame"><img loading="lazy" decoding="async" src="onboarding/quiz-loading.webp" alt=""></div></div>
+                            <div class="phone-stage"><div class="phone-frame"><img loading="lazy" decoding="async" src="quiz/result-hiddengem.webp?v=2" alt=""></div></div>
                         </div>
                     </div>
 
@@ -2454,10 +2471,36 @@
                             <figure><img src="quiz/result-homebase.webp" width="402" height="874" loading="lazy" decoding="async" alt="Vibe type: homebase"><figcaption>homebase</figcaption></figure>
                             <figure><img src="quiz/result-nightowl.webp" width="402" height="874" loading="lazy" decoding="async" alt="Vibe type: night owl"><figcaption>night owl</figcaption></figure>
                             <figure><img src="quiz/result-sidequest.webp" width="402" height="874" loading="lazy" decoding="async" alt="Vibe type: side quest"><figcaption>side quest</figcaption></figure>
-                            <figure><img src="quiz/result-hiddengem.webp" width="402" height="874" loading="lazy" decoding="async" alt="Vibe type: hidden gem"><figcaption>hidden gem</figcaption></figure>
+                            <figure><img src="quiz/result-hiddengem.webp?v=2" width="402" height="874" loading="lazy" decoding="async" alt="Vibe type: hidden gem"><figcaption>hidden gem</figcaption></figure>
                             <figure><img src="quiz/result-spotlight.webp" width="402" height="874" loading="lazy" decoding="async" alt="Vibe type: spotlight"><figcaption>spotlight</figcaption></figure>
                     </div>
                     <p class="dd-after">Hardware stayed optional throughout: pairing moved out of onboarding, so the map and the social features work before anyone owns a device.</p>
+                </div>
+
+                <div class="note note-sub" id="onboarding-device">
+                    <p class="kicker">When a device joins</p>
+                    <p>Pairing became its own short sequence, started whenever someone adds a Blinkko. It carries the three phases of the first version into hi-fi: the setup is split into small asks, the encounter happens on the device itself, and it ends with Blinkko sitting right on the shoulder.</p>
+                    <p class="dd-row-head">Senses: one permission at a time, each with a reason and a small reward</p>
+                    <div class="dd-row">
+                            <figure><img src="onboarding/senses-intro.webp" width="402" height="874" loading="lazy" decoding="async" alt="Now let’s help your blinkko wake up"><figcaption>Why it asks</figcaption></figure>
+                            <figure><img src="onboarding/senses-list.webp" width="402" height="874" loading="lazy" decoding="async" alt="Blinkko’s senses: location, notifications, bluetooth"><figcaption>Three senses, all visible</figcaption></figure>
+                            <figure><img src="onboarding/senses-location.webp" width="402" height="874" loading="lazy" decoding="async" alt="Let blinkko discover your world: what location is used for"><figcaption>Location, with “not now”</figcaption></figure>
+                            <figure><img src="onboarding/senses-yay.webp" width="402" height="874" loading="lazy" decoding="async" alt="Yay! now i know where the fun stuff is"><figcaption>Blinkko reacts</figcaption></figure>
+                            <figure><img src="onboarding/senses-ready.webp" width="402" height="874" loading="lazy" decoding="async" alt="You are ready to explore"><figcaption>What it can do now</figcaption></figure>
+                    </div>
+                    <p class="dd-row-head">The encounter: pairing is the first meeting</p>
+                    <div class="dd-row">
+                            <figure><img src="onboarding/pair-connected.webp" width="402" height="874" loading="lazy" decoding="async" alt="Blinkko orange found, connect"><figcaption>Found nearby</figcaption></figure>
+                            <figure><img src="onboarding/meet-blink.webp" width="402" height="874" loading="lazy" decoding="async" alt="Blink... blink..."><figcaption>A faint light</figcaption></figure>
+                            <figure><img src="onboarding/meet-tap.webp" width="402" height="874" loading="lazy" decoding="async" alt="Tap to give it energy"><figcaption>Tap to give it energy</figcaption></figure>
+                            <figure><img src="onboarding/meet-recognize.webp" width="402" height="874" loading="lazy" decoding="async" alt="It seems to recognize you"><figcaption>It recognizes you</figcaption></figure>
+                    </div>
+                    <p class="dd-row-head">Wearing it: a fit check before the first walk</p>
+                    <div class="dd-row">
+                            <figure><img src="onboarding/wear-shoulder.webp" width="402" height="874" loading="lazy" decoding="async" alt="Put blinkko on your shoulder"><figcaption>Mount under clothes</figcaption></figure>
+                            <figure><img src="onboarding/wear-fit.webp" width="402" height="874" loading="lazy" decoding="async" alt="How does it feel? perfect, or a little loose"><figcaption>How does it feel?</figcaption></figure>
+                            <figure><img src="onboarding/wear-tap.webp" width="402" height="874" loading="lazy" decoding="async" alt="Give blinkko a gentle tap"><figcaption>First tap, then explore</figcaption></figure>
+                    </div>
                 </div>
                     </div>
 
